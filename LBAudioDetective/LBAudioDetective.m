@@ -35,22 +35,22 @@ typedef struct LBAudioDetective {
     } FFT;
 } LBAudioDetective;
 
-void _LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef detective);
-void _LBAudioDetectiveReset(LBAudioDetectiveRef detective);
-OSStatus _LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionFlags* ioActionFlags, const AudioTimeStamp* inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList* ioData);
+void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef detective);
+void LBAudioDetectiveReset(LBAudioDetectiveRef detective);
+OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionFlags* ioActionFlags, const AudioTimeStamp* inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList* ioData);
 
-void _LBAudioDetectiveAnalyse(LBAudioDetectiveRef detective, UInt32 inNumberFrames, AudioBufferList inData);
-Boolean _LBAudioDetectiveIdentificationUnitAddFrequency(LBAudioDetectiveIdentificationUnit* identification, Float32 frequency, Float32 magnitude, UInt32 index);
+void LBAudioDetectiveAnalyse(LBAudioDetectiveRef detective, UInt32 inNumberFrames, AudioBufferList inData);
+Boolean LBAudioDetectiveIdentificationUnitAddFrequency(LBAudioDetectiveIdentificationUnit* identification, Float32 frequency, Float32 magnitude, UInt32 index);
 
-UInt32 _LBAudioDetectiveRangeOfFrequency(Float32 frequency);
-void _LBAudioDetectiveConvertStreamFormatToFloat(void* inBuffer, UInt32 bufferSize, AudioStreamBasicDescription inFormat, float* outBuffer);
+UInt32 LBAudioDetectiveRangeOfFrequency(Float32 frequency);
+void LBAudioDetectiveConvertStreamFormatToFloat(void* inBuffer, UInt32 bufferSize, AudioStreamBasicDescription inFormat, float* outBuffer);
 
 #pragma mark Utilites
 
-#define LBErrorCheck(error) (_LBErrorCheckOnLine(error, __LINE__))
-#define LBAssert(condition) (_LBErrorCheckOnLine(!condition, __LINE__))
+#define LBErrorCheck(error) (LBErrorCheckOnLine(error, __LINE__))
+#define LBAssert(condition) (LBErrorCheckOnLine(!condition, __LINE__))
 
-static inline void _LBErrorCheckOnLine(OSStatus error, int line) {
+static inline void LBErrorCheckOnLine(OSStatus error, int line) {
     if (error == noErr) {
         return;
     }
@@ -174,7 +174,7 @@ void LBAudioDetectiveSetWriteAudioToURL(LBAudioDetectiveRef detective, NSURL* fi
 #pragma mark Other Methods
 
 void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef detective, NSURL* inFileURL) {
-    _LBAudioDetectiveReset(detective);
+    LBAudioDetectiveReset(detective);
     
     OSStatus error = ExtAudioFileOpenURL((__bridge CFURLRef)(inFileURL), &detective->inputFile);
     LBErrorCheck(error);
@@ -193,16 +193,16 @@ void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef detective, NSURL* inFil
         error = ExtAudioFileRead(detective->inputFile, &numberFrames, &bufferList);
         LBErrorCheck(error);
         
-        _LBAudioDetectiveAnalyse(detective, numberFrames, bufferList);
+        LBAudioDetectiveAnalyse(detective, numberFrames, bufferList);
     }
 }
 
 void LBAudioDetectiveStartProcessing(LBAudioDetectiveRef detective) {
     if (detective->graph == NULL || detective->rioUnit == NULL) {
-        _LBAudioDetectiveInitializeGraph(detective);
+        LBAudioDetectiveInitializeGraph(detective);
     }
     
-    _LBAudioDetectiveReset(detective);
+    LBAudioDetectiveReset(detective);
     
     AUGraphStart(detective->graph);
 }
@@ -226,7 +226,7 @@ void LBAudioDetectivePauseProcessing(LBAudioDetectiveRef detective) {
 #pragma mark -
 #pragma mark Processing
 
-void _LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef detective) {    
+void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef detective) {    
     // Create new AUGraph
     OSStatus error = NewAUGraph(&detective->graph);
     LBErrorCheck(error);
@@ -273,7 +273,7 @@ void _LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef detective) {
     LBErrorCheck(error);
 	
     AURenderCallbackStruct callback = {0};
-    callback.inputProc = _LBAudioDetectiveMicrophoneOutput;
+    callback.inputProc = LBAudioDetectiveMicrophoneOutput;
 	callback.inputProcRefCon = detective;
     propertySize = sizeof(AURenderCallbackStruct);
 	error = AudioUnitSetProperty(detective->rioUnit, kAudioOutputUnitProperty_SetInputCallback, kAudioUnitScope_Global, bus0, &callback, propertySize);
@@ -288,7 +288,7 @@ void _LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef detective) {
     LBErrorCheck(error);
 }
 
-void _LBAudioDetectiveReset(LBAudioDetectiveRef detective) {
+void LBAudioDetectiveReset(LBAudioDetectiveRef detective) {
     free(detective->identificationUnits);
     detective->identificationUnits = NULL;
     detective->identificationUnitCount = 0;
@@ -297,7 +297,7 @@ void _LBAudioDetectiveReset(LBAudioDetectiveRef detective) {
     detective->FFT.index = 0;
 }
 
-OSStatus _LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionFlags* ioActionFlags, const AudioTimeStamp* inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList* ioData) {
+OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionFlags* ioActionFlags, const AudioTimeStamp* inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList* ioData) {
     LBAudioDetective* detective = (LBAudioDetective*)inRefCon;
     OSStatus error = noErr;
     
@@ -319,12 +319,12 @@ OSStatus _LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderAction
         LBErrorCheck(error);
     }
     
-    _LBAudioDetectiveAnalyse(detective, inNumberFrames, bufferList);
+    LBAudioDetectiveAnalyse(detective, inNumberFrames, bufferList);
     
     return error;
 }
 
-void _LBAudioDetectiveAnalyse(LBAudioDetectiveRef detective, UInt32 inNumberFrames, AudioBufferList inData) {
+void LBAudioDetectiveAnalyse(LBAudioDetectiveRef detective, UInt32 inNumberFrames, AudioBufferList inData) {
     // Fill the buffer with our sampled data. If we fill our buffer, run the FFT
 	UInt32 read = kLBAudioDetectiveWindowSize-detective->FFT.index;
 	if (read > inNumberFrames) {
@@ -339,7 +339,7 @@ void _LBAudioDetectiveAnalyse(LBAudioDetectiveRef detective, UInt32 inNumberFram
 		// We want to deal with only floating point values here.
         
         float outputBuffer[kLBAudioDetectiveWindowSize];
-        _LBAudioDetectiveConvertStreamFormatToFloat(detective->FFT.buffer, kLBAudioDetectiveWindowSize, detective->streamFormat, (float*)outputBuffer);
+        LBAudioDetectiveConvertStreamFormatToFloat(detective->FFT.buffer, kLBAudioDetectiveWindowSize, detective->streamFormat, (float*)outputBuffer);
 		
 		/**
 		 Look at the real signal as an interleaved complex vector by casting it.
@@ -364,9 +364,9 @@ void _LBAudioDetectiveAnalyse(LBAudioDetectiveRef detective, UInt32 inNumberFram
 			Float32 magnitude = (outputBuffer[i]*outputBuffer[i])+(outputBuffer[i+1]*outputBuffer[i+1]);
             UInt32 bin = (i+1)/2;
             Float32 frequency = bin*(detective->streamFormat.mSampleRate/kLBAudioDetectiveWindowSize);
-            UInt32 idx = _LBAudioDetectiveRangeOfFrequency(frequency);
+            UInt32 idx = LBAudioDetectiveRangeOfFrequency(frequency);
             
-            _LBAudioDetectiveIdentificationUnitAddFrequency(&identification, frequency, magnitude, idx);
+            LBAudioDetectiveIdentificationUnitAddFrequency(&identification, frequency, magnitude, idx);
 		}
         
         memset(detective->FFT.buffer, 0, sizeof(detective->FFT.buffer));
@@ -378,7 +378,7 @@ void _LBAudioDetectiveAnalyse(LBAudioDetectiveRef detective, UInt32 inNumberFram
 	}
 }
 
-Boolean _LBAudioDetectiveIdentificationUnitAddFrequency(LBAudioDetectiveIdentificationUnit* identification, Float32 frequency, Float32 magnitude, UInt32 index) {
+Boolean LBAudioDetectiveIdentificationUnitAddFrequency(LBAudioDetectiveIdentificationUnit* identification, Float32 frequency, Float32 magnitude, UInt32 index) {
     if ((magnitude > identification->magnitudes[index]) && frequency) {
         identification->magnitudes[index] = magnitude;
         identification->frequencies[index] = frequency;
@@ -392,7 +392,7 @@ Boolean _LBAudioDetectiveIdentificationUnitAddFrequency(LBAudioDetectiveIdentifi
 #pragma mark -
 #pragma mark Utilities
 
-UInt32 _LBAudioDetectiveRangeOfFrequency(Float32 frequency) {
+UInt32 LBAudioDetectiveRangeOfFrequency(Float32 frequency) {
     if (frequency < 40.0f) {
         return 0;
     }
@@ -409,7 +409,7 @@ UInt32 _LBAudioDetectiveRangeOfFrequency(Float32 frequency) {
     return 4;
 }
 
-void _LBAudioDetectiveConvertStreamFormatToFloat(void* inBuffer, UInt32 bufferSize, AudioStreamBasicDescription inFormat, float* outBuffer) {
+void LBAudioDetectiveConvertStreamFormatToFloat(void* inBuffer, UInt32 bufferSize, AudioStreamBasicDescription inFormat, float* outBuffer) {
 	UInt32 bytesPerSample = sizeof(float);
     
 	AudioStreamBasicDescription asbd = {0};
