@@ -115,9 +115,14 @@ void LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective) {
 
 AudioStreamBasicDescription LBAudioDetectiveDefaultFormat() {
     Float64 defaultSampleRate;
+    
+#if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
     UInt32 propertySize = sizeof(Float64);
     OSStatus error = AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareSampleRate, &propertySize, &defaultSampleRate);
     LBErrorCheck(error);
+#else
+    defaultSampleRate = 44100.0;
+#endif
     
     UInt32 bytesPerSample = sizeof(SInt16);
     
@@ -235,7 +240,9 @@ void LBAudioDetectivePauseProcessing(LBAudioDetectiveRef inDetective) {
 #pragma mark -
 #pragma mark Processing
 
-void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef inDetective) {    
+void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef inDetective) {
+#if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)  
+    
     // Create new AUGraph
     OSStatus error = NewAUGraph(&inDetective->graph);
     LBErrorCheck(error);
@@ -265,7 +272,7 @@ void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef inDetective) {
     UInt32 onFlag = 1, offFlag = 0;
     UInt32 propertySize = sizeof(UInt32);
     
-    // Enable micorphone input
+    // Enable microphone input
 	error = AudioUnitSetProperty(inDetective->rioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, bus1, &onFlag, propertySize);
     LBErrorCheck(error);
 	
@@ -295,6 +302,8 @@ void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef inDetective) {
     // Initialize Graph
     error = AUGraphInitialize(inDetective->graph);
     LBErrorCheck(error);
+    
+#endif
 }
 
 void LBAudioDetectiveReset(LBAudioDetectiveRef inDetective) {
