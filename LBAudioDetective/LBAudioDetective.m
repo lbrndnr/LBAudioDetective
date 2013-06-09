@@ -344,13 +344,11 @@ void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, UInt32 inNumberFra
 		// If we enter this conditional, our buffer will be filled and we should perform the FFT.
 		memcpy((SInt16 *)inDetective->FFT.buffer+inDetective->FFT.index, inData.mBuffers[0].mData, read*sizeof(SInt16));
 		
-		/*************** FFT ***************/
 		// We want to deal with only floating point values here.
-        
         float outputBuffer[kLBAudioDetectiveWindowSize];
         LBAudioDetectiveConvertStreamFormatToFloat(inDetective->FFT.buffer, kLBAudioDetectiveWindowSize, inDetective->streamFormat, (float*)outputBuffer);
 		
-		/**
+		/*
 		 Look at the real signal as an interleaved complex vector by casting it.
 		 Then call the transformation function vDSP_ctoz to get a split complex
 		 vector, which for a real signal, divides into an even-odd configuration.
@@ -360,22 +358,23 @@ void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, UInt32 inNumberFra
 		// Carry out a Forward FFT transform.
 		vDSP_fft_zrip(inDetective->FFT.setup, &inDetective->FFT.A, 1, inDetective->FFT.log2n, FFT_FORWARD);
 		
-		// The output signal is now in a split real form. Use the vDSP_ztoc to get
-		// a split real vector.
+		// The output signal is now in a split real form. Use the vDSP_ztoc to get a split real vector.
 		vDSP_ztoc(&inDetective->FFT.A, 1, (COMPLEX *)outputBuffer, 2, inDetective->FFT.nOver2);
 		
 		// Determine the dominant frequency by taking the magnitude squared and saving the bin which it resides in
-        
         LBAudioDetectiveIdentificationUnit identification = {0};
         memset(&identification, 0, sizeof(LBAudioDetectiveIdentificationUnit));
         
 		for (int i = 0; i < inDetective->FFT.n; i += 2) {
 			Float32 magnitude = (outputBuffer[i]*outputBuffer[i])+(outputBuffer[i+1]*outputBuffer[i+1]);
-            UInt32 bin = (i+1)/2;
-            Float32 frequency = bin*(inDetective->streamFormat.mSampleRate/kLBAudioDetectiveWindowSize);
-            UInt32 idx = LBAudioDetectiveRangeOfFrequency(frequency);
             
-            LBAudioDetectiveIdentificationUnitAddFrequency(&identification, frequency, magnitude, idx);
+            if (magnitude >= inDetective->minAmpltiude) {
+                UInt32 bin = (i+1)/2;
+                Float32 frequency = bin*(inDetective->streamFormat.mSampleRate/kLBAudioDetectiveWindowSize);
+                UInt32 idx = LBAudioDetectiveRangeOfFrequency(frequency);
+                
+                LBAudioDetectiveIdentificationUnitAddFrequency(&identification, frequency, magnitude, idx);
+            }
 		}
         
         memset(inDetective->FFT.buffer, 0, sizeof(inDetective->FFT.buffer));

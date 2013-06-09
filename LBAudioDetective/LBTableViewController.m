@@ -59,7 +59,9 @@ const NSInteger kLBTableViewActionSheetTagSaveOrProcess = 2;
     self = [super init];
     if (self) {
         self.manager = [NSFileManager new];
+        
         self.detective = LBAudioDetectiveNew();
+        LBAudioDetectiveSetMinAmpltitude(self.detective, 0.1f);
     }
     
     return self;
