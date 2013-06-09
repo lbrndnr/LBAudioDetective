@@ -115,9 +115,14 @@ void LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective) {
 
 AudioStreamBasicDescription LBAudioDetectiveDefaultFormat() {
     Float64 defaultSampleRate;
+    
+#if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
     UInt32 propertySize = sizeof(Float64);
     OSStatus error = AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareSampleRate, &propertySize, &defaultSampleRate);
     LBErrorCheck(error);
+#else
+    defaultSampleRate = 44100.0;
+#endif
     
     UInt32 bytesPerSample = sizeof(SInt16);
     
