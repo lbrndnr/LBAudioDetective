@@ -203,9 +203,9 @@ const NSInteger kLBTableViewActionSheetTagSaveOrProcess = 2;
     }
     
 #if TARGET_IPHONE_SIMULATOR
-    NSURL* URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://localhost:3000/birds/identify.json?data=%@", string]];
+    NSURL* URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://localhost:3000/birds/identify.json?voice=%@", string]];
 #else
-    NSURL* URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://whistles.herokuapp.com/birds/identify.json?data=%@", string]];
+    NSURL* URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://whistles.herokuapp.com/birds/identify.json?voice=%@", string]];
 #endif
     
     NSURLRequest* request = [NSURLRequest requestWithURL:URL];
