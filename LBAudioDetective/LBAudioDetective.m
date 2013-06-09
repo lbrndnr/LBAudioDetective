@@ -23,6 +23,7 @@ typedef struct LBAudioDetective {
     
     LBAudioDetectiveIdentificationUnit* identificationUnits;
     UInt32 identificationUnitCount;
+    Float32 minAmpltiude;
     
     struct FFT {
         void* buffer;
@@ -143,6 +144,10 @@ LBAudioDetectiveIdentificationUnit* LBAudioDetectiveGetIdentificationUnits(LBAud
     return inDetective->identificationUnits;
 }
 
+Float32 LBAudioDetectiveGetMinAmplitude(LBAudioDetectiveRef inDetective) {
+    return inDetective->minAmpltiude;
+}
+
 #pragma mark -
 #pragma mark Setters
 
@@ -168,6 +173,10 @@ void LBAudioDetectiveSetWriteAudioToURL(LBAudioDetectiveRef inDetective, NSURL* 
         
         inDetective->outputFile = NULL;
     }
+}
+
+void LBAudioDetectiveSetMinAmpltitude(LBAudioDetectiveRef inDetective, Float32 inMinAmplitude) {
+    inDetective->minAmpltiude = inMinAmplitude;
 }
 
 #pragma mark -
