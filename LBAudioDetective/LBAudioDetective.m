@@ -190,6 +190,11 @@ void LBAudioDetectiveSetMinAmpltitude(LBAudioDetectiveRef inDetective, Float32 i
 void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL) {
     LBAudioDetectiveReset(inDetective);
     
+    if (inDetective->inputFile) {
+        ExtAudioFileDispose(inDetective->inputFile);
+        inDetective->inputFile = NULL;
+    }
+    
     OSStatus error = ExtAudioFileOpenURL((__bridge CFURLRef)(inFileURL), &inDetective->inputFile);
     LBErrorCheck(error);
     
