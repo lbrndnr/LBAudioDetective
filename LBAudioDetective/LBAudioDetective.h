@@ -19,30 +19,32 @@ typedef struct LBAudioDetective *LBAudioDetectiveRef;
 #pragma mark (De)Allocation
 
 LBAudioDetectiveRef LBAudioDetectiveNew();
-void LBAudioDetectiveDispose(LBAudioDetectiveRef detective);
+void LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective);
 
 #pragma mark -
 #pragma mark Getters
 
 AudioStreamBasicDescription LBAudioDetectiveDefaultFormat();
-AudioStreamBasicDescription LBAudioDetectiveGetFormat(LBAudioDetectiveRef detective);
-LBAudioDetectiveIdentificationUnit* LBAudioDetectiveGetIdentificationUnits(LBAudioDetectiveRef detective, UInt32* outUnitNumber);
+AudioStreamBasicDescription LBAudioDetectiveGetFormat(LBAudioDetectiveRef inDetective);
+LBAudioDetectiveIdentificationUnit* LBAudioDetectiveGetIdentificationUnits(LBAudioDetectiveRef inDetective, UInt32* outUnitNumber);
+Float32 LBAudioDetectiveGetMinAmplitude(LBAudioDetectiveRef inDetective);
 
 #pragma mark -
 #pragma mark Setters
 
-void LBAudioDetectiveSetFormat(LBAudioDetectiveRef detective, AudioStreamBasicDescription inStreamFormat);
-void LBAudioDetectiveSetWriteAudioToURL(LBAudioDetectiveRef detective, NSURL* inFileURL);
+void LBAudioDetectiveSetFormat(LBAudioDetectiveRef inDetective, AudioStreamBasicDescription inStreamFormat);
+void LBAudioDetectiveSetWriteAudioToURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL);
+void LBAudioDetectiveSetMinAmpltitude(LBAudioDetectiveRef inDetective, Float32 inMinAmplitude);
 
 #pragma mark -
 #pragma mark Processing
 
-void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef detective, NSURL* inFileURL);
+void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL);
 
-void LBAudioDetectiveStartProcessing(LBAudioDetectiveRef detective);
-void LBAudioDetectiveStopProcessing(LBAudioDetectiveRef detective);
+void LBAudioDetectiveStartProcessing(LBAudioDetectiveRef inDetective);
+void LBAudioDetectiveStopProcessing(LBAudioDetectiveRef inDetective);
 
-void LBAudioDetectiveResumeProcessing(LBAudioDetectiveRef detective);
-void LBAudioDetectivePauseProcessing(LBAudioDetectiveRef detective);
+void LBAudioDetectiveResumeProcessing(LBAudioDetectiveRef inDetective);
+void LBAudioDetectivePauseProcessing(LBAudioDetectiveRef inDetective);
 
 #pragma mark -

@@ -35,11 +35,11 @@ typedef struct LBAudioDetective {
     } FFT;
 } LBAudioDetective;
 
-void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef detective);
-void LBAudioDetectiveReset(LBAudioDetectiveRef detective);
+void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef inDetective);
+void LBAudioDetectiveReset(LBAudioDetectiveRef inDetective);
 OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionFlags* ioActionFlags, const AudioTimeStamp* inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList* ioData);
 
-void LBAudioDetectiveAnalyse(LBAudioDetectiveRef detective, UInt32 inNumberFrames, AudioBufferList inData);
+void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, UInt32 inNumberFrames, AudioBufferList inData);
 Boolean LBAudioDetectiveIdentificationUnitAddFrequency(LBAudioDetectiveIdentificationUnit* identification, Float32 frequency, Float32 magnitude, UInt32 index);
 
 UInt32 LBAudioDetectiveRangeOfFrequency(Float32 frequency);
@@ -91,22 +91,22 @@ LBAudioDetectiveRef LBAudioDetectiveNew() {
     return instance;
 }
 
-void LBAudioDetectiveDispose(LBAudioDetectiveRef detective) {
-    LBAudioDetectiveStopProcessing(detective);
+void LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective) {
+    LBAudioDetectiveStopProcessing(inDetective);
     
-    AUGraphUninitialize(detective->graph);
-    AUGraphClose(detective->graph);
+    AUGraphUninitialize(inDetective->graph);
+    AUGraphClose(inDetective->graph);
     
-    ExtAudioFileDispose(detective->inputFile);
-    ExtAudioFileDispose(detective->outputFile);
+    ExtAudioFileDispose(inDetective->inputFile);
+    ExtAudioFileDispose(inDetective->outputFile);
     
-    free(detective->identificationUnits);
+    free(inDetective->identificationUnits);
     
-    free(detective->FFT.A.realp);
-    free(detective->FFT.A.imagp);
-    vDSP_destroy_fftsetup(detective->FFT.setup);
+    free(inDetective->FFT.A.realp);
+    free(inDetective->FFT.A.imagp);
+    vDSP_destroy_fftsetup(inDetective->FFT.setup);
     
-    free(detective);
+    free(inDetective);
 }
 
 #pragma mark -
@@ -134,49 +134,49 @@ AudioStreamBasicDescription LBAudioDetectiveDefaultFormat() {
     return asbd;
 }
 
-AudioStreamBasicDescription LBAudioDetectiveGetFormat(LBAudioDetectiveRef detective) {
-    return detective->streamFormat;
+AudioStreamBasicDescription LBAudioDetectiveGetFormat(LBAudioDetectiveRef inDetective) {
+    return inDetective->streamFormat;
 }
 
-LBAudioDetectiveIdentificationUnit* LBAudioDetectiveGetIdentificationUnits(LBAudioDetectiveRef detective, UInt32* outUnitNumber) {
-    *outUnitNumber = detective->identificationUnitCount;
-    return detective->identificationUnits;
+LBAudioDetectiveIdentificationUnit* LBAudioDetectiveGetIdentificationUnits(LBAudioDetectiveRef inDetective, UInt32* outUnitNumber) {
+    *outUnitNumber = inDetective->identificationUnitCount;
+    return inDetective->identificationUnits;
 }
 
 #pragma mark -
 #pragma mark Setters
 
-void LBAudioDetectiveSetFormat(LBAudioDetectiveRef detective, AudioStreamBasicDescription inStreamFormat) {
-    detective->streamFormat = inStreamFormat;
+void LBAudioDetectiveSetFormat(LBAudioDetectiveRef inDetective, AudioStreamBasicDescription inStreamFormat) {
+    inDetective->streamFormat = inStreamFormat;
 }
 
-void LBAudioDetectiveSetWriteAudioToURL(LBAudioDetectiveRef detective, NSURL* fileURL) {
+void LBAudioDetectiveSetWriteAudioToURL(LBAudioDetectiveRef inDetective, NSURL* fileURL) {
     OSStatus error = noErr;
     if (fileURL) {
-        error =  ExtAudioFileCreateWithURL((__bridge CFURLRef)fileURL, kAudioFileCAFType, &detective->streamFormat, NULL, kAudioFileFlags_EraseFile, &detective->outputFile);
+        error =  ExtAudioFileCreateWithURL((__bridge CFURLRef)fileURL, kAudioFileCAFType, &inDetective->streamFormat, NULL, kAudioFileFlags_EraseFile, &inDetective->outputFile);
         LBErrorCheck(error);
         
-        error = ExtAudioFileSetProperty(detective->outputFile, kExtAudioFileProperty_ClientDataFormat, sizeof(AudioStreamBasicDescription), &detective->streamFormat);
+        error = ExtAudioFileSetProperty(inDetective->outputFile, kExtAudioFileProperty_ClientDataFormat, sizeof(AudioStreamBasicDescription), &inDetective->streamFormat);
         LBErrorCheck(error);
         
-        error = ExtAudioFileWriteAsync(detective->outputFile, 0, NULL);
+        error = ExtAudioFileWriteAsync(inDetective->outputFile, 0, NULL);
         LBErrorCheck(error);
     }
     else {
-        error = ExtAudioFileDispose(detective->outputFile);
+        error = ExtAudioFileDispose(inDetective->outputFile);
         LBErrorCheck(error);
         
-        detective->outputFile = NULL;
+        inDetective->outputFile = NULL;
     }
 }
 
 #pragma mark -
 #pragma mark Other Methods
 
-void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef detective, NSURL* inFileURL) {
-    LBAudioDetectiveReset(detective);
+void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL) {
+    LBAudioDetectiveReset(inDetective);
     
-    OSStatus error = ExtAudioFileOpenURL((__bridge CFURLRef)(inFileURL), &detective->inputFile);
+    OSStatus error = ExtAudioFileOpenURL((__bridge CFURLRef)(inFileURL), &inDetective->inputFile);
     LBErrorCheck(error);
     
     UInt32 numberFrames = kLBAudioDetectiveWindowSize;
@@ -186,49 +186,49 @@ void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef detective, NSURL* inFil
     
     bufferList.mNumberBuffers = 1;
     bufferList.mBuffers[0].mData = samples;
-    bufferList.mBuffers[0].mNumberChannels = detective->streamFormat.mChannelsPerFrame;
+    bufferList.mBuffers[0].mNumberChannels = inDetective->streamFormat.mChannelsPerFrame;
     bufferList.mBuffers[0].mDataByteSize = numberFrames*sizeof(SInt16);
     
     while (numberFrames != 0) {
-        error = ExtAudioFileRead(detective->inputFile, &numberFrames, &bufferList);
+        error = ExtAudioFileRead(inDetective->inputFile, &numberFrames, &bufferList);
         LBErrorCheck(error);
         
-        LBAudioDetectiveAnalyse(detective, numberFrames, bufferList);
+        LBAudioDetectiveAnalyse(inDetective, numberFrames, bufferList);
     }
 }
 
-void LBAudioDetectiveStartProcessing(LBAudioDetectiveRef detective) {
-    if (detective->graph == NULL || detective->rioUnit == NULL) {
-        LBAudioDetectiveInitializeGraph(detective);
+void LBAudioDetectiveStartProcessing(LBAudioDetectiveRef inDetective) {
+    if (inDetective->graph == NULL || inDetective->rioUnit == NULL) {
+        LBAudioDetectiveInitializeGraph(inDetective);
     }
     
-    LBAudioDetectiveReset(detective);
+    LBAudioDetectiveReset(inDetective);
     
-    AUGraphStart(detective->graph);
+    AUGraphStart(inDetective->graph);
 }
 
-void LBAudioDetectiveStopProcessing(LBAudioDetectiveRef detective) {
-    AUGraphStop(detective->graph);
+void LBAudioDetectiveStopProcessing(LBAudioDetectiveRef inDetective) {
+    AUGraphStop(inDetective->graph);
     
-    free(detective->FFT.buffer);
-    detective->FFT.buffer = NULL;
-    detective->FFT.index = 0;
+    free(inDetective->FFT.buffer);
+    inDetective->FFT.buffer = NULL;
+    inDetective->FFT.index = 0;
 }
 
-void LBAudioDetectiveResumeProcessing(LBAudioDetectiveRef detective) {
-    LBAudioDetectiveStartProcessing(detective);
+void LBAudioDetectiveResumeProcessing(LBAudioDetectiveRef inDetective) {
+    LBAudioDetectiveStartProcessing(inDetective);
 }
 
-void LBAudioDetectivePauseProcessing(LBAudioDetectiveRef detective) {
-    LBAudioDetectiveStopProcessing(detective);
+void LBAudioDetectivePauseProcessing(LBAudioDetectiveRef inDetective) {
+    LBAudioDetectiveStopProcessing(inDetective);
 }
 
 #pragma mark -
 #pragma mark Processing
 
-void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef detective) {    
+void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef inDetective) {    
     // Create new AUGraph
-    OSStatus error = NewAUGraph(&detective->graph);
+    OSStatus error = NewAUGraph(&inDetective->graph);
     LBErrorCheck(error);
     
     // Initialize rioNode (microphone input)
@@ -240,15 +240,15 @@ void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef detective) {
     rioCD.componentFlagsMask = 0;
 
     AUNode rioNode;
-    error = AUGraphAddNode(detective->graph, &rioCD, &rioNode);
+    error = AUGraphAddNode(inDetective->graph, &rioCD, &rioNode);
     LBErrorCheck(error);
 
     // Open the graph so I can modify the audio units
-    error = AUGraphOpen(detective->graph);
+    error = AUGraphOpen(inDetective->graph);
     LBErrorCheck(error);
     
     // Get initialized rioUnit
-    error = AUGraphNodeInfo(detective->graph, rioNode, NULL, &detective->rioUnit);
+    error = AUGraphNodeInfo(inDetective->graph, rioNode, NULL, &inDetective->rioUnit);
     LBErrorCheck(error);
     
     // Set properties to rioUnit    
@@ -257,48 +257,48 @@ void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef detective) {
     UInt32 propertySize = sizeof(UInt32);
     
     // Enable micorphone input
-	error = AudioUnitSetProperty(detective->rioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, bus1, &onFlag, propertySize);
+	error = AudioUnitSetProperty(inDetective->rioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, bus1, &onFlag, propertySize);
     LBErrorCheck(error);
 	
     // Disable speakers output
-	error = AudioUnitSetProperty(detective->rioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Output, bus0, &offFlag, propertySize);
+	error = AudioUnitSetProperty(inDetective->rioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Output, bus0, &offFlag, propertySize);
     LBErrorCheck(error);
     
     // Set the stream format we want
     propertySize = sizeof(AudioStreamBasicDescription);
-    error = AudioUnitSetProperty(detective->rioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, bus0, &detective->streamFormat, propertySize);
+    error = AudioUnitSetProperty(inDetective->rioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, bus0, &inDetective->streamFormat, propertySize);
     LBErrorCheck(error);
     
-    error = AudioUnitSetProperty(detective->rioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, bus1, &detective->streamFormat, propertySize);
+    error = AudioUnitSetProperty(inDetective->rioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, bus1, &inDetective->streamFormat, propertySize);
     LBErrorCheck(error);
 	
     AURenderCallbackStruct callback = {0};
     callback.inputProc = LBAudioDetectiveMicrophoneOutput;
-	callback.inputProcRefCon = detective;
+	callback.inputProcRefCon = inDetective;
     propertySize = sizeof(AURenderCallbackStruct);
-	error = AudioUnitSetProperty(detective->rioUnit, kAudioOutputUnitProperty_SetInputCallback, kAudioUnitScope_Global, bus0, &callback, propertySize);
+	error = AudioUnitSetProperty(inDetective->rioUnit, kAudioOutputUnitProperty_SetInputCallback, kAudioUnitScope_Global, bus0, &callback, propertySize);
     LBErrorCheck(error);
     
     propertySize = sizeof(UInt32);
-    error = AudioUnitSetProperty(detective->rioUnit, kAudioUnitProperty_ShouldAllocateBuffer, kAudioUnitScope_Output, bus1, &offFlag, propertySize);
+    error = AudioUnitSetProperty(inDetective->rioUnit, kAudioUnitProperty_ShouldAllocateBuffer, kAudioUnitScope_Output, bus1, &offFlag, propertySize);
     LBErrorCheck(error);
     
     // Initialize Graph
-    error = AUGraphInitialize(detective->graph);
+    error = AUGraphInitialize(inDetective->graph);
     LBErrorCheck(error);
 }
 
-void LBAudioDetectiveReset(LBAudioDetectiveRef detective) {
-    free(detective->identificationUnits);
-    detective->identificationUnits = NULL;
-    detective->identificationUnitCount = 0;
-    free(detective->FFT.buffer);
-    detective->FFT.buffer = (void*)malloc(kLBAudioDetectiveWindowSize*sizeof(SInt16));
-    detective->FFT.index = 0;
+void LBAudioDetectiveReset(LBAudioDetectiveRef inDetective) {
+    free(inDetective->identificationUnits);
+    inDetective->identificationUnits = NULL;
+    inDetective->identificationUnitCount = 0;
+    free(inDetective->FFT.buffer);
+    inDetective->FFT.buffer = (void*)malloc(kLBAudioDetectiveWindowSize*sizeof(SInt16));
+    inDetective->FFT.index = 0;
 }
 
 OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionFlags* ioActionFlags, const AudioTimeStamp* inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList* ioData) {
-    LBAudioDetective* detective = (LBAudioDetective*)inRefCon;
+    LBAudioDetective* inDetective = (LBAudioDetective*)inRefCon;
     OSStatus error = noErr;
     
     // Allocate the buffer that holds the data
@@ -308,73 +308,73 @@ OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionF
     
     bufferList.mNumberBuffers = 1;
     bufferList.mBuffers[0].mData = samples;
-    bufferList.mBuffers[0].mNumberChannels = detective->streamFormat.mChannelsPerFrame;
+    bufferList.mBuffers[0].mNumberChannels = inDetective->streamFormat.mChannelsPerFrame;
     bufferList.mBuffers[0].mDataByteSize = inNumberFrames*sizeof(SInt16);
     
-    error = AudioUnitRender(detective->rioUnit, ioActionFlags, inTimeStamp, 1, inNumberFrames, &bufferList);
+    error = AudioUnitRender(inDetective->rioUnit, ioActionFlags, inTimeStamp, 1, inNumberFrames, &bufferList);
     LBErrorCheck(error);
     
-    if (detective->outputFile) {
-        error = ExtAudioFileWriteAsync(detective->outputFile, inNumberFrames, &bufferList);
+    if (inDetective->outputFile) {
+        error = ExtAudioFileWriteAsync(inDetective->outputFile, inNumberFrames, &bufferList);
         LBErrorCheck(error);
     }
     
-    LBAudioDetectiveAnalyse(detective, inNumberFrames, bufferList);
+    LBAudioDetectiveAnalyse(inDetective, inNumberFrames, bufferList);
     
     return error;
 }
 
-void LBAudioDetectiveAnalyse(LBAudioDetectiveRef detective, UInt32 inNumberFrames, AudioBufferList inData) {
+void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, UInt32 inNumberFrames, AudioBufferList inData) {
     // Fill the buffer with our sampled data. If we fill our buffer, run the FFT
-	UInt32 read = kLBAudioDetectiveWindowSize-detective->FFT.index;
+	UInt32 read = kLBAudioDetectiveWindowSize-inDetective->FFT.index;
 	if (read > inNumberFrames) {
-		memcpy((SInt16 *)detective->FFT.buffer+detective->FFT.index, inData.mBuffers[0].mData, inNumberFrames*sizeof(SInt16));
-		detective->FFT.index += inNumberFrames;
+		memcpy((SInt16 *)inDetective->FFT.buffer+inDetective->FFT.index, inData.mBuffers[0].mData, inNumberFrames*sizeof(SInt16));
+		inDetective->FFT.index += inNumberFrames;
 	}
     else {
 		// If we enter this conditional, our buffer will be filled and we should perform the FFT.
-		memcpy((SInt16 *)detective->FFT.buffer+detective->FFT.index, inData.mBuffers[0].mData, read*sizeof(SInt16));
+		memcpy((SInt16 *)inDetective->FFT.buffer+inDetective->FFT.index, inData.mBuffers[0].mData, read*sizeof(SInt16));
 		
 		/*************** FFT ***************/
 		// We want to deal with only floating point values here.
         
         float outputBuffer[kLBAudioDetectiveWindowSize];
-        LBAudioDetectiveConvertStreamFormatToFloat(detective->FFT.buffer, kLBAudioDetectiveWindowSize, detective->streamFormat, (float*)outputBuffer);
+        LBAudioDetectiveConvertStreamFormatToFloat(inDetective->FFT.buffer, kLBAudioDetectiveWindowSize, inDetective->streamFormat, (float*)outputBuffer);
 		
 		/**
 		 Look at the real signal as an interleaved complex vector by casting it.
 		 Then call the transformation function vDSP_ctoz to get a split complex
 		 vector, which for a real signal, divides into an even-odd configuration.
 		 */
-		vDSP_ctoz((COMPLEX*)outputBuffer, 2, &detective->FFT.A, 1, detective->FFT.nOver2);
+		vDSP_ctoz((COMPLEX*)outputBuffer, 2, &inDetective->FFT.A, 1, inDetective->FFT.nOver2);
 		
 		// Carry out a Forward FFT transform.
-		vDSP_fft_zrip(detective->FFT.setup, &detective->FFT.A, 1, detective->FFT.log2n, FFT_FORWARD);
+		vDSP_fft_zrip(inDetective->FFT.setup, &inDetective->FFT.A, 1, inDetective->FFT.log2n, FFT_FORWARD);
 		
 		// The output signal is now in a split real form. Use the vDSP_ztoc to get
 		// a split real vector.
-		vDSP_ztoc(&detective->FFT.A, 1, (COMPLEX *)outputBuffer, 2, detective->FFT.nOver2);
+		vDSP_ztoc(&inDetective->FFT.A, 1, (COMPLEX *)outputBuffer, 2, inDetective->FFT.nOver2);
 		
 		// Determine the dominant frequency by taking the magnitude squared and saving the bin which it resides in
         
         LBAudioDetectiveIdentificationUnit identification = {0};
         memset(&identification, 0, sizeof(LBAudioDetectiveIdentificationUnit));
         
-		for (int i = 0; i < detective->FFT.n; i += 2) {
+		for (int i = 0; i < inDetective->FFT.n; i += 2) {
 			Float32 magnitude = (outputBuffer[i]*outputBuffer[i])+(outputBuffer[i+1]*outputBuffer[i+1]);
             UInt32 bin = (i+1)/2;
-            Float32 frequency = bin*(detective->streamFormat.mSampleRate/kLBAudioDetectiveWindowSize);
+            Float32 frequency = bin*(inDetective->streamFormat.mSampleRate/kLBAudioDetectiveWindowSize);
             UInt32 idx = LBAudioDetectiveRangeOfFrequency(frequency);
             
             LBAudioDetectiveIdentificationUnitAddFrequency(&identification, frequency, magnitude, idx);
 		}
         
-        memset(detective->FFT.buffer, 0, sizeof(detective->FFT.buffer));
-        detective->FFT.index = 0;
-        detective->identificationUnitCount++;
+        memset(inDetective->FFT.buffer, 0, sizeof(inDetective->FFT.buffer));
+        inDetective->FFT.index = 0;
+        inDetective->identificationUnitCount++;
         UInt32 unitSize = sizeof(LBAudioDetectiveIdentificationUnit);
-        detective->identificationUnits = realloc(detective->identificationUnits, detective->identificationUnitCount*unitSize);
-        detective->identificationUnits[detective->identificationUnitCount-1] = identification;
+        inDetective->identificationUnits = realloc(inDetective->identificationUnits, inDetective->identificationUnitCount*unitSize);
+        inDetective->identificationUnits[inDetective->identificationUnitCount-1] = identification;
 	}
 }
 
