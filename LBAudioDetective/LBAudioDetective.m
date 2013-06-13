@@ -198,6 +198,9 @@ void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inF
     OSStatus error = ExtAudioFileOpenURL((__bridge CFURLRef)(inFileURL), &inDetective->inputFile);
     LBErrorCheck(error);
     
+    error = ExtAudioFileSetProperty(inDetective->inputFile, kExtAudioFileProperty_ClientDataFormat, sizeof(AudioStreamBasicDescription), &inDetective->streamFormat);
+    LBErrorCheck(error);
+    
     UInt32 numberFrames = kLBAudioDetectiveWindowSize;
     AudioBufferList bufferList;
     SInt16 samples[numberFrames]; // A large enough size to not have to worry about buffer overrun
