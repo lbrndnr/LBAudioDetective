@@ -40,6 +40,25 @@ const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
 -(void)_identifyRecordedIdentificationUnits:(NSArray*)units answer:(void(^)(NSString*))completion;
 
 @end
+
+void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
+    LBTableViewController* controller = callbackHelper;
+    UInt32 unitCount;
+    LBAudioDetectiveIdentificationUnit* identificationUnits = LBAudioDetectiveGetIdentificationUnits(detective, &unitCount);
+    
+    NSUInteger match = [controller _matchRecordedIdentificationUnits:[controller _arrayFromAudioUnits:identificationUnits count:unitCount] withOriginalUnits:[controller _savedIdentificationUnit]];
+    NSLog(@"Audio Analysis Matches:%u", match);
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"There were %u hits", match] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alertView show];
+    
+    UIBarButtonItem* processItem = controller.navigationItem.rightBarButtonItem;
+    processItem.title = @"Process";
+    processItem.action = @selector(_startProcessing:);
+    
+    [controller.tableView reloadData];
+    controller.userData = nil;
+}
+
 @implementation LBTableViewController
 
 #pragma mark Accessors
@@ -136,27 +155,7 @@ const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
 
 -(void)_startProcessing:(id)sender {
     LBAudioDetectiveSetWriteAudioToURL(self.detective, [self _URLForRecording:[self.tableView numberOfRowsInSection:0]]);
-    LBAudioDetectiveProcess(self.detective, 100, ^(LBAudioDetectiveRef outDetective) {
-        UInt32 unitCount;
-        LBAudioDetectiveIdentificationUnit* identificationUnits = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount);
-        
-        if ([(NSNumber*)self.userData[@"Process"] boolValue]) {
-            NSUInteger match = [self _matchRecordedIdentificationUnits:[self _arrayFromAudioUnits:identificationUnits count:unitCount] withOriginalUnits:[self _savedIdentificationUnit]];
-            NSLog(@"Audio Analysis Matches:%u", match);
-            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"There were %u hits", match] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertView show];
-        }
-        else {
-            [self _saveIdentificationUnits:[self _arrayFromAudioUnits:identificationUnits count:unitCount]];
-        }
-        
-        UIBarButtonItem* processItem = self.navigationItem.rightBarButtonItem;
-        processItem.title = @"Process";
-        processItem.action = @selector(_startProcessing:);
-        
-        [self.tableView reloadData];
-        self.userData = nil;
-    });
+    LBAudioDetectiveProcess(self.detective, 100, didFinishProcessing, self);
     
     UIBarButtonItem* processItem = self.navigationItem.rightBarButtonItem;
     processItem.title = @"Stop";

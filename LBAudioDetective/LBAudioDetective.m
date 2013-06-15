@@ -26,7 +26,8 @@ typedef struct LBAudioDetective {
     UInt32 identificationUnitCount;
     UInt32 maxIdentificationUnitCount;
     
-    __unsafe_unretained LBAudioDetectiveCallback callback;
+    LBAudioDetectiveCallback callback;
+    __unsafe_unretained id callbackHelper;
     
     struct FFT {
         void* buffer;
@@ -225,9 +226,10 @@ void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inF
     LBAudioDetectiveClean(inDetective);
 }
 
-void LBAudioDetectiveProcess(LBAudioDetectiveRef inDetective, UInt32 inIdentificationUnitCount, LBAudioDetectiveCallback inCallback) {
+void LBAudioDetectiveProcess(LBAudioDetectiveRef inDetective, UInt32 inIdentificationUnitCount, LBAudioDetectiveCallback inCallback, id inCallbackHelper) {
     inDetective->maxIdentificationUnitCount = inIdentificationUnitCount;
     inDetective->callback = inCallback;
+    inDetective->callbackHelper = inCallbackHelper;
     LBAudioDetectiveStartProcessing(inDetective);
 }
 
@@ -337,7 +339,8 @@ void LBAudioDetectiveClean(LBAudioDetectiveRef inDetective) {
     inDetective->FFT.buffer = NULL;
     inDetective->FFT.index = 0;
     inDetective->maxIdentificationUnitCount = 0;
-    inDetective->callback = nil;
+    inDetective->callback = NULL;
+    inDetective->callbackHelper = nil;
 }
 
 OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionFlags* ioActionFlags, const AudioTimeStamp* inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList* ioData) {
@@ -422,7 +425,7 @@ void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, UInt32 inNumberFra
         if (inDetective->identificationUnitCount == inDetective->maxIdentificationUnitCount) {
             if (inDetective->callback) {
                 dispatch_sync(dispatch_get_main_queue(), ^{
-                    inDetective->callback(inDetective);
+                    inDetective->callback(inDetective, inDetective->callbackHelper);
                 });
             }
             
