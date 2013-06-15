@@ -13,7 +13,6 @@
 NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
 
 const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
-const NSInteger kLBTableViewActionSheetTagSaveOrProcess = 2;
 
 @interface LBTableViewController () <UIActionSheetDelegate> {
     LBAudioDetectiveRef _detective;
@@ -136,9 +135,32 @@ const NSInteger kLBTableViewActionSheetTagSaveOrProcess = 2;
 }
 
 -(void)_startProcessing:(id)sender {
-    UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:@"Action" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Save", @"Process", nil];
-    sheet.tag = kLBTableViewActionSheetTagSaveOrProcess;
-    [sheet showInView:self.tableView];
+    LBAudioDetectiveSetWriteAudioToURL(self.detective, [self _URLForRecording:[self.tableView numberOfRowsInSection:0]]);
+    LBAudioDetectiveProcess(self.detective, 100, ^(LBAudioDetectiveRef outDetective) {
+        UInt32 unitCount;
+        LBAudioDetectiveIdentificationUnit* identificationUnits = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount);
+        
+        if ([(NSNumber*)self.userData[@"Process"] boolValue]) {
+            NSUInteger match = [self _matchRecordedIdentificationUnits:[self _arrayFromAudioUnits:identificationUnits count:unitCount] withOriginalUnits:[self _savedIdentificationUnit]];
+            NSLog(@"Audio Analysis Matches:%u", match);
+            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"There were %u hits", match] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
+        }
+        else {
+            [self _saveIdentificationUnits:[self _arrayFromAudioUnits:identificationUnits count:unitCount]];
+        }
+        
+        UIBarButtonItem* processItem = self.navigationItem.rightBarButtonItem;
+        processItem.title = @"Process";
+        processItem.action = @selector(_startProcessing:);
+        
+        [self.tableView reloadData];
+        self.userData = nil;
+    });
+    
+    UIBarButtonItem* processItem = self.navigationItem.rightBarButtonItem;
+    processItem.title = @"Stop";
+    processItem.action = @selector(_stopProcessing:);
 }
 
 -(void)_stopProcessing:(id)sender {
@@ -279,20 +301,6 @@ const NSInteger kLBTableViewActionSheetTagSaveOrProcess = 2;
         }
         
         self.userData = nil;
-    }
-    else if (buttonIndex != 2) {
-        self.userData = @{@"Process": @(buttonIndex)};
-        
-        LBAudioDetectiveSetWriteAudioToURL(self.detective, [self _URLForRecording:[self.tableView numberOfRowsInSection:0]]);
-        LBAudioDetectiveStartProcessing(self.detective);
-        
-        UIBarButtonItem* processItem = self.navigationItem.rightBarButtonItem;
-        processItem.title = @"Stop";
-        processItem.action = @selector(_stopProcessing:);
-        
-        if (buttonIndex == 1) {
-            [self performSelector:@selector(_stopProcessing:) withObject:processItem afterDelay:2.0f];
-        }
     }
 }
 

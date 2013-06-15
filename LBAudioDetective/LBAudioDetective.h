@@ -15,6 +15,7 @@ typedef struct LBAudioDetectiveIdentificationUnit {
 } LBAudioDetectiveIdentificationUnit;
 
 typedef struct LBAudioDetective *LBAudioDetectiveRef;
+typedef void(^LBAudioDetectiveCallback)(LBAudioDetectiveRef outDetective);
 
 #pragma mark (De)Allocation
 
@@ -41,6 +42,7 @@ void LBAudioDetectiveSetMinAmpltitude(LBAudioDetectiveRef inDetective, Float32 i
 
 void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL);
 
+void LBAudioDetectiveProcess(LBAudioDetectiveRef inDetective, UInt32 inIdentificationUnitCount, LBAudioDetectiveCallback inCallback);
 void LBAudioDetectiveStartProcessing(LBAudioDetectiveRef inDetective);
 void LBAudioDetectiveStopProcessing(LBAudioDetectiveRef inDetective);
 

@@ -22,8 +22,11 @@ typedef struct LBAudioDetective {
     ExtAudioFileRef outputFile;
     
     LBAudioDetectiveIdentificationUnit* identificationUnits;
-    UInt32 identificationUnitCount;
     Float32 minAmpltiude;
+    UInt32 identificationUnitCount;
+    UInt32 maxIdentificationUnitCount;
+    
+    __unsafe_unretained LBAudioDetectiveCallback callback;
     
     struct FFT {
         void* buffer;
@@ -38,6 +41,7 @@ typedef struct LBAudioDetective {
 
 void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef inDetective);
 void LBAudioDetectiveReset(LBAudioDetectiveRef inDetective);
+void LBAudioDetectiveClean(LBAudioDetectiveRef inDetective);
 OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionFlags* ioActionFlags, const AudioTimeStamp* inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList* ioData);
 
 void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, UInt32 inNumberFrames, AudioBufferList inData);
@@ -145,7 +149,7 @@ AudioStreamBasicDescription LBAudioDetectiveGetFormat(LBAudioDetectiveRef inDete
 }
 
 LBAudioDetectiveIdentificationUnit* LBAudioDetectiveGetIdentificationUnits(LBAudioDetectiveRef inDetective, UInt32* outUnitNumber) {
-    *outUnitNumber = inDetective->identificationUnitCount;
+    *outUnitNumber = sizeof(inDetective->identificationUnits)/sizeof(LBAudioDetectiveIdentificationUnit);
     return inDetective->identificationUnits;
 }
 
@@ -217,6 +221,14 @@ void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inF
         
         LBAudioDetectiveAnalyse(inDetective, numberFrames, bufferList);
     }
+    
+    LBAudioDetectiveClean(inDetective);
+}
+
+void LBAudioDetectiveProcess(LBAudioDetectiveRef inDetective, UInt32 inIdentificationUnitCount, LBAudioDetectiveCallback inCallback) {
+    inDetective->maxIdentificationUnitCount = inIdentificationUnitCount;
+    inDetective->callback = inCallback;
+    LBAudioDetectiveStartProcessing(inDetective);
 }
 
 void LBAudioDetectiveStartProcessing(LBAudioDetectiveRef inDetective) {
@@ -231,10 +243,7 @@ void LBAudioDetectiveStartProcessing(LBAudioDetectiveRef inDetective) {
 
 void LBAudioDetectiveStopProcessing(LBAudioDetectiveRef inDetective) {
     AUGraphStop(inDetective->graph);
-    
-    free(inDetective->FFT.buffer);
-    inDetective->FFT.buffer = NULL;
-    inDetective->FFT.index = 0;
+    LBAudioDetectiveClean(inDetective);
 }
 
 void LBAudioDetectiveResumeProcessing(LBAudioDetectiveRef inDetective) {
@@ -315,12 +324,20 @@ void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef inDetective) {
 }
 
 void LBAudioDetectiveReset(LBAudioDetectiveRef inDetective) {
+    inDetective->identificationUnitCount = 0;
     free(inDetective->identificationUnits);
     inDetective->identificationUnits = NULL;
-    inDetective->identificationUnitCount = 0;
     free(inDetective->FFT.buffer);
     inDetective->FFT.buffer = (void*)malloc(kLBAudioDetectiveWindowSize*sizeof(SInt16));
     inDetective->FFT.index = 0;
+}
+
+void LBAudioDetectiveClean(LBAudioDetectiveRef inDetective) {
+    free(inDetective->FFT.buffer);
+    inDetective->FFT.buffer = NULL;
+    inDetective->FFT.index = 0;
+    inDetective->maxIdentificationUnitCount = 0;
+    inDetective->callback = nil;
 }
 
 OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionFlags* ioActionFlags, const AudioTimeStamp* inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList* ioData) {
@@ -396,10 +413,21 @@ void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, UInt32 inNumberFra
         
         memset(inDetective->FFT.buffer, 0, sizeof(inDetective->FFT.buffer));
         inDetective->FFT.index = 0;
-        inDetective->identificationUnitCount++;
+        
         UInt32 unitSize = sizeof(LBAudioDetectiveIdentificationUnit);
+        inDetective->identificationUnitCount++;
         inDetective->identificationUnits = realloc(inDetective->identificationUnits, inDetective->identificationUnitCount*unitSize);
         inDetective->identificationUnits[inDetective->identificationUnitCount-1] = identification;
+        
+        if (inDetective->identificationUnitCount == inDetective->maxIdentificationUnitCount) {
+            if (inDetective->callback) {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    inDetective->callback(inDetective);
+                });
+            }
+            
+            LBAudioDetectiveStopProcessing(inDetective);
+        }
 	}
 }
 
