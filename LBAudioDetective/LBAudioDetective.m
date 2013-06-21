@@ -476,7 +476,7 @@ UInt32 LBAudioDetectivePitchRange(LBAudioDetectiveRef inDetective, Float32 pitch
         }
     }
     
-    return count-1;
+    return count;
 }
 
 void LBAudioDetectiveConvertStreamFormatToFloat(void* inBuffer, UInt32 bufferSize, AudioStreamBasicDescription inFormat, float* outBuffer) {
