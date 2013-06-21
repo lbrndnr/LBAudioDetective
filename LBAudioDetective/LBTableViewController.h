@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LBAudioDetective.h"
+#import "AFNetworking.h"
 
-@interface LBTableViewController : UITableViewController
+@interface LBTableViewController : UITableViewController {
+    AFHTTPClient* _client;
+    LBAudioDetectiveRef _detective;
+}
+
+@property (nonatomic, strong) AFHTTPClient* client;
+@property (nonatomic) LBAudioDetectiveRef detective;
 
 @end

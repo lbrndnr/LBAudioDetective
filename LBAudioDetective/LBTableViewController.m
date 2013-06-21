@@ -7,7 +7,6 @@
 //
 
 #import "LBTableViewController.h"
-#import "LBAudioDetective.h"
 #import <AVFoundation/AVFoundation.h>
 
 NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
@@ -15,13 +14,11 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
 const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
 
 @interface LBTableViewController () <UIActionSheetDelegate> {
-    LBAudioDetectiveRef _detective;
     NSFileManager* _manager;
     AVAudioPlayer* _player;
     NSDictionary* _userData;
 }
 
-@property (nonatomic) LBAudioDetectiveRef detective;
 @property (nonatomic, strong) NSFileManager* manager;
 @property (nonatomic, strong) AVAudioPlayer* player;
 @property (nonatomic, strong) NSDictionary* userData;
@@ -80,11 +77,20 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
         
         self.detective = LBAudioDetectiveNew();
         Float32 pitches[4];
-        pitches[0] = 5000.0f;
-        pitches[1] = 10000.0f;
-        pitches[2] = 15000.0f;
-        pitches[3] = 20000.0f;
+        pitches[0] = 4000.0f;
+        pitches[1] = 8000.0f;
+        pitches[2] = 12000.0f;
+        pitches[3] = 16000.0f;
         LBAudioDetectiveSetPitchSteps(self.detective, pitches, 4);
+        
+#if TARGET_IPHONE_SIMULATOR
+        NSURL* URL = [NSURL URLWithString:@"http://localhost:3000"];
+#else
+        NSURL* URL = [NSURL URLWithString:@"http://whistles.herokuapp.com/"];
+#endif
+        
+        self.client = [[AFHTTPClient alloc] initWithBaseURL:URL];
+        _client.parameterEncoding = AFJSONParameterEncoding;
     }
     
     return self;
@@ -165,6 +171,8 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
     UIBarButtonItem* processItem = self.navigationItem.rightBarButtonItem;
     processItem.title = @"Stop";
     processItem.action = @selector(_stopProcessing:);
+    
+    [self performSelector:@selector(_stopProcessing:) withObject:nil afterDelay:4.0f];
 }
 
 -(void)_stopProcessing:(id)sender {
@@ -228,17 +236,17 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
         [string appendFormat:@"%i-%i-%i-%i-%i", [(NSNumber*)unit[0] integerValue], [(NSNumber*)unit[1] integerValue], [(NSNumber*)unit[2] integerValue], [(NSNumber*)unit[3] integerValue], [(NSNumber*)unit[4] integerValue]];
     }
     
-#if TARGET_IPHONE_SIMULATOR
-    NSURL* URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://localhost:3000/birds/identify.json?voice=%@", string]];
-#else
-    NSURL* URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://whistles.herokuapp.com/birds/identify.json?voice=%@", string]];
-#endif
-    
-    NSURLRequest* request = [NSURLRequest requestWithURL:URL];
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new] completionHandler:^(NSURLResponse* response, NSData* data, NSError* error) {
-        NSDictionary* JSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    NSDictionary* parameters = @{@"voice": string};
+    NSMutableURLRequest* request = [_client requestWithMethod:@"POST" path:@"/birds/identify.json" parameters:parameters];
+    AFJSONRequestOperation* operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:nil failure:nil];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
         completion(JSON[@"name"]);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"%@", error);
+        NSLog(@"%@", operation.responseString);
+        completion(@"Fuckup");
     }];
+    [_client enqueueHTTPRequestOperation:operation];
 }
 
 -(NSArray*)_arrayFromAudioUnits:(LBAudioDetectiveIdentificationUnit *)units count:(NSUInteger)count {
@@ -297,10 +305,8 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
             UInt32 unitCount;
             LBAudioDetectiveIdentificationUnit* identificationUnits = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount);
             [self _identifyRecordedIdentificationUnits:[self _arrayFromAudioUnits:identificationUnits count:unitCount] answer:^(NSString* name) {
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"It's a %@", name] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                    [alertView show];
-                });
+                UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"It's a %@", name] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alertView show];
             }];
         }
         
