@@ -25,6 +25,7 @@ typedef struct LBAudioDetective {
     Float32 minAmpltiude;
     UInt32 identificationUnitCount;
     UInt32 maxIdentificationUnitCount;
+    Float32* pitchSteps;
     
     LBAudioDetectiveCallback callback;
     __unsafe_unretained id callbackHelper;
@@ -48,7 +49,7 @@ OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionF
 void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, UInt32 inNumberFrames, AudioBufferList inData);
 Boolean LBAudioDetectiveIdentificationUnitAddFrequency(LBAudioDetectiveIdentificationUnit* identification, Float32 frequency, Float32 magnitude, UInt32 index);
 
-UInt32 LBAudioDetectiveRangeOfFrequency(Float32 frequency);
+UInt32 LBAudioDetectivePitchRange(LBAudioDetectiveRef inDetective, Float32 pitch);
 void LBAudioDetectiveConvertStreamFormatToFloat(void* inBuffer, UInt32 bufferSize, AudioStreamBasicDescription inFormat, float* outBuffer);
 
 #pragma mark Utilites
@@ -158,6 +159,10 @@ Float32 LBAudioDetectiveGetMinAmplitude(LBAudioDetectiveRef inDetective) {
     return inDetective->minAmpltiude;
 }
 
+Float32* LBAudioDetectiveGetPitchSteps(LBAudioDetectiveRef inDetective) {
+    return inDetective->pitchSteps;
+}
+
 #pragma mark -
 #pragma mark Setters
 
@@ -187,6 +192,10 @@ void LBAudioDetectiveSetWriteAudioToURL(LBAudioDetectiveRef inDetective, NSURL* 
 
 void LBAudioDetectiveSetMinAmpltitude(LBAudioDetectiveRef inDetective, Float32 inMinAmplitude) {
     inDetective->minAmpltiude = inMinAmplitude;
+}
+
+void LBAudioDetectiveSetPitchSteps(LBAudioDetectiveRef inDetective, Float32* inPitchSteps) {
+    inDetective->pitchSteps = inPitchSteps;
 }
 
 #pragma mark -
@@ -408,8 +417,8 @@ void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, UInt32 inNumberFra
             if (magnitude >= inDetective->minAmpltiude) {
                 UInt32 bin = (i+1)/2;
                 Float32 frequency = bin*(inDetective->streamFormat.mSampleRate/kLBAudioDetectiveWindowSize);
-                UInt32 idx = LBAudioDetectiveRangeOfFrequency(frequency);
-                
+                UInt32 idx = LBAudioDetectivePitchRange(inDetective, frequency);
+
                 LBAudioDetectiveIdentificationUnitAddFrequency(&identification, frequency, magnitude, idx);
             }
 		}
@@ -448,21 +457,15 @@ Boolean LBAudioDetectiveIdentificationUnitAddFrequency(LBAudioDetectiveIdentific
 #pragma mark -
 #pragma mark Utilities
 
-UInt32 LBAudioDetectiveRangeOfFrequency(Float32 frequency) {
-    if (frequency < 40.0f) {
-        return 0;
-    }
-    else if (frequency < 80.0f) {
-        return 1;
-    }
-    else if (frequency < 120.0f) {
-        return 2;
-    }
-    else if (frequency < 180.0f) {
-        return 3;
+UInt32 LBAudioDetectivePitchRange(LBAudioDetectiveRef inDetective, Float32 pitch) {
+    UInt32 count = sizeof(inDetective->pitchSteps)/sizeof(Float32);
+    for (int i = 0; i < count; i++) {
+        if (pitch < inDetective->pitchSteps[i]) {
+            return i;
+        }
     }
     
-    return 4;
+    return count-1;
 }
 
 void LBAudioDetectiveConvertStreamFormatToFloat(void* inBuffer, UInt32 bufferSize, AudioStreamBasicDescription inFormat, float* outBuffer) {

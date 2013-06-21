@@ -79,7 +79,12 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
         self.manager = [NSFileManager new];
         
         self.detective = LBAudioDetectiveNew();
-        LBAudioDetectiveSetMinAmpltitude(self.detective, 0.1f);
+        Float32* pitches = malloc(sizeof(Float32)*4);
+        pitches[0] = 5000.0f;
+        pitches[1] = 10000.0f;
+        pitches[2] = 15000.0f;
+        pitches[3] = 20000.0f;
+        LBAudioDetectiveSetPitchSteps(self.detective, pitches);
     }
     
     return self;
@@ -155,7 +160,7 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
 
 -(void)_startProcessing:(id)sender {
     LBAudioDetectiveSetWriteAudioToURL(self.detective, [self _URLForRecording:[self.tableView numberOfRowsInSection:0]]);
-    LBAudioDetectiveProcess(self.detective, 100, didFinishProcessing, self);
+    LBAudioDetectiveStartProcessing(self.detective);
     
     UIBarButtonItem* processItem = self.navigationItem.rightBarButtonItem;
     processItem.title = @"Stop";
