@@ -79,12 +79,12 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
         self.manager = [NSFileManager new];
         
         self.detective = LBAudioDetectiveNew();
-        Float32* pitches = malloc(sizeof(Float32)*4);
+        Float32 pitches[4];
         pitches[0] = 5000.0f;
         pitches[1] = 10000.0f;
         pitches[2] = 15000.0f;
         pitches[3] = 20000.0f;
-        LBAudioDetectiveSetPitchSteps(self.detective, pitches);
+        LBAudioDetectiveSetPitchSteps(self.detective, pitches, 4);
     }
     
     return self;

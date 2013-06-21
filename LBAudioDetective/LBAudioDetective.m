@@ -25,7 +25,9 @@ typedef struct LBAudioDetective {
     Float32 minAmpltiude;
     UInt32 identificationUnitCount;
     UInt32 maxIdentificationUnitCount;
+    
     Float32* pitchSteps;
+    UInt32 pitchStepsCount;
     
     LBAudioDetectiveCallback callback;
     __unsafe_unretained id callbackHelper;
@@ -109,6 +111,8 @@ void LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective) {
     
     free(inDetective->identificationUnits);
     
+    free(inDetective->pitchSteps);
+    
     free(inDetective->FFT.A.realp);
     free(inDetective->FFT.A.imagp);
     vDSP_destroy_fftsetup(inDetective->FFT.setup);
@@ -151,7 +155,7 @@ AudioStreamBasicDescription LBAudioDetectiveGetFormat(LBAudioDetectiveRef inDete
 }
 
 LBAudioDetectiveIdentificationUnit* LBAudioDetectiveGetIdentificationUnits(LBAudioDetectiveRef inDetective, UInt32* outUnitNumber) {
-    *outUnitNumber = sizeof(inDetective->identificationUnits)/sizeof(LBAudioDetectiveIdentificationUnit);
+    *outUnitNumber = inDetective->identificationUnitCount;
     return inDetective->identificationUnits;
 }
 
@@ -159,7 +163,8 @@ Float32 LBAudioDetectiveGetMinAmplitude(LBAudioDetectiveRef inDetective) {
     return inDetective->minAmpltiude;
 }
 
-Float32* LBAudioDetectiveGetPitchSteps(LBAudioDetectiveRef inDetective) {
+Float32* LBAudioDetectiveGetPitchSteps(LBAudioDetectiveRef inDetective, UInt32* outPitchStepsCount) {
+    *outPitchStepsCount = inDetective->pitchStepsCount;
     return inDetective->pitchSteps;
 }
 
@@ -194,8 +199,14 @@ void LBAudioDetectiveSetMinAmpltitude(LBAudioDetectiveRef inDetective, Float32 i
     inDetective->minAmpltiude = inMinAmplitude;
 }
 
-void LBAudioDetectiveSetPitchSteps(LBAudioDetectiveRef inDetective, Float32* inPitchSteps) {
-    inDetective->pitchSteps = inPitchSteps;
+void LBAudioDetectiveSetPitchSteps(LBAudioDetectiveRef inDetective, Float32* inPitchSteps, UInt32 inPitchStepsCount) {
+    Float32* pitchSteps = malloc(sizeof(Float32)*inPitchStepsCount);
+    for (int i = 0; i < inPitchStepsCount; i++) {
+        pitchSteps[i] = inPitchSteps[i];
+    }
+    
+    inDetective->pitchSteps = pitchSteps;
+    inDetective->pitchStepsCount = inPitchStepsCount;
 }
 
 #pragma mark -
@@ -458,7 +469,7 @@ Boolean LBAudioDetectiveIdentificationUnitAddFrequency(LBAudioDetectiveIdentific
 #pragma mark Utilities
 
 UInt32 LBAudioDetectivePitchRange(LBAudioDetectiveRef inDetective, Float32 pitch) {
-    UInt32 count = sizeof(inDetective->pitchSteps)/sizeof(Float32);
+    UInt32 count = inDetective->pitchStepsCount;
     for (int i = 0; i < count; i++) {
         if (pitch < inDetective->pitchSteps[i]) {
             return i;

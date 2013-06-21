@@ -29,7 +29,7 @@ AudioStreamBasicDescription LBAudioDetectiveDefaultFormat();
 AudioStreamBasicDescription LBAudioDetectiveGetFormat(LBAudioDetectiveRef inDetective);
 LBAudioDetectiveIdentificationUnit* LBAudioDetectiveGetIdentificationUnits(LBAudioDetectiveRef inDetective, UInt32* outUnitNumber);
 Float32 LBAudioDetectiveGetMinAmplitude(LBAudioDetectiveRef inDetective);
-Float32* LBAudioDetectiveGetPitchSteps(LBAudioDetectiveRef inDetective);
+Float32* LBAudioDetectiveGetPitchSteps(LBAudioDetectiveRef inDetective, UInt32* outPitchStepsCount);
 
 #pragma mark -
 #pragma mark Setters
@@ -37,7 +37,7 @@ Float32* LBAudioDetectiveGetPitchSteps(LBAudioDetectiveRef inDetective);
 void LBAudioDetectiveSetFormat(LBAudioDetectiveRef inDetective, AudioStreamBasicDescription inStreamFormat);
 void LBAudioDetectiveSetWriteAudioToURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL);
 void LBAudioDetectiveSetMinAmpltitude(LBAudioDetectiveRef inDetective, Float32 inMinAmplitude);
-void LBAudioDetectiveSetPitchSteps(LBAudioDetectiveRef inDetective, Float32* inPitchSteps);
+void LBAudioDetectiveSetPitchSteps(LBAudioDetectiveRef inDetective, Float32* inPitchSteps, UInt32 inPitchStepsCount);
 
 #pragma mark -
 #pragma mark Processing
