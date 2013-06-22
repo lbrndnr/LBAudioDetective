@@ -233,7 +233,6 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
 -(void)_identifyRecordedIdentificationUnits:(NSArray *)units answer:(void (^)(NSString *))completion {
     NSMutableString* string = [NSMutableString new];
     for (NSArray* unit in units) {
-        NSLog(@"%@", unit[4]);
         [string appendFormat:@"%i-%i-%i-%i-%i-", [(NSNumber*)unit[0] integerValue], [(NSNumber*)unit[1] integerValue], [(NSNumber*)unit[2] integerValue], [(NSNumber*)unit[3] integerValue], [(NSNumber*)unit[4] integerValue]];
     }
     
