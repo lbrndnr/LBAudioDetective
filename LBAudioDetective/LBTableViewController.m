@@ -293,8 +293,9 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
             
             UInt32 unitCount;
             LBAudioDetectiveIdentificationUnit* identificationUnits = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount);
+            NSArray* array = [self _arrayFromAudioUnits:identificationUnits count:unitCount];
             
-            NSUInteger match = [self _matchRecordedIdentificationUnits:[self _arrayFromAudioUnits:identificationUnits count:unitCount] withOriginalUnits:[self _savedIdentificationUnit]];
+            NSUInteger match = [self _matchRecordedIdentificationUnits:array withOriginalUnits:array];
             NSLog(@"Audio Analysis Matches:%u", match);
             UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"There were %u hits", match] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView show];
