@@ -17,11 +17,13 @@ const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
     NSFileManager* _manager;
     AVAudioPlayer* _player;
     NSDictionary* _userData;
+    NSUInteger _selectedRecording;
 }
 
 @property (nonatomic, strong) NSFileManager* manager;
 @property (nonatomic, strong) AVAudioPlayer* player;
 @property (nonatomic, strong) NSDictionary* userData;
+@property (nonatomic) NSUInteger selectedRecording;
 
 @property (nonatomic, readonly) NSURL* applicationDocumentDirectory;
 
@@ -31,31 +33,10 @@ const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
 -(void)_stopProcessing:(id)sender;
 
 -(NSArray*)_arrayFromAudioUnits:(LBAudioDetectiveIdentificationUnit*)units count:(NSUInteger)count;
--(void)_saveIdentificationUnits:(NSArray*)units;
--(NSArray*)_savedIdentificationUnit;
 -(NSUInteger)_matchRecordedIdentificationUnits:(NSArray*)units1 withOriginalUnits:(NSArray*)units2;
 -(void)_identifyRecordedIdentificationUnits:(NSArray*)units answer:(void(^)(NSString*))completion;
 
 @end
-
-void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
-    LBTableViewController* controller = callbackHelper;
-    UInt32 unitCount;
-    LBAudioDetectiveIdentificationUnit* identificationUnits = LBAudioDetectiveGetIdentificationUnits(detective, &unitCount);
-    
-    NSUInteger match = [controller _matchRecordedIdentificationUnits:[controller _arrayFromAudioUnits:identificationUnits count:unitCount] withOriginalUnits:[controller _savedIdentificationUnit]];
-    NSLog(@"Audio Analysis Matches:%u", match);
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"There were %u hits", match] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alertView show];
-    
-    UIBarButtonItem* processItem = controller.navigationItem.rightBarButtonItem;
-    processItem.title = @"Process";
-    processItem.action = @selector(_startProcessing:);
-    
-    [controller.tableView reloadData];
-    controller.userData = nil;
-}
-
 @implementation LBTableViewController
 
 #pragma mark Accessors
@@ -144,9 +125,9 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
     }
     
     NSURL* URL = [self _URLForRecording:indexPath.row];
-    self.userData = @{@"URL": URL};
+    self.userData = @{@"URL": URL, @"index": @(indexPath.row)};
     
-    UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:@"Action" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Play", @"Process", @"Send", nil];
+    UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:@"Action" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Play", @"Process", @"Send", @"Select", nil];
     sheet.tag = kLBTableViewActionSheetTagPlayOrProcess;
     [sheet showInView:self.tableView];
     
@@ -178,19 +159,6 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
 -(void)_stopProcessing:(id)sender {
     LBAudioDetectiveStopProcessing(self.detective);
     
-    UInt32 unitCount;
-    LBAudioDetectiveIdentificationUnit* identificationUnits = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount);
-    
-    if ([(NSNumber*)self.userData[@"Process"] boolValue]) {
-        NSUInteger match = [self _matchRecordedIdentificationUnits:[self _arrayFromAudioUnits:identificationUnits count:unitCount] withOriginalUnits:[self _savedIdentificationUnit]];
-        NSLog(@"Audio Analysis Matches:%u", match);
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"There were %u hits", match] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-    }
-    else {
-        [self _saveIdentificationUnits:[self _arrayFromAudioUnits:identificationUnits count:unitCount]];
-    }
-    
     UIBarButtonItem* processItem = self.navigationItem.rightBarButtonItem;
     processItem.title = @"Process";
     processItem.action = @selector(_startProcessing:);
@@ -202,28 +170,48 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
 -(NSUInteger)_matchRecordedIdentificationUnits:(NSArray *)recordedUnits withOriginalUnits:(NSArray *)originalUnits {
     NSAssert(recordedUnits || originalUnits, @"Identification Units are nil");
     
+    NSLog(@"MATCHING");
+    
+    NSInteger range = 50;
     __block NSMutableDictionary* offsetDictionary = [NSMutableDictionary new];
+    
     [originalUnits enumerateObjectsUsingBlock:^(NSArray* originalUnit, NSUInteger originalIndex, BOOL *stop) {
         [recordedUnits enumerateObjectsUsingBlock:^(NSArray* recordedUnit, NSUInteger recordedIndex, BOOL *stop) {
-            float match0 = fabsf([(NSNumber*)originalUnit[0] floatValue] - [(NSNumber*)recordedUnit[0] floatValue]);
-            float match1 = fabsf([(NSNumber*)originalUnit[1] floatValue] - [(NSNumber*)recordedUnit[1] floatValue]);
-            float match2 = fabsf([(NSNumber*)originalUnit[2] floatValue] - [(NSNumber*)recordedUnit[2] floatValue]);
-            float match3 = fabsf([(NSNumber*)originalUnit[3] floatValue] - [(NSNumber*)recordedUnit[3] floatValue]);
-            float match4 = fabsf([(NSNumber*)originalUnit[4] floatValue] - [(NSNumber*)recordedUnit[4] floatValue]);
+            float match0 = fabsf([(NSNumber*)originalUnit[0] integerValue] - [(NSNumber*)recordedUnit[0] integerValue]);
+            float match1 = fabsf([(NSNumber*)originalUnit[1] integerValue] - [(NSNumber*)recordedUnit[1] integerValue]);
+            float match2 = fabsf([(NSNumber*)originalUnit[2] integerValue] - [(NSNumber*)recordedUnit[2] integerValue]);
+            float match3 = fabsf([(NSNumber*)originalUnit[3] integerValue] - [(NSNumber*)recordedUnit[3] integerValue]);
+            float match4 = fabsf([(NSNumber*)originalUnit[4] integerValue] - [(NSNumber*)recordedUnit[4] integerValue]);
             
-            if (match0 < 0.5f && match1 < 0.5f && match2 < 0.5f && match3 < 0.5f && match4 < 0.5f) {
-                NSNumber* offset = @(originalIndex-recordedIndex);
-                NSNumber* matches = offsetDictionary[offset];
+            if ((match0 + match1 + match2 + match3 + match4) < 400.0f) {
+                NSInteger index = originalIndex-recordedIndex;
                 
-                [offsetDictionary setObject:@(1+matches.integerValue) forKey:offset];
+                __block NSNumber* newOffset = nil;
+                __block NSNumber* newCount = nil;
+                
+                [offsetDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* offset, NSNumber* count, BOOL *stop) {
+                    if (abs(fabsf(offset.floatValue)-index) < range) {
+                        *stop = YES;
+                        CGFloat sum = offset.floatValue*count.floatValue;
+                        newCount = @(count.integerValue+1);
+                        newOffset = @((sum+index)/newCount.integerValue);
+                    }
+                }];
+                
+                if (!newOffset || !newCount) {
+                    newOffset = @(index);
+                    newCount = @(1);
+                }
+
+                [offsetDictionary setObject:newCount forKey:newOffset];
             }
         }];
     }];
     
     __block NSUInteger matches = 0;
-    [offsetDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* offset, NSNumber* obj, BOOL *stop) {
-        if (obj.integerValue > 1) {
-             matches += obj.unsignedIntegerValue;
+    [offsetDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* offset, NSNumber* count, BOOL *stop) {
+        if (count.integerValue > 3) {
+            matches += count.unsignedIntegerValue;
         }
     }];
     
@@ -244,7 +232,7 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"%@", error);
         NSLog(@"%@", operation.responseString);
-        completion(@"Fuckup");
+        completion(@"No Result");
     }];
     [_client enqueueHTTPRequestOperation:operation];
 }
@@ -253,21 +241,15 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
     NSMutableArray* mutableUnits = [NSMutableArray new];
     for (NSInteger i = 0; i < count; i++) {
         LBAudioDetectiveIdentificationUnit unit = units[i];
-        [mutableUnits addObject:@[@(unit.frequencies[0]), @(unit.frequencies[1]), @(unit.frequencies[2]), @(unit.frequencies[3]), @(unit.frequencies[4])]];
+        NSInteger f0 = unit.frequencies[0];
+        NSInteger f1 = unit.frequencies[1];
+        NSInteger f2 = unit.frequencies[2];
+        NSInteger f3 = unit.frequencies[3];
+        NSInteger f4 = unit.frequencies[4];
+        [mutableUnits addObject:@[@(f0-(f0%2)), @(f1-(f1%2)), @(f2-(f2%2)), @(f3-(f3%2)), @(f4-(f4%2))]];
     }
     
     return mutableUnits;
-}
-
--(NSArray*)_savedIdentificationUnit {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    return [defaults arrayForKey:@"bird"];
-}
-
--(void)_saveIdentificationUnits:(NSArray *)units {
-    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:units forKey:@"bird"];
-    [defaults synchronize];
 }
 
 #pragma mark -
@@ -291,11 +273,17 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
         else if (buttonIndex == 1) {
             LBAudioDetectiveProcessAudioURL(self.detective, URL);
             
-            UInt32 unitCount;
-            LBAudioDetectiveIdentificationUnit* identificationUnits = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount);
-            NSArray* array = [self _arrayFromAudioUnits:identificationUnits count:unitCount];
+            UInt32 unitCount1;
+            LBAudioDetectiveIdentificationUnit* identificationUnits1 = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount1);
+            NSArray* array1 = [self _arrayFromAudioUnits:identificationUnits1 count:unitCount1];
             
-            NSUInteger match = [self _matchRecordedIdentificationUnits:array withOriginalUnits:array];
+            LBAudioDetectiveProcessAudioURL(self.detective, [self _URLForRecording:self.selectedRecording]);
+            
+            UInt32 unitCount2;
+            LBAudioDetectiveIdentificationUnit* identificationUnits2 = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount2);
+            NSArray* array2 = [self _arrayFromAudioUnits:identificationUnits2 count:unitCount2];
+            
+            NSUInteger match = [self _matchRecordedIdentificationUnits:array1 withOriginalUnits:array2];
             NSLog(@"Audio Analysis Matches:%u", match);
             UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"There were %u hits", match] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView show];
@@ -309,6 +297,9 @@ void didFinishProcessing(LBAudioDetectiveRef detective, id callbackHelper) {
                 UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"It's a %@", name] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alertView show];
             }];
+        }
+        else {
+            self.selectedRecording = [self.userData[@"index"] integerValue];
         }
         
         self.userData = nil;
