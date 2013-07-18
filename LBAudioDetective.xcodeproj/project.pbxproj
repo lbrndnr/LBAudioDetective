@@ -17,6 +17,19 @@
 		2B79D056177479E70060DE41 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D04B177479E70060DE41 /* AFURLConnectionOperation.m */; };
 		2B79D057177479E70060DE41 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D04D177479E70060DE41 /* AFXMLRequestOperation.m */; };
 		2B79D058177479E70060DE41 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D04F177479E70060DE41 /* UIImageView+AFNetworking.m */; };
+		2B93C1A0179830A4002F5355 /* Amsel.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C193179830A4002F5355 /* Amsel.caf */; };
+		2B93C1A1179830A4002F5355 /* Amsel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C194179830A4002F5355 /* Amsel.mp3 */; };
+		2B93C1A2179830A4002F5355 /* Amsel_amplified.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C195179830A4002F5355 /* Amsel_amplified.caf */; };
+		2B93C1A3179830A4002F5355 /* Blaumeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C196179830A4002F5355 /* Blaumeise.caf */; };
+		2B93C1A4179830A4002F5355 /* Blaumeise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C197179830A4002F5355 /* Blaumeise.mp3 */; };
+		2B93C1A5179830A4002F5355 /* Buchfink.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C198179830A4002F5355 /* Buchfink.caf */; };
+		2B93C1A6179830A4002F5355 /* Buchfink.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C199179830A4002F5355 /* Buchfink.mp3 */; };
+		2B93C1A7179830A4002F5355 /* Haussperling.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C19A179830A4002F5355 /* Haussperling.caf */; };
+		2B93C1A8179830A4002F5355 /* Haussperling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C19B179830A4002F5355 /* Haussperling.mp3 */; };
+		2B93C1A9179830A4002F5355 /* Kohlmeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C19C179830A4002F5355 /* Kohlmeise.caf */; };
+		2B93C1AA179830A4002F5355 /* Kohlmeise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C19D179830A4002F5355 /* Kohlmeise.mp3 */; };
+		2B93C1AB179830A4002F5355 /* Rabenkraehe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C19E179830A4002F5355 /* Rabenkraehe.caf */; };
+		2B93C1AC179830A4002F5355 /* Rabenkraehe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C19F179830A4002F5355 /* Rabenkraehe.mp3 */; };
 		2BA183C017245839004CB1BC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183BF17245839004CB1BC /* UIKit.framework */; };
 		2BA183C217245839004CB1BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183C117245839004CB1BC /* Foundation.framework */; };
 		2BA183C417245839004CB1BC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183C317245839004CB1BC /* CoreGraphics.framework */; };
@@ -54,6 +67,19 @@
 		2B79D04E177479E70060DE41 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		2B79D04F177479E70060DE41 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		2B79D05917747D4F0060DE41 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		2B93C193179830A4002F5355 /* Amsel.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Amsel.caf; sourceTree = "<group>"; };
+		2B93C194179830A4002F5355 /* Amsel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Amsel.mp3; sourceTree = "<group>"; };
+		2B93C195179830A4002F5355 /* Amsel_amplified.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Amsel_amplified.caf; sourceTree = "<group>"; };
+		2B93C196179830A4002F5355 /* Blaumeise.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Blaumeise.caf; sourceTree = "<group>"; };
+		2B93C197179830A4002F5355 /* Blaumeise.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Blaumeise.mp3; sourceTree = "<group>"; };
+		2B93C198179830A4002F5355 /* Buchfink.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Buchfink.caf; sourceTree = "<group>"; };
+		2B93C199179830A4002F5355 /* Buchfink.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Buchfink.mp3; sourceTree = "<group>"; };
+		2B93C19A179830A4002F5355 /* Haussperling.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Haussperling.caf; sourceTree = "<group>"; };
+		2B93C19B179830A4002F5355 /* Haussperling.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Haussperling.mp3; sourceTree = "<group>"; };
+		2B93C19C179830A4002F5355 /* Kohlmeise.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kohlmeise.caf; sourceTree = "<group>"; };
+		2B93C19D179830A4002F5355 /* Kohlmeise.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Kohlmeise.mp3; sourceTree = "<group>"; };
+		2B93C19E179830A4002F5355 /* Rabenkraehe.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rabenkraehe.caf; sourceTree = "<group>"; };
+		2B93C19F179830A4002F5355 /* Rabenkraehe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Rabenkraehe.mp3; sourceTree = "<group>"; };
 		2BA183BC17245839004CB1BC /* LBAudioDetective.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LBAudioDetective.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BA183BF17245839004CB1BC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2BA183C117245839004CB1BC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -127,6 +153,26 @@
 			path = AFNetworking;
 			sourceTree = "<group>";
 		};
+		2B93C192179830A4002F5355 /* Birds */ = {
+			isa = PBXGroup;
+			children = (
+				2B93C193179830A4002F5355 /* Amsel.caf */,
+				2B93C194179830A4002F5355 /* Amsel.mp3 */,
+				2B93C195179830A4002F5355 /* Amsel_amplified.caf */,
+				2B93C196179830A4002F5355 /* Blaumeise.caf */,
+				2B93C197179830A4002F5355 /* Blaumeise.mp3 */,
+				2B93C198179830A4002F5355 /* Buchfink.caf */,
+				2B93C199179830A4002F5355 /* Buchfink.mp3 */,
+				2B93C19A179830A4002F5355 /* Haussperling.caf */,
+				2B93C19B179830A4002F5355 /* Haussperling.mp3 */,
+				2B93C19C179830A4002F5355 /* Kohlmeise.caf */,
+				2B93C19D179830A4002F5355 /* Kohlmeise.mp3 */,
+				2B93C19E179830A4002F5355 /* Rabenkraehe.caf */,
+				2B93C19F179830A4002F5355 /* Rabenkraehe.mp3 */,
+			);
+			path = Birds;
+			sourceTree = "<group>";
+		};
 		2BA183B317245839004CB1BC = {
 			isa = PBXGroup;
 			children = (
@@ -176,6 +222,7 @@
 		2BA183C617245839004CB1BC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2B93C192179830A4002F5355 /* Birds */,
 				2BA183C717245839004CB1BC /* LBAudioDetective-Info.plist */,
 				2BA183C817245839004CB1BC /* InfoPlist.strings */,
 				2BA183CB17245839004CB1BC /* main.m */,
@@ -249,9 +296,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BA183CA17245839004CB1BC /* InfoPlist.strings in Resources */,
+				2B93C1A0179830A4002F5355 /* Amsel.caf in Resources */,
+				2B93C1A5179830A4002F5355 /* Buchfink.caf in Resources */,
+				2B93C1AA179830A4002F5355 /* Kohlmeise.mp3 in Resources */,
 				2BA183D217245839004CB1BC /* Default.png in Resources */,
+				2B93C1AC179830A4002F5355 /* Rabenkraehe.mp3 in Resources */,
+				2B93C1A1179830A4002F5355 /* Amsel.mp3 in Resources */,
+				2B93C1A6179830A4002F5355 /* Buchfink.mp3 in Resources */,
+				2B93C1A3179830A4002F5355 /* Blaumeise.caf in Resources */,
 				2BA183D417245839004CB1BC /* Default@2x.png in Resources */,
+				2B93C1A4179830A4002F5355 /* Blaumeise.mp3 in Resources */,
+				2B93C1A7179830A4002F5355 /* Haussperling.caf in Resources */,
+				2B93C1A9179830A4002F5355 /* Kohlmeise.caf in Resources */,
 				2BA183D617245839004CB1BC /* Default-568h@2x.png in Resources */,
+				2B93C1A8179830A4002F5355 /* Haussperling.mp3 in Resources */,
+				2B93C1A2179830A4002F5355 /* Amsel_amplified.caf in Resources */,
+				2B93C1AB179830A4002F5355 /* Rabenkraehe.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
