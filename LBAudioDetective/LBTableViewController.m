@@ -169,14 +169,20 @@ const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
 
 -(NSUInteger)_matchRecordedIdentificationUnits:(NSArray *)recordedUnits withOriginalUnits:(NSArray *)originalUnits {
     NSAssert(recordedUnits || originalUnits, @"Identification Units are nil");
-    
-    NSLog(@"MATCHING");
+
+    if (recordedUnits.count > originalUnits.count) {
+        NSLog(@"recorded is bigger");
+    }
+    else {
+        NSLog(@"original is bigger");
+    }
     
     NSInteger range = 50;
     __block NSMutableDictionary* offsetDictionary = [NSMutableDictionary new];
+    __block NSUInteger matches = 0;
     
-    [originalUnits enumerateObjectsUsingBlock:^(NSArray* originalUnit, NSUInteger originalIndex, BOOL *stop) {
-        [recordedUnits enumerateObjectsUsingBlock:^(NSArray* recordedUnit, NSUInteger recordedIndex, BOOL *stop) {
+    [originalUnits enumerateObjectsUsingBlock:^(NSArray* originalUnit, NSUInteger originalIndex, BOOL *originalStop) {
+        [recordedUnits enumerateObjectsUsingBlock:^(NSArray* recordedUnit, NSUInteger recordedIndex, BOOL *recordedStop) {
             float match0 = fabsf([(NSNumber*)originalUnit[0] integerValue] - [(NSNumber*)recordedUnit[0] integerValue]);
             float match1 = fabsf([(NSNumber*)originalUnit[1] integerValue] - [(NSNumber*)recordedUnit[1] integerValue]);
             float match2 = fabsf([(NSNumber*)originalUnit[2] integerValue] - [(NSNumber*)recordedUnit[2] integerValue]);
@@ -186,15 +192,17 @@ const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
             if ((match0 + match1 + match2 + match3 + match4) < 400.0f) {
                 NSInteger index = originalIndex-recordedIndex;
                 
+                __block NSNumber* oldOffset = nil;
                 __block NSNumber* newOffset = nil;
                 __block NSNumber* newCount = nil;
                 
                 [offsetDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* offset, NSNumber* count, BOOL *stop) {
-                    if (abs(fabsf(offset.floatValue)-index) < range) {
-                        *stop = YES;
+                    if (abs(offset.floatValue-index) < range) {
+                        oldOffset = offset;
                         CGFloat sum = offset.floatValue*count.floatValue;
                         newCount = @(count.integerValue+1);
-                        newOffset = @((sum+index)/newCount.integerValue);
+                        newOffset = @((sum+index)/newCount.floatValue);
+                        *stop = YES;
                     }
                 }];
                 
@@ -203,12 +211,26 @@ const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
                     newCount = @(1);
                 }
 
+                if (oldOffset) {
+                    [offsetDictionary removeObjectForKey:oldOffset];
+                }
                 [offsetDictionary setObject:newCount forKey:newOffset];
+//                
+//                NSArray* sortedValues = [offsetDictionary.allKeys sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"floatValue" ascending:YES]]];
+//                [sortedValues enumerateObjectsUsingBlock:^(NSNumber* offset, NSUInteger idx, BOOL *stop) {
+//                    if (idx != 0) {
+//                        NSNumber* priorOffset = [sortedValues objectAtIndex:idx-1];
+//                        if (abs(offset.floatValue-priorOffset.floatValue) < 50) {
+//                            NSLog(@"%@, %@, %i, %i, %u", newOffset, newCount, index, didFind, recordedIndex);
+//                            NSLog(@"%@: %@", priorOffset, offsetDictionary[priorOffset]);
+//                            NSLog(@"%@: %@", offset, offsetDictionary[offset]);
+//                        }
+//                    }
+//                }];
             }
         }];
     }];
     
-    __block NSUInteger matches = 0;
     [offsetDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* offset, NSNumber* count, BOOL *stop) {
         if (count.integerValue > 3) {
             matches += count.unsignedIntegerValue;
@@ -277,7 +299,10 @@ const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
             LBAudioDetectiveIdentificationUnit* identificationUnits1 = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount1);
             NSArray* array1 = [self _arrayFromAudioUnits:identificationUnits1 count:unitCount1];
             
-            LBAudioDetectiveProcessAudioURL(self.detective, [self _URLForRecording:self.selectedRecording]);
+            NSURL* selectedURL = [self _URLForRecording:self.selectedRecording];
+            LBAudioDetectiveProcessAudioURL(self.detective, selectedURL);
+            
+            NSLog(@"Comparing %@ with %@", URL.absoluteString.lastPathComponent, selectedURL.absoluteString.lastPathComponent);
             
             UInt32 unitCount2;
             LBAudioDetectiveIdentificationUnit* identificationUnits2 = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount2);
