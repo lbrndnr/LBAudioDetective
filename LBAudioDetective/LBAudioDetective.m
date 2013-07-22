@@ -10,7 +10,7 @@
 #import <Accelerate/Accelerate.h>
 #import "LBAudioDetective.h"
 
-const UInt32 kLBAudioDetectiveWindowSize = 1024; // 1 KB
+const UInt32 kLBAudioDetectiveWindowSize = 512; // 0.5 KB
 
 typedef struct LBAudioDetective {
     AUGraph graph;

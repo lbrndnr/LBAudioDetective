@@ -170,15 +170,8 @@ const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
 
 -(NSUInteger)_matchRecordedIdentificationUnits:(NSArray *)recordedUnits withOriginalUnits:(NSArray *)originalUnits {
     NSAssert(recordedUnits || originalUnits, @"Identification Units are nil");
-
-    if (recordedUnits.count > originalUnits.count) {
-        NSLog(@"recorded is bigger");
-    }
-    else {
-        NSLog(@"original is bigger");
-    }
     
-    NSInteger range = 50;
+    NSInteger range = 100;
     __block NSMutableDictionary* offsetDictionary = [NSMutableDictionary new];
     
     [originalUnits enumerateObjectsUsingBlock:^(NSArray* originalUnit, NSUInteger originalIndex, BOOL *originalStop) {
@@ -221,7 +214,7 @@ const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
     
     __block NSUInteger matches = 0;
     [offsetDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* offset, NSNumber* count, BOOL *stop) {
-        if (count.integerValue > 0) {
+        if (count.integerValue > 3) {
             matches += count.unsignedIntegerValue;
         }
     }];
@@ -333,7 +326,7 @@ const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
                 [alertView show];
             }];
         }
-        else {
+        else if (buttonIndex == 3) {
             self.selectedRecording = [self.userData[@"index"] integerValue];
         }
         
