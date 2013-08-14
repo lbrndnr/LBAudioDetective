@@ -126,11 +126,12 @@ const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
     }
     
     NSURL* URL = [self _URLForRecording:indexPath.row];
-    self.userData = @{@"URL": URL, @"index": @(indexPath.row)};
-    
-    UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:@"Action" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Play", @"Process", @"Send", @"Select", nil];
-    sheet.tag = kLBTableViewActionSheetTagPlayOrProcess;
-    [sheet showInView:self.tableView];
+    LBAudioDetectiveProcessAudioURL(self.detective, URL, 2048, 64);
+//    self.userData = @{@"URL": URL, @"index": @(indexPath.row)};
+//    
+//    UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:@"Action" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Play", @"Process", @"Send", @"Select", nil];
+//    sheet.tag = kLBTableViewActionSheetTagPlayOrProcess;
+//    [sheet showInView:self.tableView];
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -260,78 +261,78 @@ const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
 #pragma mark UIActionSheetDelegate
 
 -(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {    
-    if (actionSheet.tag == kLBTableViewActionSheetTagPlayOrProcess) {
-        NSURL* URL = self.userData[@"URL"];
-        
-        if (buttonIndex == 0) {
-            NSError* error;
-            
-            self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:URL error:&error];
-            if (error) {
-                NSLog(@"Error playing file:%@", error);
-            }
-            else {
-                [self.player play];
-            }
-        }
-        else if (buttonIndex == 1) {
-            LBAudioDetectiveProcessAudioURL(self.detective, URL);
-            
-            UInt32 unitCount1;
-            LBAudioDetectiveIdentificationUnit* identificationUnits1 = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount1);
-            NSArray* array1 = [self _arrayFromAudioUnits:identificationUnits1 count:unitCount1];
-            
-            if (self.selectedRecording == -1) {
-                NSMutableDictionary* matches = [NSMutableDictionary new];
-                NSArray* birds = @[@"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe"];
-                
-                [birds enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                    NSURL* selectedURL = [[NSBundle mainBundle] URLForResource:obj withExtension:@"caf"];
-                    LBAudioDetectiveProcessAudioURL(self.detective, selectedURL);
-                    
-                    UInt32 unitCount2;
-                    LBAudioDetectiveIdentificationUnit* identificationUnits2 = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount2);
-                    NSArray* array2 = [self _arrayFromAudioUnits:identificationUnits2 count:unitCount2];
-                    
-                    NSUInteger match = [self _matchRecordedIdentificationUnits:array1 withOriginalUnits:array2];
-                    [matches setObject:@(match) forKey:obj];
-                }];
-
-                UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"%@", matches] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alertView show];
-            }
-            else {
-                NSURL* selectedURL = [self _URLForRecording:self.selectedRecording];
-                LBAudioDetectiveProcessAudioURL(self.detective, selectedURL);
-                
-                NSLog(@"Comparing %@ with %@", URL.absoluteString.lastPathComponent, selectedURL.absoluteString.lastPathComponent);
-                
-                UInt32 unitCount2;
-                LBAudioDetectiveIdentificationUnit* identificationUnits2 = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount2);
-                NSArray* array2 = [self _arrayFromAudioUnits:identificationUnits2 count:unitCount2];
-                
-                NSUInteger match = [self _matchRecordedIdentificationUnits:array1 withOriginalUnits:array2];
-                NSLog(@"Audio Analysis Matches:%u", match);
-                UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"There were %u hits", match] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alertView show];
-            }
-        }
-        else if (buttonIndex == 2) {
-            LBAudioDetectiveProcessAudioURL(self.detective, URL);
-            
-            UInt32 unitCount;
-            LBAudioDetectiveIdentificationUnit* identificationUnits = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount);
-            [self _identifyRecordedIdentificationUnits:[self _arrayFromAudioUnits:identificationUnits count:unitCount] answer:^(NSString* name) {
-                UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"It's a %@", name] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alertView show];
-            }];
-        }
-        else if (buttonIndex == 3) {
-            self.selectedRecording = [self.userData[@"index"] integerValue];
-        }
-        
-        self.userData = nil;
-    }
+//    if (actionSheet.tag == kLBTableViewActionSheetTagPlayOrProcess) {
+//        NSURL* URL = self.userData[@"URL"];
+//        
+//        if (buttonIndex == 0) {
+//            NSError* error;
+//            
+//            self.player = [[AVAudioPlayer alloc] initWithContentsOfURL:URL error:&error];
+//            if (error) {
+//                NSLog(@"Error playing file:%@", error);
+//            }
+//            else {
+//                [self.player play];
+//            }
+//        }
+//        else if (buttonIndex == 1) {
+//            LBAudioDetectiveProcessAudioURL(self.detective, URL);
+//            
+//            UInt32 unitCount1;
+//            LBAudioDetectiveIdentificationUnit* identificationUnits1 = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount1);
+//            NSArray* array1 = [self _arrayFromAudioUnits:identificationUnits1 count:unitCount1];
+//            
+//            if (self.selectedRecording == -1) {
+//                NSMutableDictionary* matches = [NSMutableDictionary new];
+//                NSArray* birds = @[@"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe"];
+//                
+//                [birds enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//                    NSURL* selectedURL = [[NSBundle mainBundle] URLForResource:obj withExtension:@"caf"];
+//                    LBAudioDetectiveProcessAudioURL(self.detective, selectedURL);
+//                    
+//                    UInt32 unitCount2;
+//                    LBAudioDetectiveIdentificationUnit* identificationUnits2 = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount2);
+//                    NSArray* array2 = [self _arrayFromAudioUnits:identificationUnits2 count:unitCount2];
+//                    
+//                    NSUInteger match = [self _matchRecordedIdentificationUnits:array1 withOriginalUnits:array2];
+//                    [matches setObject:@(match) forKey:obj];
+//                }];
+//
+//                UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"%@", matches] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//                [alertView show];
+//            }
+//            else {
+//                NSURL* selectedURL = [self _URLForRecording:self.selectedRecording];
+//                LBAudioDetectiveProcessAudioURL(self.detective, selectedURL);
+//                
+//                NSLog(@"Comparing %@ with %@", URL.absoluteString.lastPathComponent, selectedURL.absoluteString.lastPathComponent);
+//                
+//                UInt32 unitCount2;
+//                LBAudioDetectiveIdentificationUnit* identificationUnits2 = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount2);
+//                NSArray* array2 = [self _arrayFromAudioUnits:identificationUnits2 count:unitCount2];
+//                
+//                NSUInteger match = [self _matchRecordedIdentificationUnits:array1 withOriginalUnits:array2];
+//                NSLog(@"Audio Analysis Matches:%u", match);
+//                UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"There were %u hits", match] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//                [alertView show];
+//            }
+//        }
+//        else if (buttonIndex == 2) {
+//            LBAudioDetectiveProcessAudioURL(self.detective, URL);
+//            
+//            UInt32 unitCount;
+//            LBAudioDetectiveIdentificationUnit* identificationUnits = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount);
+//            [self _identifyRecordedIdentificationUnits:[self _arrayFromAudioUnits:identificationUnits count:unitCount] answer:^(NSString* name) {
+//                UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"It's a %@", name] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//                [alertView show];
+//            }];
+//        }
+//        else if (buttonIndex == 3) {
+//            self.selectedRecording = [self.userData[@"index"] integerValue];
+//        }
+//        
+//        self.userData = nil;
+//    }
 }
 
 #pragma mark -
