@@ -28,6 +28,26 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2B8C5E0317C8908900B9F2EE"
+               BuildableName = "LBAudioDetective Tests.xctest"
+               BlueprintName = "LBAudioDetective Tests"
+               ReferencedContainer = "container:LBAudioDetective.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2B8C5E1A17C890B000B9F2EE"
+               BuildableName = "LBAudioDetectiveTests.xctest"
+               BlueprintName = "LBAudioDetectiveTests"
+               ReferencedContainer = "container:LBAudioDetective.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

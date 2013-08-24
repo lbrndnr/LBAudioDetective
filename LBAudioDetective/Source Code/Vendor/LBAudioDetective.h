@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
+#import <AVFoundation/AVFoundation.h>
 
 typedef struct LBAudioDetectiveIdentificationUnit {
     Float32 magnitudes[5];

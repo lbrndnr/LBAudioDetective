@@ -126,7 +126,7 @@ const NSInteger kLBTableViewActionSheetTagPlayOrProcess = 1;
     }
     
     NSURL* URL = [self _URLForRecording:indexPath.row];
-    LBAudioDetectiveProcessAudioURL(self.detective, URL, 2048, 64);
+    LBAudioDetectiveProcessAudioURL(self.detective, URL);
 //    self.userData = @{@"URL": URL, @"index": @(indexPath.row)};
 //    
 //    UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:@"Action" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Play", @"Process", @"Send", @"Select", nil];

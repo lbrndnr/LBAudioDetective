@@ -7,6 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B024DCF17C89632006F0355 /* Amsel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC217C89632006F0355 /* Amsel.mp3 */; };
+		2B024DD017C89632006F0355 /* Amsel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC217C89632006F0355 /* Amsel.mp3 */; };
+		2B024DD117C89632006F0355 /* Blaumeise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC317C89632006F0355 /* Blaumeise.mp3 */; };
+		2B024DD217C89632006F0355 /* Blaumeise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC317C89632006F0355 /* Blaumeise.mp3 */; };
+		2B024DD317C89632006F0355 /* Buchfink.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC417C89632006F0355 /* Buchfink.mp3 */; };
+		2B024DD417C89632006F0355 /* Buchfink.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC417C89632006F0355 /* Buchfink.mp3 */; };
+		2B024DD517C89632006F0355 /* Haussperling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC517C89632006F0355 /* Haussperling.mp3 */; };
+		2B024DD617C89632006F0355 /* Haussperling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC517C89632006F0355 /* Haussperling.mp3 */; };
+		2B024DD717C89632006F0355 /* Kohlmeise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC617C89632006F0355 /* Kohlmeise.mp3 */; };
+		2B024DD817C89632006F0355 /* Kohlmeise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC617C89632006F0355 /* Kohlmeise.mp3 */; };
+		2B024DD917C89632006F0355 /* Rabenkraehe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC717C89632006F0355 /* Rabenkraehe.mp3 */; };
+		2B024DDA17C89632006F0355 /* Rabenkraehe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC717C89632006F0355 /* Rabenkraehe.mp3 */; };
+		2B024DDB17C89632006F0355 /* Amsel.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC917C89632006F0355 /* Amsel.caf */; };
+		2B024DDC17C89632006F0355 /* Amsel.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC917C89632006F0355 /* Amsel.caf */; };
+		2B024DDD17C89632006F0355 /* Blaumeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCA17C89632006F0355 /* Blaumeise.caf */; };
+		2B024DDE17C89632006F0355 /* Blaumeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCA17C89632006F0355 /* Blaumeise.caf */; };
+		2B024DDF17C89632006F0355 /* Buchfink.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCB17C89632006F0355 /* Buchfink.caf */; };
+		2B024DE017C89632006F0355 /* Buchfink.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCB17C89632006F0355 /* Buchfink.caf */; };
+		2B024DE117C89632006F0355 /* Haussperling.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCC17C89632006F0355 /* Haussperling.caf */; };
+		2B024DE217C89632006F0355 /* Haussperling.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCC17C89632006F0355 /* Haussperling.caf */; };
+		2B024DE317C89632006F0355 /* Kohlmeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCD17C89632006F0355 /* Kohlmeise.caf */; };
+		2B024DE417C89632006F0355 /* Kohlmeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCD17C89632006F0355 /* Kohlmeise.caf */; };
+		2B024DE517C89632006F0355 /* Rabenkreahe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCE17C89632006F0355 /* Rabenkreahe.caf */; };
+		2B024DE617C89632006F0355 /* Rabenkreahe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCE17C89632006F0355 /* Rabenkreahe.caf */; };
+		2B024DE717C89638006F0355 /* LBAudioDetective.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183E31724584C004CB1BC /* LBAudioDetective.m */; };
+		2B024DE917C8965C006F0355 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DE817C8965C006F0355 /* Images.xcassets */; };
 		2B494BDD172806A500FFB6FC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B494BDC172806A500FFB6FC /* Accelerate.framework */; };
 		2B79D050177479E70060DE41 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D03E177479E70060DE41 /* AFHTTPClient.m */; };
 		2B79D051177479E70060DE41 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D040177479E70060DE41 /* AFHTTPRequestOperation.m */; };
@@ -17,35 +43,47 @@
 		2B79D056177479E70060DE41 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D04B177479E70060DE41 /* AFURLConnectionOperation.m */; };
 		2B79D057177479E70060DE41 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D04D177479E70060DE41 /* AFXMLRequestOperation.m */; };
 		2B79D058177479E70060DE41 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D04F177479E70060DE41 /* UIImageView+AFNetworking.m */; };
-		2B93C1A0179830A4002F5355 /* Amsel.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C193179830A4002F5355 /* Amsel.caf */; };
-		2B93C1A1179830A4002F5355 /* Amsel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C194179830A4002F5355 /* Amsel.mp3 */; };
-		2B93C1A2179830A4002F5355 /* Amsel_amplified.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C195179830A4002F5355 /* Amsel_amplified.caf */; };
-		2B93C1A3179830A4002F5355 /* Blaumeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C196179830A4002F5355 /* Blaumeise.caf */; };
-		2B93C1A4179830A4002F5355 /* Blaumeise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C197179830A4002F5355 /* Blaumeise.mp3 */; };
-		2B93C1A5179830A4002F5355 /* Buchfink.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C198179830A4002F5355 /* Buchfink.caf */; };
-		2B93C1A6179830A4002F5355 /* Buchfink.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C199179830A4002F5355 /* Buchfink.mp3 */; };
-		2B93C1A7179830A4002F5355 /* Haussperling.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C19A179830A4002F5355 /* Haussperling.caf */; };
-		2B93C1A8179830A4002F5355 /* Haussperling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C19B179830A4002F5355 /* Haussperling.mp3 */; };
-		2B93C1A9179830A4002F5355 /* Kohlmeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C19C179830A4002F5355 /* Kohlmeise.caf */; };
-		2B93C1AA179830A4002F5355 /* Kohlmeise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C19D179830A4002F5355 /* Kohlmeise.mp3 */; };
-		2B93C1AB179830A4002F5355 /* Rabenkraehe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C19E179830A4002F5355 /* Rabenkraehe.caf */; };
-		2B93C1AC179830A4002F5355 /* Rabenkraehe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B93C19F179830A4002F5355 /* Rabenkraehe.mp3 */; };
+		2B8C5E1C17C890B000B9F2EE /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8C5E0517C8908900B9F2EE /* XCTest.framework */; };
+		2B8C5E1D17C890B000B9F2EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183C117245839004CB1BC /* Foundation.framework */; };
+		2B8C5E1E17C890B000B9F2EE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183BF17245839004CB1BC /* UIKit.framework */; };
+		2B8C5E2417C890B000B9F2EE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2B8C5E2217C890B000B9F2EE /* InfoPlist.strings */; };
+		2B8C5E2617C890B000B9F2EE /* LBAudioDetectiveTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8C5E2517C890B000B9F2EE /* LBAudioDetectiveTests.m */; };
 		2BA183C017245839004CB1BC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183BF17245839004CB1BC /* UIKit.framework */; };
 		2BA183C217245839004CB1BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183C117245839004CB1BC /* Foundation.framework */; };
 		2BA183C417245839004CB1BC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183C317245839004CB1BC /* CoreGraphics.framework */; };
 		2BA183CA17245839004CB1BC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BA183C817245839004CB1BC /* InfoPlist.strings */; };
 		2BA183CC17245839004CB1BC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183CB17245839004CB1BC /* main.m */; };
 		2BA183D017245839004CB1BC /* LBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183CF17245839004CB1BC /* LBAppDelegate.m */; };
-		2BA183D217245839004CB1BC /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BA183D117245839004CB1BC /* Default.png */; };
-		2BA183D417245839004CB1BC /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BA183D317245839004CB1BC /* Default@2x.png */; };
-		2BA183D617245839004CB1BC /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BA183D517245839004CB1BC /* Default-568h@2x.png */; };
 		2BA183D917245839004CB1BC /* LBTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183D817245839004CB1BC /* LBTableViewController.m */; };
 		2BA183E41724584C004CB1BC /* LBAudioDetective.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183E31724584C004CB1BC /* LBAudioDetective.m */; };
 		2BA183EC1724631E004CB1BC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183EB1724631E004CB1BC /* AudioToolbox.framework */; };
 		2BBC2D021726C679004A0163 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBC2D011726C679004A0163 /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		2B8C5E2817C890B100B9F2EE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2BA183B417245839004CB1BC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2BA183BB17245839004CB1BC;
+			remoteInfo = LBAudioDetective;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		2B024DC217C89632006F0355 /* Amsel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Amsel.mp3; sourceTree = "<group>"; };
+		2B024DC317C89632006F0355 /* Blaumeise.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Blaumeise.mp3; sourceTree = "<group>"; };
+		2B024DC417C89632006F0355 /* Buchfink.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Buchfink.mp3; sourceTree = "<group>"; };
+		2B024DC517C89632006F0355 /* Haussperling.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Haussperling.mp3; sourceTree = "<group>"; };
+		2B024DC617C89632006F0355 /* Kohlmeise.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Kohlmeise.mp3; sourceTree = "<group>"; };
+		2B024DC717C89632006F0355 /* Rabenkraehe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Rabenkraehe.mp3; sourceTree = "<group>"; };
+		2B024DC917C89632006F0355 /* Amsel.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Amsel.caf; sourceTree = "<group>"; };
+		2B024DCA17C89632006F0355 /* Blaumeise.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Blaumeise.caf; sourceTree = "<group>"; };
+		2B024DCB17C89632006F0355 /* Buchfink.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Buchfink.caf; sourceTree = "<group>"; };
+		2B024DCC17C89632006F0355 /* Haussperling.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Haussperling.caf; sourceTree = "<group>"; };
+		2B024DCD17C89632006F0355 /* Kohlmeise.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kohlmeise.caf; sourceTree = "<group>"; };
+		2B024DCE17C89632006F0355 /* Rabenkreahe.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rabenkreahe.caf; sourceTree = "<group>"; };
+		2B024DE817C8965C006F0355 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2B494BDC172806A500FFB6FC /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		2B79D03D177479E70060DE41 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		2B79D03E177479E70060DE41 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
@@ -67,19 +105,12 @@
 		2B79D04E177479E70060DE41 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		2B79D04F177479E70060DE41 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		2B79D05917747D4F0060DE41 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		2B93C193179830A4002F5355 /* Amsel.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Amsel.caf; sourceTree = "<group>"; };
-		2B93C194179830A4002F5355 /* Amsel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Amsel.mp3; sourceTree = "<group>"; };
-		2B93C195179830A4002F5355 /* Amsel_amplified.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Amsel_amplified.caf; sourceTree = "<group>"; };
-		2B93C196179830A4002F5355 /* Blaumeise.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Blaumeise.caf; sourceTree = "<group>"; };
-		2B93C197179830A4002F5355 /* Blaumeise.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Blaumeise.mp3; sourceTree = "<group>"; };
-		2B93C198179830A4002F5355 /* Buchfink.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Buchfink.caf; sourceTree = "<group>"; };
-		2B93C199179830A4002F5355 /* Buchfink.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Buchfink.mp3; sourceTree = "<group>"; };
-		2B93C19A179830A4002F5355 /* Haussperling.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Haussperling.caf; sourceTree = "<group>"; };
-		2B93C19B179830A4002F5355 /* Haussperling.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Haussperling.mp3; sourceTree = "<group>"; };
-		2B93C19C179830A4002F5355 /* Kohlmeise.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kohlmeise.caf; sourceTree = "<group>"; };
-		2B93C19D179830A4002F5355 /* Kohlmeise.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Kohlmeise.mp3; sourceTree = "<group>"; };
-		2B93C19E179830A4002F5355 /* Rabenkraehe.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rabenkraehe.caf; sourceTree = "<group>"; };
-		2B93C19F179830A4002F5355 /* Rabenkraehe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Rabenkraehe.mp3; sourceTree = "<group>"; };
+		2B8C5E0517C8908900B9F2EE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		2B8C5E1B17C890B000B9F2EE /* LBAudioDetectiveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LBAudioDetectiveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B8C5E2117C890B000B9F2EE /* LBAudioDetectiveTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LBAudioDetectiveTests-Info.plist"; sourceTree = "<group>"; };
+		2B8C5E2317C890B000B9F2EE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2B8C5E2517C890B000B9F2EE /* LBAudioDetectiveTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBAudioDetectiveTests.m; sourceTree = "<group>"; };
+		2B8C5E2717C890B000B9F2EE /* LBAudioDetectiveTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LBAudioDetectiveTests-Prefix.pch"; sourceTree = "<group>"; };
 		2BA183BC17245839004CB1BC /* LBAudioDetective.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LBAudioDetective.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BA183BF17245839004CB1BC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2BA183C117245839004CB1BC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -90,9 +121,6 @@
 		2BA183CD17245839004CB1BC /* LBAudioDetective-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LBAudioDetective-Prefix.pch"; sourceTree = "<group>"; };
 		2BA183CE17245839004CB1BC /* LBAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBAppDelegate.h; sourceTree = "<group>"; };
 		2BA183CF17245839004CB1BC /* LBAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBAppDelegate.m; sourceTree = "<group>"; };
-		2BA183D117245839004CB1BC /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		2BA183D317245839004CB1BC /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		2BA183D517245839004CB1BC /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		2BA183D717245839004CB1BC /* LBTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBTableViewController.h; sourceTree = "<group>"; };
 		2BA183D817245839004CB1BC /* LBTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBTableViewController.m; sourceTree = "<group>"; };
 		2BA183E21724584C004CB1BC /* LBAudioDetective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBAudioDetective.h; sourceTree = "<group>"; };
@@ -103,6 +131,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2B8C5E1817C890B000B9F2EE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B8C5E1C17C890B000B9F2EE /* XCTest.framework in Frameworks */,
+				2B8C5E1E17C890B000B9F2EE /* UIKit.framework in Frameworks */,
+				2B8C5E1D17C890B000B9F2EE /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2BA183B917245839004CB1BC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -119,12 +157,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B024DC017C89632006F0355 /* Birds */ = {
+			isa = PBXGroup;
+			children = (
+				2B024DC117C89632006F0355 /* Archive */,
+				2B024DC817C89632006F0355 /* Sequences */,
+			);
+			path = Birds;
+			sourceTree = "<group>";
+		};
+		2B024DC117C89632006F0355 /* Archive */ = {
+			isa = PBXGroup;
+			children = (
+				2B024DC217C89632006F0355 /* Amsel.mp3 */,
+				2B024DC317C89632006F0355 /* Blaumeise.mp3 */,
+				2B024DC417C89632006F0355 /* Buchfink.mp3 */,
+				2B024DC517C89632006F0355 /* Haussperling.mp3 */,
+				2B024DC617C89632006F0355 /* Kohlmeise.mp3 */,
+				2B024DC717C89632006F0355 /* Rabenkraehe.mp3 */,
+			);
+			path = Archive;
+			sourceTree = "<group>";
+		};
+		2B024DC817C89632006F0355 /* Sequences */ = {
+			isa = PBXGroup;
+			children = (
+				2B024DC917C89632006F0355 /* Amsel.caf */,
+				2B024DCA17C89632006F0355 /* Blaumeise.caf */,
+				2B024DCB17C89632006F0355 /* Buchfink.caf */,
+				2B024DCC17C89632006F0355 /* Haussperling.caf */,
+				2B024DCD17C89632006F0355 /* Kohlmeise.caf */,
+				2B024DCE17C89632006F0355 /* Rabenkreahe.caf */,
+			);
+			path = Sequences;
+			sourceTree = "<group>";
+		};
 		2B79D03B177479BF0060DE41 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
 				2B79D03C177479E70060DE41 /* AFNetworking */,
 			);
-			name = Externals;
+			path = Externals;
 			sourceTree = "<group>";
 		};
 		2B79D03C177479E70060DE41 /* AFNetworking */ = {
@@ -153,30 +226,43 @@
 			path = AFNetworking;
 			sourceTree = "<group>";
 		};
-		2B93C192179830A4002F5355 /* Birds */ = {
+		2B8C5DFC17C88F3300B9F2EE /* Source Code */ = {
 			isa = PBXGroup;
 			children = (
-				2B93C193179830A4002F5355 /* Amsel.caf */,
-				2B93C194179830A4002F5355 /* Amsel.mp3 */,
-				2B93C195179830A4002F5355 /* Amsel_amplified.caf */,
-				2B93C196179830A4002F5355 /* Blaumeise.caf */,
-				2B93C197179830A4002F5355 /* Blaumeise.mp3 */,
-				2B93C198179830A4002F5355 /* Buchfink.caf */,
-				2B93C199179830A4002F5355 /* Buchfink.mp3 */,
-				2B93C19A179830A4002F5355 /* Haussperling.caf */,
-				2B93C19B179830A4002F5355 /* Haussperling.mp3 */,
-				2B93C19C179830A4002F5355 /* Kohlmeise.caf */,
-				2B93C19D179830A4002F5355 /* Kohlmeise.mp3 */,
-				2B93C19E179830A4002F5355 /* Rabenkraehe.caf */,
-				2B93C19F179830A4002F5355 /* Rabenkraehe.mp3 */,
+				2BA183E51724585A004CB1BC /* Vendor */,
+				2BA183CE17245839004CB1BC /* LBAppDelegate.h */,
+				2BA183CF17245839004CB1BC /* LBAppDelegate.m */,
+				2BA183D717245839004CB1BC /* LBTableViewController.h */,
+				2BA183D817245839004CB1BC /* LBTableViewController.m */,
+				2B79D03B177479BF0060DE41 /* Externals */,
 			);
-			path = Birds;
+			path = "Source Code";
+			sourceTree = "<group>";
+		};
+		2B8C5E1F17C890B000B9F2EE /* LBAudioDetectiveTests */ = {
+			isa = PBXGroup;
+			children = (
+				2B8C5E2517C890B000B9F2EE /* LBAudioDetectiveTests.m */,
+				2B8C5E2017C890B000B9F2EE /* Supporting Files */,
+			);
+			path = LBAudioDetectiveTests;
+			sourceTree = "<group>";
+		};
+		2B8C5E2017C890B000B9F2EE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2B8C5E2117C890B000B9F2EE /* LBAudioDetectiveTests-Info.plist */,
+				2B8C5E2217C890B000B9F2EE /* InfoPlist.strings */,
+				2B8C5E2717C890B000B9F2EE /* LBAudioDetectiveTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		2BA183B317245839004CB1BC = {
 			isa = PBXGroup;
 			children = (
 				2BA183C517245839004CB1BC /* LBAudioDetective */,
+				2B8C5E1F17C890B000B9F2EE /* LBAudioDetectiveTests */,
 				2BA183BE17245839004CB1BC /* Frameworks */,
 				2BA183BD17245839004CB1BC /* Products */,
 			);
@@ -186,6 +272,7 @@
 			isa = PBXGroup;
 			children = (
 				2BA183BC17245839004CB1BC /* LBAudioDetective.app */,
+				2B8C5E1B17C890B000B9F2EE /* LBAudioDetectiveTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -201,6 +288,7 @@
 				2BA183C317245839004CB1BC /* CoreGraphics.framework */,
 				2BA183C117245839004CB1BC /* Foundation.framework */,
 				2BA183BF17245839004CB1BC /* UIKit.framework */,
+				2B8C5E0517C8908900B9F2EE /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -208,12 +296,7 @@
 		2BA183C517245839004CB1BC /* LBAudioDetective */ = {
 			isa = PBXGroup;
 			children = (
-				2BA183E51724585A004CB1BC /* Vendor */,
-				2BA183CE17245839004CB1BC /* LBAppDelegate.h */,
-				2BA183CF17245839004CB1BC /* LBAppDelegate.m */,
-				2BA183D717245839004CB1BC /* LBTableViewController.h */,
-				2BA183D817245839004CB1BC /* LBTableViewController.m */,
-				2B79D03B177479BF0060DE41 /* Externals */,
+				2B8C5DFC17C88F3300B9F2EE /* Source Code */,
 				2BA183C617245839004CB1BC /* Supporting Files */,
 			);
 			path = LBAudioDetective;
@@ -222,14 +305,12 @@
 		2BA183C617245839004CB1BC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				2B93C192179830A4002F5355 /* Birds */,
+				2B024DE817C8965C006F0355 /* Images.xcassets */,
+				2B024DC017C89632006F0355 /* Birds */,
 				2BA183C717245839004CB1BC /* LBAudioDetective-Info.plist */,
 				2BA183C817245839004CB1BC /* InfoPlist.strings */,
 				2BA183CB17245839004CB1BC /* main.m */,
 				2BA183CD17245839004CB1BC /* LBAudioDetective-Prefix.pch */,
-				2BA183D117245839004CB1BC /* Default.png */,
-				2BA183D317245839004CB1BC /* Default@2x.png */,
-				2BA183D517245839004CB1BC /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -240,12 +321,30 @@
 				2BA183E21724584C004CB1BC /* LBAudioDetective.h */,
 				2BA183E31724584C004CB1BC /* LBAudioDetective.m */,
 			);
-			name = Vendor;
+			path = Vendor;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2B8C5E1A17C890B000B9F2EE /* LBAudioDetectiveTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B8C5E2A17C890B100B9F2EE /* Build configuration list for PBXNativeTarget "LBAudioDetectiveTests" */;
+			buildPhases = (
+				2B8C5E1717C890B000B9F2EE /* Sources */,
+				2B8C5E1817C890B000B9F2EE /* Frameworks */,
+				2B8C5E1917C890B000B9F2EE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2B8C5E2917C890B100B9F2EE /* PBXTargetDependency */,
+			);
+			name = LBAudioDetectiveTests;
+			productName = LBAudioDetectiveTests;
+			productReference = 2B8C5E1B17C890B000B9F2EE /* LBAudioDetectiveTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		2BA183BB17245839004CB1BC /* LBAudioDetective */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2BA183DF17245839004CB1BC /* Build configuration list for PBXNativeTarget "LBAudioDetective" */;
@@ -272,6 +371,11 @@
 				CLASSPREFIX = LB;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Laurin Brandner";
+				TargetAttributes = {
+					2B8C5E1A17C890B000B9F2EE = {
+						TestTargetID = 2BA183BB17245839004CB1BC;
+					};
+				};
 			};
 			buildConfigurationList = 2BA183B717245839004CB1BC /* Build configuration list for PBXProject "LBAudioDetective" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -286,38 +390,65 @@
 			projectRoot = "";
 			targets = (
 				2BA183BB17245839004CB1BC /* LBAudioDetective */,
+				2B8C5E1A17C890B000B9F2EE /* LBAudioDetectiveTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2B8C5E1917C890B000B9F2EE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B024DD817C89632006F0355 /* Kohlmeise.mp3 in Resources */,
+				2B024DDA17C89632006F0355 /* Rabenkraehe.mp3 in Resources */,
+				2B024DE017C89632006F0355 /* Buchfink.caf in Resources */,
+				2B024DD417C89632006F0355 /* Buchfink.mp3 in Resources */,
+				2B024DE617C89632006F0355 /* Rabenkreahe.caf in Resources */,
+				2B024DDE17C89632006F0355 /* Blaumeise.caf in Resources */,
+				2B024DDC17C89632006F0355 /* Amsel.caf in Resources */,
+				2B024DE417C89632006F0355 /* Kohlmeise.caf in Resources */,
+				2B024DE217C89632006F0355 /* Haussperling.caf in Resources */,
+				2B024DD217C89632006F0355 /* Blaumeise.mp3 in Resources */,
+				2B024DD617C89632006F0355 /* Haussperling.mp3 in Resources */,
+				2B8C5E2417C890B000B9F2EE /* InfoPlist.strings in Resources */,
+				2B024DD017C89632006F0355 /* Amsel.mp3 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2BA183BA17245839004CB1BC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B024DDD17C89632006F0355 /* Blaumeise.caf in Resources */,
+				2B024DD117C89632006F0355 /* Blaumeise.mp3 in Resources */,
 				2BA183CA17245839004CB1BC /* InfoPlist.strings in Resources */,
-				2B93C1A0179830A4002F5355 /* Amsel.caf in Resources */,
-				2B93C1A5179830A4002F5355 /* Buchfink.caf in Resources */,
-				2B93C1AA179830A4002F5355 /* Kohlmeise.mp3 in Resources */,
-				2BA183D217245839004CB1BC /* Default.png in Resources */,
-				2B93C1AC179830A4002F5355 /* Rabenkraehe.mp3 in Resources */,
-				2B93C1A1179830A4002F5355 /* Amsel.mp3 in Resources */,
-				2B93C1A6179830A4002F5355 /* Buchfink.mp3 in Resources */,
-				2B93C1A3179830A4002F5355 /* Blaumeise.caf in Resources */,
-				2BA183D417245839004CB1BC /* Default@2x.png in Resources */,
-				2B93C1A4179830A4002F5355 /* Blaumeise.mp3 in Resources */,
-				2B93C1A7179830A4002F5355 /* Haussperling.caf in Resources */,
-				2B93C1A9179830A4002F5355 /* Kohlmeise.caf in Resources */,
-				2BA183D617245839004CB1BC /* Default-568h@2x.png in Resources */,
-				2B93C1A8179830A4002F5355 /* Haussperling.mp3 in Resources */,
-				2B93C1A2179830A4002F5355 /* Amsel_amplified.caf in Resources */,
-				2B93C1AB179830A4002F5355 /* Rabenkraehe.caf in Resources */,
+				2B024DD517C89632006F0355 /* Haussperling.mp3 in Resources */,
+				2B024DE317C89632006F0355 /* Kohlmeise.caf in Resources */,
+				2B024DDF17C89632006F0355 /* Buchfink.caf in Resources */,
+				2B024DE117C89632006F0355 /* Haussperling.caf in Resources */,
+				2B024DD917C89632006F0355 /* Rabenkraehe.mp3 in Resources */,
+				2B024DCF17C89632006F0355 /* Amsel.mp3 in Resources */,
+				2B024DE917C8965C006F0355 /* Images.xcassets in Resources */,
+				2B024DDB17C89632006F0355 /* Amsel.caf in Resources */,
+				2B024DD717C89632006F0355 /* Kohlmeise.mp3 in Resources */,
+				2B024DD317C89632006F0355 /* Buchfink.mp3 in Resources */,
+				2B024DE517C89632006F0355 /* Rabenkreahe.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2B8C5E1717C890B000B9F2EE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B024DE717C89638006F0355 /* LBAudioDetective.m in Sources */,
+				2B8C5E2617C890B000B9F2EE /* LBAudioDetectiveTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2BA183B817245839004CB1BC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -340,7 +471,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		2B8C5E2917C890B100B9F2EE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2BA183BB17245839004CB1BC /* LBAudioDetective */;
+			targetProxy = 2B8C5E2817C890B100B9F2EE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		2B8C5E2217C890B000B9F2EE /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2B8C5E2317C890B000B9F2EE /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		2BA183C817245839004CB1BC /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -352,6 +499,63 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		2B8C5E2B17C890B100B9F2EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LBAudioDetective.app/LBAudioDetective";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LBAudioDetectiveTests/LBAudioDetectiveTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "LBAudioDetectiveTests/LBAudioDetectiveTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		2B8C5E2C17C890B100B9F2EE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LBAudioDetective.app/LBAudioDetective";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LBAudioDetectiveTests/LBAudioDetectiveTests-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "LBAudioDetectiveTests/LBAudioDetectiveTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 		2BA183DD17245839004CB1BC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -437,6 +641,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2B8C5E2A17C890B100B9F2EE /* Build configuration list for PBXNativeTarget "LBAudioDetectiveTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B8C5E2B17C890B100B9F2EE /* Debug */,
+				2B8C5E2C17C890B100B9F2EE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2BA183B717245839004CB1BC /* Build configuration list for PBXProject "LBAudioDetective" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
