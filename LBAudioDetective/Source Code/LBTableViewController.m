@@ -11,17 +11,11 @@
 
 NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
 
-@interface LBTableViewController () <UIActionSheetDelegate> {
-    NSFileManager* _manager;
-    AVAudioPlayer* _player;
-    NSDictionary* _userData;
-    NSUInteger _selectedRecording;
-}
+@interface LBTableViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) NSFileManager* manager;
 @property (nonatomic, strong) AVAudioPlayer* player;
 @property (nonatomic, strong) NSDictionary* userData;
-@property (nonatomic) NSUInteger selectedRecording;
 
 @property (nonatomic, readonly) NSURL* applicationDocumentDirectory;
 
@@ -50,8 +44,7 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
 
 -(id)init {
     self = [super init];
-    if (self) {
-        self.selectedRecording = -1;
+    if (self)
         self.manager = [NSFileManager new];
         
         self.detective = LBAudioDetectiveNew();
