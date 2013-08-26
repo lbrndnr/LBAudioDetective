@@ -507,3 +507,76 @@ void LBAudioDetectiveConvertStreamFormatToFloat(void* inBuffer, UInt32 bufferSiz
 }
 
 #pragma mark -
+#pragma mark Comparison
+
+UInt32 LBAudioDetectiveCompareAudioURLs(LBAudioDetectiveRef inDetective, NSURL* inFileURL1, NSURL* inFileURL2) {
+    LBAudioDetectiveProcessAudioURL(inDetective, inFileURL1);
+    
+    UInt32 unitCount1;
+    LBAudioDetectiveIdentificationUnit* units1 = LBAudioDetectiveGetIdentificationUnits(inDetective, &unitCount1);
+    
+    LBAudioDetectiveProcessAudioURL(inDetective, inFileURL2);
+    
+    UInt32 unitCount2;
+    LBAudioDetectiveIdentificationUnit* units2 = LBAudioDetectiveGetIdentificationUnits(inDetective, &unitCount2);
+    
+    return LBAudioDetectiveCompareAudioUnits(units1, unitCount1, units2, unitCount2);
+}
+
+UInt32 LBAudioDetectiveCompareAudioUnits(LBAudioDetectiveIdentificationUnit* units1, UInt32 unitCount1, LBAudioDetectiveIdentificationUnit* units2, UInt32 unitCount2) {
+    if (!units1 || unitCount1 == 0 || !units2 || unitCount2 == 0) {
+        return 0;
+    }
+    
+    NSInteger range = 100;
+    __block NSMutableDictionary* offsetDictionary = [NSMutableDictionary new];
+    
+    for (UInt32 i1 = 0; i1 < unitCount1; i1++) {
+        for (UInt32 i2 = 0; i2 < unitCount2; i2++) {
+            NSInteger match0 = fabsf(units1[i1].frequencies[0] - units2[i2].frequencies[0]);
+            NSInteger match1 = fabsf(units1[i1].frequencies[1] - units2[i2].frequencies[1]);
+            NSInteger match2 = fabsf(units1[i1].frequencies[2] - units2[i2].frequencies[2]);
+            NSInteger match3 = fabsf(units1[i1].frequencies[3] - units2[i2].frequencies[3]);
+            NSInteger match4 = fabsf(units1[i1].frequencies[4] - units2[i2].frequencies[4]);
+            
+            if ((match0 + match1 + match2 + match3 + match4) < 400) {
+                SInt32 index = i1-i2;
+                
+                __block NSNumber* oldOffset = nil;
+                __block NSNumber* newOffset = nil;
+                __block NSNumber* newCount = nil;
+                
+                [offsetDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* offset, NSNumber* count, BOOL *stop) {
+                    if (fabsf(offset.floatValue-index) < range) {
+                        oldOffset = offset;
+                        CGFloat sum = offset.floatValue*count.floatValue;
+                        newCount = @(count.integerValue+1);
+                        newOffset = @((sum+index)/newCount.floatValue);
+                        *stop = YES;
+                    }
+                }];
+                
+                if (!newOffset || !newCount) {
+                    newOffset = @(index);
+                    newCount = @(1);
+                }
+                
+                if (oldOffset) {
+                    [offsetDictionary removeObjectForKey:oldOffset];
+                }
+                [offsetDictionary setObject:newCount forKey:newOffset];
+            }
+        }
+    }
+    
+    __block UInt32 matches = 0;
+    [offsetDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* offset, NSNumber* count, BOOL *stop) {
+        if (count.integerValue > 3) {
+            matches += count.unsignedIntegerValue;
+        }
+    }];
+    
+    return matches;
+}
+
+#pragma mark -

@@ -53,3 +53,9 @@ void LBAudioDetectiveResumeProcessing(LBAudioDetectiveRef inDetective);
 void LBAudioDetectivePauseProcessing(LBAudioDetectiveRef inDetective);
 
 #pragma mark -
+#pragma mark Comparison
+
+UInt32 LBAudioDetectiveCompareAudioURLs(LBAudioDetectiveRef inDetective, NSURL* inFileURL1, NSURL* inFileURL2);
+UInt32 LBAudioDetectiveCompareAudioUnits(LBAudioDetectiveIdentificationUnit* units1, UInt32 unitCount1, LBAudioDetectiveIdentificationUnit* units2, UInt32 unitCount2);
+
+#pragma mark -
