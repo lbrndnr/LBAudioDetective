@@ -231,7 +231,7 @@ void LBAudioDetectiveSetMinAmpltitude(LBAudioDetectiveRef inDetective, Float32 i
 }
 
 void LBAudioDetectiveSetPitchSteps(LBAudioDetectiveRef inDetective, Float32* inPitchSteps, UInt32 inPitchStepsCount) {
-    Float32* pitchSteps = malloc(sizeof(Float32)*inPitchStepsCount);
+    Float32* pitchSteps = (Float32*)malloc(sizeof(Float32)*inPitchStepsCount);
     for (int i = 0; i < inPitchStepsCount; i++) {
         pitchSteps[i] = inPitchSteps[i];
     }
@@ -433,14 +433,17 @@ void LBAudioDetectiveAnalyseIfFrameFull(LBAudioDetectiveRef inDetective, UInt32 
     else {
         memcpy(inDetective->FFT.buffer+inDetective->FFT.index, inData.mBuffers[0].mData, read*AudioStreamBytesPerSample(inDataFormat));
         LBAudioDetectiveAnalyse(inDetective, inDetective->FFT.buffer, inData.mBuffers[0].mDataByteSize/AudioStreamBytesPerSample(inDetective->recordingFormat), inDetective->recordingFormat);
+        
+        memset(inDetective->FFT.buffer, 0, sizeof(inDetective->FFT.buffer));
+        inDetective->FFT.index = 0;
     }
 }
 
 void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, void* inBuffer, UInt32 inNumberFrames, AudioStreamBasicDescription inDataFormat) {
     Float32 outputBuffer[inNumberFrames];
-    Boolean converted = LBAudioDetectiveConvertToFormat(inDetective->FFT.buffer, inNumberFrames, inDataFormat, inDetective->processingFormat, (float*)outputBuffer);
+    Boolean converted = LBAudioDetectiveConvertToFormat(inBuffer, inNumberFrames, inDataFormat, inDetective->processingFormat, (float*)outputBuffer);
     if (!converted) {
-        memcpy(outputBuffer, inDetective->FFT.buffer, inNumberFrames);
+        memcpy(outputBuffer, inBuffer, inNumberFrames);
     }
     
     /*
@@ -472,12 +475,9 @@ void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, void* inBuffer, UI
         }
     }
     
-    memset(inDetective->FFT.buffer, 0, sizeof(inDetective->FFT.buffer));
-    inDetective->FFT.index = 0;
-    
     UInt32 unitSize = sizeof(LBAudioDetectiveIdentificationUnit);
     inDetective->identificationUnitCount++;
-    inDetective->identificationUnits = realloc(inDetective->identificationUnits, inDetective->identificationUnitCount*unitSize);
+    inDetective->identificationUnits = (LBAudioDetectiveIdentificationUnit*)realloc(inDetective->identificationUnits, inDetective->identificationUnitCount*unitSize);
     inDetective->identificationUnits[inDetective->identificationUnitCount-1] = identification;
     
     if (inDetective->identificationUnitCount == inDetective->maxIdentificationUnitCount) {
@@ -560,7 +560,7 @@ UInt32 LBAudioDetectiveCompareAudioUnits(LBAudioDetectiveIdentificationUnit* uni
     }
     
     NSInteger range = 100;
-    __block NSMutableDictionary* offsetDictionary = [NSMutableDictionary new];
+    NSMutableDictionary* offsetDictionary = [NSMutableDictionary new];
     
     for (UInt32 i1 = 0; i1 < unitCount1; i1++) {
         for (UInt32 i2 = 0; i2 < unitCount2; i2++) {
