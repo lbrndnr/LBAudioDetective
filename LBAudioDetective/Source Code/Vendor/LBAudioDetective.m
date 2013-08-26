@@ -10,14 +10,19 @@
 #import <Accelerate/Accelerate.h>
 #import "LBAudioDetective.h"
 
+SInt32 AudioStreamBytesPerSample(AudioStreamBasicDescription asbd) {
+    return asbd.mBytesPerFrame/asbd.mChannelsPerFrame;
+}
+
 const UInt32 kLBAudioDetectiveWindowSize = 512; // 0.5 KB
 
 typedef struct LBAudioDetective {
     AUGraph graph;
     AudioUnit rioUnit;
     
-    AudioStreamBasicDescription streamFormat;
-
+    AudioStreamBasicDescription recordingFormat;
+    AudioStreamBasicDescription processingFormat;
+    
     ExtAudioFileRef inputFile;
     ExtAudioFileRef outputFile;
     
@@ -48,11 +53,12 @@ void LBAudioDetectiveReset(LBAudioDetectiveRef inDetective);
 void LBAudioDetectiveClean(LBAudioDetectiveRef inDetective);
 OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionFlags* ioActionFlags, const AudioTimeStamp* inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList* ioData);
 
-void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, UInt32 inNumberFrames, AudioBufferList inData);
+void LBAudioDetectiveAnalyseIfFrameFull(LBAudioDetectiveRef inDetective, UInt32 inNumberFrames, AudioBufferList inData, AudioStreamBasicDescription inDataFormat);
+void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, void* inBuffer, UInt32 inNumberFrames, AudioStreamBasicDescription inDataFormat);
 Boolean LBAudioDetectiveIdentificationUnitAddFrequency(LBAudioDetectiveIdentificationUnit* identification, Float32 frequency, Float32 magnitude, UInt32 index);
 
 UInt32 LBAudioDetectivePitchRange(LBAudioDetectiveRef inDetective, Float32 pitch);
-void LBAudioDetectiveConvertStreamFormatToFloat(void* inBuffer, UInt32 bufferSize, AudioStreamBasicDescription inFormat, float* outBuffer);
+Boolean LBAudioDetectiveConvertToFormat(void* inBuffer, UInt32 inBufferSize, AudioStreamBasicDescription inFromFormat, AudioStreamBasicDescription inToFormat, void* outBuffer);
 
 #pragma mark Utilites
 
@@ -86,15 +92,16 @@ LBAudioDetectiveRef LBAudioDetectiveNew() {
     LBAudioDetective* instance = (LBAudioDetective*)malloc(sizeof(LBAudioDetective));
     memset(instance, 0, sizeof(LBAudioDetective));
     
-    instance->streamFormat = LBAudioDetectiveDefaultFormat();
+    instance->recordingFormat = LBAudioDetectiveDefaultRecordingFormat();
+    instance->processingFormat = LBAudioDetectiveDefaultProcessingFormat();
 
     instance->FFT.log2n = log2(kLBAudioDetectiveWindowSize);
     instance->FFT.n = (1 << instance->FFT.log2n);
     LBAssert(instance->FFT.n == kLBAudioDetectiveWindowSize);
     
     instance->FFT.nOver2 = kLBAudioDetectiveWindowSize/2;
-	instance->FFT.A.realp = (float *)malloc(instance->FFT.nOver2*sizeof(float));
-	instance->FFT.A.imagp = (float *)malloc(instance->FFT.nOver2*sizeof(float));
+	instance->FFT.A.realp = (float *)malloc(instance->FFT.nOver2*sizeof(Float32));
+	instance->FFT.A.imagp = (float *)malloc(instance->FFT.nOver2*sizeof(Float32));
 	instance->FFT.setup = vDSP_create_fftsetup(instance->FFT.log2n, FFT_RADIX2);
     
     return instance;
@@ -123,7 +130,7 @@ void LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective) {
 #pragma mark -
 #pragma mark Getters
 
-AudioStreamBasicDescription LBAudioDetectiveDefaultFormat() {
+AudioStreamBasicDescription LBAudioDetectiveDefaultRecordingFormat() {
     Float64 defaultSampleRate;
     
 #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
@@ -149,8 +156,29 @@ AudioStreamBasicDescription LBAudioDetectiveDefaultFormat() {
     return asbd;
 }
 
-AudioStreamBasicDescription LBAudioDetectiveGetFormat(LBAudioDetectiveRef inDetective) {
-    return inDetective->streamFormat;
+AudioStreamBasicDescription LBAudioDetectiveDefaultProcessingFormat() {
+    UInt32 bytesPerSample = sizeof(Float32);
+    
+	AudioStreamBasicDescription asbd = {0};
+    memset(&asbd, 0, sizeof(AudioStreamBasicDescription));
+	asbd.mFormatID = kAudioFormatLinearPCM;
+	asbd.mFormatFlags = kAudioFormatFlagIsFloat | kAudioFormatFlagIsPacked;
+	asbd.mBitsPerChannel = 8*bytesPerSample;
+	asbd.mFramesPerPacket = 1;
+	asbd.mChannelsPerFrame = 1;
+	asbd.mBytesPerPacket = bytesPerSample*asbd.mFramesPerPacket;
+	asbd.mBytesPerFrame = bytesPerSample*asbd.mChannelsPerFrame;
+	asbd.mSampleRate = 5512.0;
+    
+    return asbd;
+}
+
+AudioStreamBasicDescription LBAudioDetectiveGetRecordingFormat(LBAudioDetectiveRef inDetective) {
+    return inDetective->recordingFormat;
+}
+
+AudioStreamBasicDescription LBAudioDetectiveGetProcessingFormat(LBAudioDetectiveRef inDetective) {
+    return inDetective->processingFormat;
 }
 
 LBAudioDetectiveIdentificationUnit* LBAudioDetectiveGetIdentificationUnits(LBAudioDetectiveRef inDetective, UInt32* outUnitNumber) {
@@ -170,17 +198,21 @@ Float32* LBAudioDetectiveGetPitchSteps(LBAudioDetectiveRef inDetective, UInt32* 
 #pragma mark -
 #pragma mark Setters
 
-void LBAudioDetectiveSetFormat(LBAudioDetectiveRef inDetective, AudioStreamBasicDescription inStreamFormat) {
-    inDetective->streamFormat = inStreamFormat;
+void LBAudioDetectiveSetRecordingFormat(LBAudioDetectiveRef inDetective, AudioStreamBasicDescription inStreamFormat) {
+    inDetective->recordingFormat = inStreamFormat;
+}
+
+void LBAudioDetectiveSetProcessingFormat(LBAudioDetectiveRef inDetective, AudioStreamBasicDescription inStreamFormat) {
+    inDetective->processingFormat = inStreamFormat;
 }
 
 void LBAudioDetectiveSetWriteAudioToURL(LBAudioDetectiveRef inDetective, NSURL* fileURL) {
     OSStatus error = noErr;
     if (fileURL) {
-        error =  ExtAudioFileCreateWithURL((__bridge CFURLRef)fileURL, kAudioFileCAFType, &inDetective->streamFormat, NULL, kAudioFileFlags_EraseFile, &inDetective->outputFile);
+        error =  ExtAudioFileCreateWithURL((__bridge CFURLRef)fileURL, kAudioFileCAFType, &inDetective->recordingFormat, NULL, kAudioFileFlags_EraseFile, &inDetective->outputFile);
         LBErrorCheck(error);
         
-        error = ExtAudioFileSetProperty(inDetective->outputFile, kExtAudioFileProperty_ClientDataFormat, sizeof(AudioStreamBasicDescription), &inDetective->streamFormat);
+        error = ExtAudioFileSetProperty(inDetective->outputFile, kExtAudioFileProperty_ClientDataFormat, sizeof(AudioStreamBasicDescription), &inDetective->recordingFormat);
         LBErrorCheck(error);
         
         error = ExtAudioFileWriteAsync(inDetective->outputFile, 0, NULL);
@@ -222,24 +254,27 @@ void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inF
     OSStatus error = ExtAudioFileOpenURL((__bridge CFURLRef)(inFileURL), &inDetective->inputFile);
     LBErrorCheck(error);
     
-    error = ExtAudioFileSetProperty(inDetective->inputFile, kExtAudioFileProperty_ClientDataFormat, sizeof(AudioStreamBasicDescription), &inDetective->streamFormat);
+    error = ExtAudioFileSetProperty(inDetective->inputFile, kExtAudioFileProperty_ClientDataFormat, sizeof(AudioStreamBasicDescription), &inDetective->processingFormat);
     LBErrorCheck(error);
     
     UInt32 numberFrames = kLBAudioDetectiveWindowSize;
     AudioBufferList bufferList;
-    SInt16 samples[numberFrames]; // A large enough size to not have to worry about buffer overrun
+    Float32 samples[numberFrames]; // A large enough size to not have to worry about buffer overrun
     memset(&samples, 0, sizeof(samples));
     
     bufferList.mNumberBuffers = 1;
     bufferList.mBuffers[0].mData = samples;
-    bufferList.mBuffers[0].mNumberChannels = inDetective->streamFormat.mChannelsPerFrame;
-    bufferList.mBuffers[0].mDataByteSize = numberFrames*sizeof(SInt16);
+    bufferList.mBuffers[0].mNumberChannels = inDetective->processingFormat.mChannelsPerFrame;
+    bufferList.mBuffers[0].mDataByteSize = numberFrames*AudioStreamBytesPerSample(inDetective->processingFormat);
     
-    while (numberFrames != 0) {
-        error = ExtAudioFileRead(inDetective->inputFile, &numberFrames, &bufferList);
+    UInt32 readNumberFrames = numberFrames;
+    while (readNumberFrames != 0) {
+        error = ExtAudioFileRead(inDetective->inputFile, &readNumberFrames, &bufferList);
         LBErrorCheck(error);
         
-        LBAudioDetectiveAnalyse(inDetective, numberFrames, bufferList);
+        if (readNumberFrames == numberFrames) {
+            LBAudioDetectiveAnalyse(inDetective, bufferList.mBuffers[0].mData, readNumberFrames, inDetective->processingFormat);
+        }
     }
     
     LBAudioDetectiveClean(inDetective);
@@ -320,10 +355,10 @@ void LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef inDetective) {
     
     // Set the stream format we want
     propertySize = sizeof(AudioStreamBasicDescription);
-    error = AudioUnitSetProperty(inDetective->rioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, bus0, &inDetective->streamFormat, propertySize);
+    error = AudioUnitSetProperty(inDetective->rioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, bus0, &inDetective->recordingFormat, propertySize);
     LBErrorCheck(error);
     
-    error = AudioUnitSetProperty(inDetective->rioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, bus1, &inDetective->streamFormat, propertySize);
+    error = AudioUnitSetProperty(inDetective->rioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, bus1, &inDetective->recordingFormat, propertySize);
     LBErrorCheck(error);
 	
     AURenderCallbackStruct callback = {0};
@@ -373,8 +408,8 @@ OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionF
     
     bufferList.mNumberBuffers = 1;
     bufferList.mBuffers[0].mData = samples;
-    bufferList.mBuffers[0].mNumberChannels = inDetective->streamFormat.mChannelsPerFrame;
-    bufferList.mBuffers[0].mDataByteSize = inNumberFrames*sizeof(SInt16);
+    bufferList.mBuffers[0].mNumberChannels = inDetective->recordingFormat.mChannelsPerFrame;
+    bufferList.mBuffers[0].mDataByteSize = inNumberFrames*AudioStreamBytesPerSample(inDetective->recordingFormat);
     
     error = AudioUnitRender(inDetective->rioUnit, ioActionFlags, inTimeStamp, 1, inNumberFrames, &bufferList);
     LBErrorCheck(error);
@@ -384,73 +419,76 @@ OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionF
         LBErrorCheck(error);
     }
     
-    LBAudioDetectiveAnalyse(inDetective, inNumberFrames, bufferList);
+    LBAudioDetectiveAnalyseIfFrameFull(inDetective, inNumberFrames, bufferList, inDetective->recordingFormat);
     
     return error;
 }
 
-void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, UInt32 inNumberFrames, AudioBufferList inData) {
-    // Fill the buffer with our sampled data. If we fill our buffer, run the FFT
-	UInt32 read = kLBAudioDetectiveWindowSize-inDetective->FFT.index;
+void LBAudioDetectiveAnalyseIfFrameFull(LBAudioDetectiveRef inDetective, UInt32 inNumberFrames, AudioBufferList inData, AudioStreamBasicDescription inDataFormat) {
+    UInt32 read = kLBAudioDetectiveWindowSize-inDetective->FFT.index;
 	if (read > inNumberFrames) {
-		memcpy((SInt16 *)inDetective->FFT.buffer+inDetective->FFT.index, inData.mBuffers[0].mData, inNumberFrames*sizeof(SInt16));
+		memcpy(inDetective->FFT.buffer+inDetective->FFT.index, inData.mBuffers[0].mData, inNumberFrames*AudioStreamBytesPerSample(inDataFormat));
 		inDetective->FFT.index += inNumberFrames;
 	}
     else {
-		// If we enter this conditional, our buffer will be filled and we should perform the FFT.
-		memcpy((SInt16 *)inDetective->FFT.buffer+inDetective->FFT.index, inData.mBuffers[0].mData, read*sizeof(SInt16));
-		
-		// We want to deal with only floating point values here.
-        float outputBuffer[kLBAudioDetectiveWindowSize];
-        LBAudioDetectiveConvertStreamFormatToFloat(inDetective->FFT.buffer, kLBAudioDetectiveWindowSize, inDetective->streamFormat, (float*)outputBuffer);
-		
-		/*
-		 Look at the real signal as an interleaved complex vector by casting it.
-		 Then call the transformation function vDSP_ctoz to get a split complex
-		 vector, which for a real signal, divides into an even-odd configuration.
-		 */
-		vDSP_ctoz((COMPLEX*)outputBuffer, 2, &inDetective->FFT.A, 1, inDetective->FFT.nOver2);
-		
-		// Carry out a Forward FFT transform.
-		vDSP_fft_zrip(inDetective->FFT.setup, &inDetective->FFT.A, 1, inDetective->FFT.log2n, FFT_FORWARD);
-		
-		// The output signal is now in a split real form. Use the vDSP_ztoc to get a split real vector.
-		vDSP_ztoc(&inDetective->FFT.A, 1, (COMPLEX *)outputBuffer, 2, inDetective->FFT.nOver2);
-		
-		// Determine the dominant frequency by taking the magnitude squared and saving the bin which it resides in
-        LBAudioDetectiveIdentificationUnit identification = {0};
-        memset(&identification, 0, sizeof(LBAudioDetectiveIdentificationUnit));
-        
-		for (int i = 0; i < inDetective->FFT.n; i += 2) {
-			Float32 magnitude = (outputBuffer[i]*outputBuffer[i])+(outputBuffer[i+1]*outputBuffer[i+1]);
-            
-            if (magnitude >= inDetective->minAmpltiude) {
-                UInt32 bin = (i+1)/2;
-                Float32 frequency = bin*(inDetective->streamFormat.mSampleRate/kLBAudioDetectiveWindowSize);
-                UInt32 idx = LBAudioDetectivePitchRange(inDetective, frequency);
+        memcpy(inDetective->FFT.buffer+inDetective->FFT.index, inData.mBuffers[0].mData, read*AudioStreamBytesPerSample(inDataFormat));
+        LBAudioDetectiveAnalyse(inDetective, inDetective->FFT.buffer, inData.mBuffers[0].mDataByteSize/AudioStreamBytesPerSample(inDetective->recordingFormat), inDetective->recordingFormat);
+    }
+}
 
-                LBAudioDetectiveIdentificationUnitAddFrequency(&identification, frequency, magnitude, idx);
-            }
-		}
+void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, void* inBuffer, UInt32 inNumberFrames, AudioStreamBasicDescription inDataFormat) {
+    Float32 outputBuffer[inNumberFrames];
+    Boolean converted = LBAudioDetectiveConvertToFormat(inDetective->FFT.buffer, inNumberFrames, inDataFormat, inDetective->processingFormat, (float*)outputBuffer);
+    if (!converted) {
+        memcpy(outputBuffer, inDetective->FFT.buffer, inNumberFrames);
+    }
+    
+    /*
+     Look at the real signal as an interleaved complex vector by casting it.
+     Then call the transformation function vDSP_ctoz to get a split complex
+     vector, which for a real signal, divides into an even-odd configuration.
+     */
+    vDSP_ctoz((COMPLEX*)outputBuffer, 2, &inDetective->FFT.A, 1, inDetective->FFT.nOver2);
+    
+    // Carry out a Forward FFT transform.
+    vDSP_fft_zrip(inDetective->FFT.setup, &inDetective->FFT.A, 1, inDetective->FFT.log2n, FFT_FORWARD);
+    
+    // The output signal is now in a split real form. Use the vDSP_ztoc to get a split real vector.
+    vDSP_ztoc(&inDetective->FFT.A, 1, (COMPLEX *)outputBuffer, 2, inDetective->FFT.nOver2);
+    
+    // Determine the dominant frequency by taking the magnitude squared and saving the bin which it resides in
+    LBAudioDetectiveIdentificationUnit identification = {0};
+    memset(&identification, 0, sizeof(LBAudioDetectiveIdentificationUnit));
+    
+    for (int i = 0; i < inDetective->FFT.n; i += 2) {
+        Float32 magnitude = (outputBuffer[i]*outputBuffer[i])+(outputBuffer[i+1]*outputBuffer[i+1]);
         
-        memset(inDetective->FFT.buffer, 0, sizeof(inDetective->FFT.buffer));
-        inDetective->FFT.index = 0;
-        
-        UInt32 unitSize = sizeof(LBAudioDetectiveIdentificationUnit);
-        inDetective->identificationUnitCount++;
-        inDetective->identificationUnits = realloc(inDetective->identificationUnits, inDetective->identificationUnitCount*unitSize);
-        inDetective->identificationUnits[inDetective->identificationUnitCount-1] = identification;
-        
-        if (inDetective->identificationUnitCount == inDetective->maxIdentificationUnitCount) {
-            if (inDetective->callback) {
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    inDetective->callback(inDetective, inDetective->callbackHelper);
-                });
-            }
+        if (magnitude >= inDetective->minAmpltiude) {
+            UInt32 bin = (i+1)/2;
+            Float32 frequency = bin*(inDetective->processingFormat.mSampleRate/inNumberFrames);
+            UInt32 idx = LBAudioDetectivePitchRange(inDetective, frequency);
             
-            LBAudioDetectiveStopProcessing(inDetective);
+            LBAudioDetectiveIdentificationUnitAddFrequency(&identification, frequency, magnitude, idx);
         }
-	}
+    }
+    
+    memset(inDetective->FFT.buffer, 0, sizeof(inDetective->FFT.buffer));
+    inDetective->FFT.index = 0;
+    
+    UInt32 unitSize = sizeof(LBAudioDetectiveIdentificationUnit);
+    inDetective->identificationUnitCount++;
+    inDetective->identificationUnits = realloc(inDetective->identificationUnits, inDetective->identificationUnitCount*unitSize);
+    inDetective->identificationUnits[inDetective->identificationUnitCount-1] = identification;
+    
+    if (inDetective->identificationUnitCount == inDetective->maxIdentificationUnitCount) {
+        if (inDetective->callback) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                inDetective->callback(inDetective, inDetective->callbackHelper);
+            });
+        }
+        
+        LBAudioDetectiveStopProcessing(inDetective);
+    }
 }
 
 Boolean LBAudioDetectiveIdentificationUnitAddFrequency(LBAudioDetectiveIdentificationUnit* identification, Float32 frequency, Float32 magnitude, UInt32 index) {
@@ -478,25 +516,16 @@ UInt32 LBAudioDetectivePitchRange(LBAudioDetectiveRef inDetective, Float32 pitch
     return count;
 }
 
-void LBAudioDetectiveConvertStreamFormatToFloat(void* inBuffer, UInt32 bufferSize, AudioStreamBasicDescription inFormat, float* outBuffer) {
-	UInt32 bytesPerSample = sizeof(float);
+Boolean LBAudioDetectiveConvertToFormat(void* inBuffer, UInt32 inBufferSize, AudioStreamBasicDescription inFromFormat, AudioStreamBasicDescription inToFormat, void* outBuffer) {
+    if (inFromFormat.mSampleRate == inToFormat.mSampleRate && inFromFormat.mFormatFlags == inToFormat.mFormatFlags && inFromFormat.mBytesPerFrame == inToFormat.mBytesPerFrame) {
+        return FALSE;
+    }
     
-	AudioStreamBasicDescription asbd = {0};
-    memset(&asbd, 0, sizeof(AudioStreamBasicDescription));
-	asbd.mFormatID = kAudioFormatLinearPCM;
-	asbd.mFormatFlags = kAudioFormatFlagIsFloat | kAudioFormatFlagIsPacked;
-	asbd.mBitsPerChannel = 8*bytesPerSample;
-	asbd.mFramesPerPacket = 1;
-	asbd.mChannelsPerFrame = 1;
-	asbd.mBytesPerPacket = bytesPerSample*asbd.mFramesPerPacket;
-	asbd.mBytesPerFrame = bytesPerSample*asbd.mChannelsPerFrame;
-	asbd.mSampleRate = inFormat.mSampleRate;
-	
-	UInt32 inSize = bufferSize*sizeof(SInt16);
-	UInt32 outSize = bufferSize*sizeof(float);
+	UInt32 inSize = inBufferSize*AudioStreamBytesPerSample(inFromFormat);
+	UInt32 outSize = inBufferSize*AudioStreamBytesPerSample(inToFormat);
     
     AudioConverterRef converter;
-	OSStatus error = AudioConverterNew(&inFormat, &asbd, &converter);
+	OSStatus error = AudioConverterNew(&inFromFormat, &inToFormat, &converter);
     LBErrorCheck(error);
     
 	error = AudioConverterConvertBuffer(converter, inSize, inBuffer, &outSize, outBuffer);
@@ -504,6 +533,8 @@ void LBAudioDetectiveConvertStreamFormatToFloat(void* inBuffer, UInt32 bufferSiz
     
     error = AudioConverterDispose(converter);
     LBErrorCheck(error);
+    
+    return TRUE;
 }
 
 #pragma mark -

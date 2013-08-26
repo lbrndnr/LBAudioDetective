@@ -44,7 +44,7 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
 
 -(id)init {
     self = [super init];
-    if (self)
+    if (self) {
         self.manager = [NSFileManager new];
         
         self.detective = LBAudioDetectiveNew();
@@ -64,7 +64,7 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
         self.client = [[AFHTTPClient alloc] initWithBaseURL:URL];
         _client.parameterEncoding = AFJSONParameterEncoding;
     }
-    
+
     return self;
 }
 
