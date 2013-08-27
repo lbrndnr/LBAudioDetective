@@ -15,6 +15,9 @@ typedef struct LBAudioDetectiveIdentificationUnit {
     Float32 frequencies[5];
 } LBAudioDetectiveIdentificationUnit;
 
+extern const UInt32 kLBAudioDetectiveDefaultWindowSize;
+extern const UInt32 kLBAudioDetectiveDefaultAnalysisStride;
+
 typedef struct LBAudioDetective *LBAudioDetectiveRef;
 typedef void(*LBAudioDetectiveCallback)(LBAudioDetectiveRef outDetective, id callbackHelper);
 
@@ -31,18 +34,24 @@ AudioStreamBasicDescription LBAudioDetectiveDefaultProcessingFormat();
 
 AudioStreamBasicDescription LBAudioDetectiveGetRecordingFormat(LBAudioDetectiveRef inDetective);
 AudioStreamBasicDescription LBAudioDetectiveGetProcessingFormat(LBAudioDetectiveRef inDetective);
-LBAudioDetectiveIdentificationUnit* LBAudioDetectiveGetIdentificationUnits(LBAudioDetectiveRef inDetective, UInt32* outUnitNumber);
 Float32 LBAudioDetectiveGetMinAmplitude(LBAudioDetectiveRef inDetective);
 Float32* LBAudioDetectiveGetPitchSteps(LBAudioDetectiveRef inDetective, UInt32* outPitchStepsCount);
+UInt32 LBAudioDetectiveGetWindowSize(LBAudioDetectiveRef inDetective);
+UInt32 LBAudioDetectiveGetAnalysisStride(LBAudioDetectiveRef inDetective);
+
+LBAudioDetectiveIdentificationUnit* LBAudioDetectiveGetIdentificationUnits(LBAudioDetectiveRef inDetective, UInt32* outUnitNumber);
 
 #pragma mark -
 #pragma mark Setters
 
 void LBAudioDetectiveSetRecordingFormat(LBAudioDetectiveRef inDetective, AudioStreamBasicDescription inStreamFormat);
 void LBAudioDetectiveSetProcessingFormat(LBAudioDetectiveRef inDetective, AudioStreamBasicDescription inStreamFormat);
-void LBAudioDetectiveSetWriteAudioToURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL);
 void LBAudioDetectiveSetMinAmpltitude(LBAudioDetectiveRef inDetective, Float32 inMinAmplitude);
 void LBAudioDetectiveSetPitchSteps(LBAudioDetectiveRef inDetective, Float32* inPitchSteps, UInt32 inPitchStepsCount);
+void LBAudioDetectiveSetWindowSize(LBAudioDetectiveRef inDetective, UInt32 inWindowSize);
+void LBAudioDetectiveSetAnalysisStride(LBAudioDetectiveRef inDetective, UInt32 inAnalysisStride);
+
+void LBAudioDetectiveSetWriteAudioToURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL);
 
 #pragma mark -
 #pragma mark Processing

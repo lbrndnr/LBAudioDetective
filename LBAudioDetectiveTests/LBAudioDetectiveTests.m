@@ -50,6 +50,10 @@
             if ([originalBird isEqualToString:sequenceBird]) {
                 originalName = [originalName uppercaseString];
                 sequenceName = [sequenceName uppercaseString];
+                
+                if (match < 1) {
+                    XCTFail(@"%@ didn't match", originalName);
+                }
             }
             NSLog(@"Identification(%@-%@):%u", originalName, sequenceName, (unsigned int)match);
         }];

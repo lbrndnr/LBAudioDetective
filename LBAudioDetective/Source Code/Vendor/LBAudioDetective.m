@@ -14,7 +14,8 @@ SInt32 AudioStreamBytesPerSample(AudioStreamBasicDescription asbd) {
     return asbd.mBytesPerFrame/asbd.mChannelsPerFrame;
 }
 
-const UInt32 kLBAudioDetectiveWindowSize = 512; // 0.5 KB
+const UInt32 kLBAudioDetectiveDefaultWindowSize = 2048;
+const UInt32 kLBAudioDetectiveDefaultAnalysisStride = 64;
 
 typedef struct LBAudioDetective {
     AUGraph graph;
@@ -27,12 +28,16 @@ typedef struct LBAudioDetective {
     ExtAudioFileRef outputFile;
     
     LBAudioDetectiveIdentificationUnit* identificationUnits;
-    Float32 minAmpltiude;
     UInt32 identificationUnitCount;
     UInt32 maxIdentificationUnitCount;
     
+    Float32 minAmpltiude;
+    
     Float32* pitchSteps;
     UInt32 pitchStepsCount;
+    
+    UInt32 windowSize;
+    UInt32 analysisStride;
     
     LBAudioDetectiveCallback callback;
     __unsafe_unretained id callbackHelper;
@@ -94,15 +99,9 @@ LBAudioDetectiveRef LBAudioDetectiveNew() {
     
     instance->recordingFormat = LBAudioDetectiveDefaultRecordingFormat();
     instance->processingFormat = LBAudioDetectiveDefaultProcessingFormat();
-
-    instance->FFT.log2n = log2(kLBAudioDetectiveWindowSize);
-    instance->FFT.n = (1 << instance->FFT.log2n);
-    LBAssert(instance->FFT.n == kLBAudioDetectiveWindowSize);
     
-    instance->FFT.nOver2 = kLBAudioDetectiveWindowSize/2;
-	instance->FFT.A.realp = (float *)malloc(instance->FFT.nOver2*sizeof(Float32));
-	instance->FFT.A.imagp = (float *)malloc(instance->FFT.nOver2*sizeof(Float32));
-	instance->FFT.setup = vDSP_create_fftsetup(instance->FFT.log2n, FFT_RADIX2);
+    LBAudioDetectiveSetWindowSize(instance, kLBAudioDetectiveDefaultWindowSize);
+    instance->analysisStride = kLBAudioDetectiveDefaultAnalysisStride;
     
     return instance;
 }
@@ -195,6 +194,14 @@ Float32* LBAudioDetectiveGetPitchSteps(LBAudioDetectiveRef inDetective, UInt32* 
     return inDetective->pitchSteps;
 }
 
+UInt32 LBAudioDetectiveGetWindowSize(LBAudioDetectiveRef inDetective) {
+    return inDetective->windowSize;
+}
+
+UInt32 LBAudioDetectiveGetAnalysisStride(LBAudioDetectiveRef inDetective) {
+    return inDetective->analysisStride;
+}
+
 #pragma mark -
 #pragma mark Setters
 
@@ -240,6 +247,27 @@ void LBAudioDetectiveSetPitchSteps(LBAudioDetectiveRef inDetective, Float32* inP
     inDetective->pitchStepsCount = inPitchStepsCount;
 }
 
+void LBAudioDetectiveSetWindowSize(LBAudioDetectiveRef inDetective, UInt32 inWindowSize) {
+    free(inDetective->FFT.A.realp);
+    free(inDetective->FFT.A.imagp);
+    vDSP_destroy_fftsetup(inDetective->FFT.setup);
+    
+    inDetective->windowSize = inWindowSize;
+    
+    inDetective->FFT.log2n = log2(inWindowSize);
+    inDetective->FFT.n = (1 << inDetective->FFT.log2n);
+    LBAssert(inDetective->FFT.n == inWindowSize);
+    
+    inDetective->FFT.nOver2 = inWindowSize/2;
+	inDetective->FFT.A.realp = (float *)malloc(inDetective->FFT.nOver2*sizeof(Float32));
+	inDetective->FFT.A.imagp = (float *)malloc(inDetective->FFT.nOver2*sizeof(Float32));
+	inDetective->FFT.setup = vDSP_create_fftsetup(inDetective->FFT.log2n, FFT_RADIX2);
+}
+
+void LBAudioDetectiveSetAnalysisStride(LBAudioDetectiveRef inDetective, UInt32 inAnalysisStride) {
+    inDetective->analysisStride = inAnalysisStride;
+}
+
 #pragma mark -
 #pragma mark Other Methods
 
@@ -257,7 +285,7 @@ void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inF
     error = ExtAudioFileSetProperty(inDetective->inputFile, kExtAudioFileProperty_ClientDataFormat, sizeof(AudioStreamBasicDescription), &inDetective->processingFormat);
     LBErrorCheck(error);
     
-    UInt32 numberFrames = kLBAudioDetectiveWindowSize;
+    UInt32 numberFrames = inDetective->windowSize;
     AudioBufferList bufferList;
     Float32 samples[numberFrames]; // A large enough size to not have to worry about buffer overrun
     memset(&samples, 0, sizeof(samples));
@@ -267,6 +295,7 @@ void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inF
     bufferList.mBuffers[0].mNumberChannels = inDetective->processingFormat.mChannelsPerFrame;
     bufferList.mBuffers[0].mDataByteSize = numberFrames*AudioStreamBytesPerSample(inDetective->processingFormat);
     
+    SInt64 offset = 0;
     UInt32 readNumberFrames = numberFrames;
     while (readNumberFrames != 0) {
         error = ExtAudioFileRead(inDetective->inputFile, &readNumberFrames, &bufferList);
@@ -274,6 +303,9 @@ void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inF
         
         if (readNumberFrames == numberFrames) {
             LBAudioDetectiveAnalyse(inDetective, bufferList.mBuffers[0].mData, readNumberFrames, inDetective->processingFormat);
+            
+//            offset += inDetective->analysisStride;
+//            ExtAudioFileSeek(inDetective->inputFile, offset);
         }
     }
     
@@ -293,6 +325,7 @@ void LBAudioDetectiveStartProcessing(LBAudioDetectiveRef inDetective) {
     }
     
     LBAudioDetectiveReset(inDetective);
+    inDetective->FFT.buffer = (void*)malloc(inDetective->windowSize*AudioStreamBytesPerSample(inDetective->recordingFormat));
     
     AUGraphStart(inDetective->graph);
 }
@@ -384,7 +417,7 @@ void LBAudioDetectiveReset(LBAudioDetectiveRef inDetective) {
     free(inDetective->identificationUnits);
     inDetective->identificationUnits = NULL;
     free(inDetective->FFT.buffer);
-    inDetective->FFT.buffer = (void*)malloc(kLBAudioDetectiveWindowSize*sizeof(SInt16));
+    inDetective->FFT.buffer = NULL;
     inDetective->FFT.index = 0;
 }
 
@@ -425,7 +458,7 @@ OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionF
 }
 
 void LBAudioDetectiveAnalyseIfFrameFull(LBAudioDetectiveRef inDetective, UInt32 inNumberFrames, AudioBufferList inData, AudioStreamBasicDescription inDataFormat) {
-    UInt32 read = kLBAudioDetectiveWindowSize-inDetective->FFT.index;
+    UInt32 read = inDetective->windowSize-inDetective->FFT.index;
 	if (read > inNumberFrames) {
 		memcpy(inDetective->FFT.buffer+inDetective->FFT.index, inData.mBuffers[0].mData, inNumberFrames*AudioStreamBytesPerSample(inDataFormat));
 		inDetective->FFT.index += inNumberFrames;
@@ -440,10 +473,10 @@ void LBAudioDetectiveAnalyseIfFrameFull(LBAudioDetectiveRef inDetective, UInt32 
 }
 
 void LBAudioDetectiveAnalyse(LBAudioDetectiveRef inDetective, void* inBuffer, UInt32 inNumberFrames, AudioStreamBasicDescription inDataFormat) {
-    Float32 outputBuffer[inNumberFrames];
-    Boolean converted = LBAudioDetectiveConvertToFormat(inBuffer, inNumberFrames, inDataFormat, inDetective->processingFormat, (float*)outputBuffer);
+    Float32* outputBuffer = NULL;
+    Boolean converted = LBAudioDetectiveConvertToFormat(inBuffer, inNumberFrames, inDataFormat, inDetective->processingFormat, (Float32*)outputBuffer);
     if (!converted) {
-        memcpy(outputBuffer, inBuffer, inNumberFrames);
+        outputBuffer = inBuffer;
     }
     
     /*
@@ -559,10 +592,10 @@ UInt32 LBAudioDetectiveCompareAudioUnits(LBAudioDetectiveIdentificationUnit* uni
         return 0;
     }
     
-    NSInteger range = 100;
-    NSMutableDictionary* offsetDictionary = [NSMutableDictionary new];
+    UInt32 matches = 0;
     
     for (UInt32 i1 = 0; i1 < unitCount1; i1++) {
+        UInt32 hits = 0;
         for (UInt32 i2 = 0; i2 < unitCount2; i2++) {
             NSInteger match0 = fabsf(units1[i1].frequencies[0] - units2[i2].frequencies[0]);
             NSInteger match1 = fabsf(units1[i1].frequencies[1] - units2[i2].frequencies[1]);
@@ -571,41 +604,12 @@ UInt32 LBAudioDetectiveCompareAudioUnits(LBAudioDetectiveIdentificationUnit* uni
             NSInteger match4 = fabsf(units1[i1].frequencies[4] - units2[i2].frequencies[4]);
             
             if ((match0 + match1 + match2 + match3 + match4) < 400) {
-                SInt32 index = i1-i2;
-                
-                __block NSNumber* oldOffset = nil;
-                __block NSNumber* newOffset = nil;
-                __block NSNumber* newCount = nil;
-                
-                [offsetDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* offset, NSNumber* count, BOOL *stop) {
-                    if (fabsf(offset.floatValue-index) < range) {
-                        oldOffset = offset;
-                        CGFloat sum = offset.floatValue*count.floatValue;
-                        newCount = @(count.integerValue+1);
-                        newOffset = @((sum+index)/newCount.floatValue);
-                        *stop = YES;
-                    }
-                }];
-                
-                if (!newOffset || !newCount) {
-                    newOffset = @(index);
-                    newCount = @(1);
-                }
-                
-                if (oldOffset) {
-                    [offsetDictionary removeObjectForKey:oldOffset];
-                }
-                [offsetDictionary setObject:newCount forKey:newOffset];
+                hits++;
             }
         }
+        
+        matches = MAX(matches, hits);
     }
-    
-    __block UInt32 matches = 0;
-    [offsetDictionary enumerateKeysAndObjectsUsingBlock:^(NSNumber* offset, NSNumber* count, BOOL *stop) {
-        if (count.integerValue > 3) {
-            matches += count.unsignedIntegerValue;
-        }
-    }];
     
     return matches;
 }
