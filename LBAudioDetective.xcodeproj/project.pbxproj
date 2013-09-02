@@ -7,18 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2B024DCF17C89632006F0355 /* Amsel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC217C89632006F0355 /* Amsel.mp3 */; };
-		2B024DD017C89632006F0355 /* Amsel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC217C89632006F0355 /* Amsel.mp3 */; };
-		2B024DD117C89632006F0355 /* Blaumeise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC317C89632006F0355 /* Blaumeise.mp3 */; };
-		2B024DD217C89632006F0355 /* Blaumeise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC317C89632006F0355 /* Blaumeise.mp3 */; };
-		2B024DD317C89632006F0355 /* Buchfink.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC417C89632006F0355 /* Buchfink.mp3 */; };
-		2B024DD417C89632006F0355 /* Buchfink.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC417C89632006F0355 /* Buchfink.mp3 */; };
-		2B024DD517C89632006F0355 /* Haussperling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC517C89632006F0355 /* Haussperling.mp3 */; };
-		2B024DD617C89632006F0355 /* Haussperling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC517C89632006F0355 /* Haussperling.mp3 */; };
-		2B024DD717C89632006F0355 /* Kohlmeise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC617C89632006F0355 /* Kohlmeise.mp3 */; };
-		2B024DD817C89632006F0355 /* Kohlmeise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC617C89632006F0355 /* Kohlmeise.mp3 */; };
-		2B024DD917C89632006F0355 /* Rabenkraehe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC717C89632006F0355 /* Rabenkraehe.mp3 */; };
-		2B024DDA17C89632006F0355 /* Rabenkraehe.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC717C89632006F0355 /* Rabenkraehe.mp3 */; };
 		2B024DDB17C89632006F0355 /* Amsel.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC917C89632006F0355 /* Amsel.caf */; };
 		2B024DDC17C89632006F0355 /* Amsel.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC917C89632006F0355 /* Amsel.caf */; };
 		2B024DDD17C89632006F0355 /* Blaumeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCA17C89632006F0355 /* Blaumeise.caf */; };
@@ -31,8 +19,9 @@
 		2B024DE417C89632006F0355 /* Kohlmeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCD17C89632006F0355 /* Kohlmeise.caf */; };
 		2B024DE517C89632006F0355 /* Rabenkreahe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCE17C89632006F0355 /* Rabenkreahe.caf */; };
 		2B024DE617C89632006F0355 /* Rabenkreahe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCE17C89632006F0355 /* Rabenkreahe.caf */; };
-		2B024DE717C89638006F0355 /* LBAudioDetective.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183E31724584C004CB1BC /* LBAudioDetective.m */; };
+		2B024DE717C89638006F0355 /* LBAudioDetective.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183E31724584C004CB1BC /* LBAudioDetective.mm */; };
 		2B024DE917C8965C006F0355 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DE817C8965C006F0355 /* Images.xcassets */; };
+		2B3DFF4417CE620B00EC4032 /* LBAudioDetectiveFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B3DFF4317CE620B00EC4032 /* LBAudioDetectiveFrame.m */; };
 		2B494BDD172806A500FFB6FC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B494BDC172806A500FFB6FC /* Accelerate.framework */; };
 		2B79D050177479E70060DE41 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D03E177479E70060DE41 /* AFHTTPClient.m */; };
 		2B79D051177479E70060DE41 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D040177479E70060DE41 /* AFHTTPRequestOperation.m */; };
@@ -55,8 +44,22 @@
 		2BA183CC17245839004CB1BC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183CB17245839004CB1BC /* main.m */; };
 		2BA183D017245839004CB1BC /* LBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183CF17245839004CB1BC /* LBAppDelegate.m */; };
 		2BA183D917245839004CB1BC /* LBTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183D817245839004CB1BC /* LBTableViewController.m */; };
-		2BA183E41724584C004CB1BC /* LBAudioDetective.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183E31724584C004CB1BC /* LBAudioDetective.m */; };
+		2BA183E41724584C004CB1BC /* LBAudioDetective.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183E31724584C004CB1BC /* LBAudioDetective.mm */; };
 		2BA183EC1724631E004CB1BC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183EB1724631E004CB1BC /* AudioToolbox.framework */; };
+		2BAD516317D0BBA2002827FB /* Amsel_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD515D17D0BB32002827FB /* Amsel_org.caf */; };
+		2BAD516417D0BBA4002827FB /* Blaumeise_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD515E17D0BB32002827FB /* Blaumeise_org.caf */; };
+		2BAD516517D0BBA8002827FB /* Buchfink_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD515F17D0BB32002827FB /* Buchfink_org.caf */; };
+		2BAD516617D0BBA8002827FB /* Haussperling_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD516017D0BB32002827FB /* Haussperling_org.caf */; };
+		2BAD516717D0BBA8002827FB /* Kohlmeise_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD516117D0BB32002827FB /* Kohlmeise_org.caf */; };
+		2BAD516817D0BBA8002827FB /* Rabenkraehe_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD516217D0BB32002827FB /* Rabenkraehe_org.caf */; };
+		2BAD516917D0BBAF002827FB /* Amsel_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD515D17D0BB32002827FB /* Amsel_org.caf */; };
+		2BAD516A17D0BBAF002827FB /* Blaumeise_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD515E17D0BB32002827FB /* Blaumeise_org.caf */; };
+		2BAD516B17D0BBAF002827FB /* Buchfink_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD515F17D0BB32002827FB /* Buchfink_org.caf */; };
+		2BAD516C17D0BBAF002827FB /* Haussperling_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD516017D0BB32002827FB /* Haussperling_org.caf */; };
+		2BAD516D17D0BBAF002827FB /* Kohlmeise_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD516117D0BB32002827FB /* Kohlmeise_org.caf */; };
+		2BAD516E17D0BBAF002827FB /* Rabenkraehe_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD516217D0BB32002827FB /* Rabenkraehe_org.caf */; };
+		2BAD519817D107DA002827FB /* LBAudioDetectiveFingerprint.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD519717D107DA002827FB /* LBAudioDetectiveFingerprint.m */; };
+		2BAD519917D107DA002827FB /* LBAudioDetectiveFingerprint.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD519717D107DA002827FB /* LBAudioDetectiveFingerprint.m */; };
 		2BBC2D021726C679004A0163 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBC2D011726C679004A0163 /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -71,12 +74,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2B024DC217C89632006F0355 /* Amsel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Amsel.mp3; sourceTree = "<group>"; };
-		2B024DC317C89632006F0355 /* Blaumeise.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Blaumeise.mp3; sourceTree = "<group>"; };
-		2B024DC417C89632006F0355 /* Buchfink.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Buchfink.mp3; sourceTree = "<group>"; };
-		2B024DC517C89632006F0355 /* Haussperling.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Haussperling.mp3; sourceTree = "<group>"; };
-		2B024DC617C89632006F0355 /* Kohlmeise.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Kohlmeise.mp3; sourceTree = "<group>"; };
-		2B024DC717C89632006F0355 /* Rabenkraehe.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Rabenkraehe.mp3; sourceTree = "<group>"; };
 		2B024DC917C89632006F0355 /* Amsel.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Amsel.caf; sourceTree = "<group>"; };
 		2B024DCA17C89632006F0355 /* Blaumeise.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Blaumeise.caf; sourceTree = "<group>"; };
 		2B024DCB17C89632006F0355 /* Buchfink.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Buchfink.caf; sourceTree = "<group>"; };
@@ -84,6 +81,8 @@
 		2B024DCD17C89632006F0355 /* Kohlmeise.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kohlmeise.caf; sourceTree = "<group>"; };
 		2B024DCE17C89632006F0355 /* Rabenkreahe.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rabenkreahe.caf; sourceTree = "<group>"; };
 		2B024DE817C8965C006F0355 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		2B3DFF4217CE620B00EC4032 /* LBAudioDetectiveFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBAudioDetectiveFrame.h; sourceTree = "<group>"; };
+		2B3DFF4317CE620B00EC4032 /* LBAudioDetectiveFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBAudioDetectiveFrame.m; sourceTree = "<group>"; };
 		2B494BDC172806A500FFB6FC /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		2B79D03D177479E70060DE41 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		2B79D03E177479E70060DE41 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
@@ -124,9 +123,17 @@
 		2BA183D717245839004CB1BC /* LBTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBTableViewController.h; sourceTree = "<group>"; };
 		2BA183D817245839004CB1BC /* LBTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBTableViewController.m; sourceTree = "<group>"; };
 		2BA183E21724584C004CB1BC /* LBAudioDetective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBAudioDetective.h; sourceTree = "<group>"; };
-		2BA183E31724584C004CB1BC /* LBAudioDetective.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBAudioDetective.m; sourceTree = "<group>"; };
+		2BA183E31724584C004CB1BC /* LBAudioDetective.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LBAudioDetective.mm; sourceTree = "<group>"; };
 		2BA183EB1724631E004CB1BC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		2BA183ED17246329004CB1BC /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		2BAD515D17D0BB32002827FB /* Amsel_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Amsel_org.caf; sourceTree = "<group>"; };
+		2BAD515E17D0BB32002827FB /* Blaumeise_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Blaumeise_org.caf; sourceTree = "<group>"; };
+		2BAD515F17D0BB32002827FB /* Buchfink_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Buchfink_org.caf; sourceTree = "<group>"; };
+		2BAD516017D0BB32002827FB /* Haussperling_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Haussperling_org.caf; sourceTree = "<group>"; };
+		2BAD516117D0BB32002827FB /* Kohlmeise_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kohlmeise_org.caf; sourceTree = "<group>"; };
+		2BAD516217D0BB32002827FB /* Rabenkraehe_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rabenkraehe_org.caf; sourceTree = "<group>"; };
+		2BAD519617D107DA002827FB /* LBAudioDetectiveFingerprint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBAudioDetectiveFingerprint.h; sourceTree = "<group>"; };
+		2BAD519717D107DA002827FB /* LBAudioDetectiveFingerprint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBAudioDetectiveFingerprint.m; sourceTree = "<group>"; };
 		2BBC2D011726C679004A0163 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -169,12 +176,12 @@
 		2B024DC117C89632006F0355 /* Archive */ = {
 			isa = PBXGroup;
 			children = (
-				2B024DC217C89632006F0355 /* Amsel.mp3 */,
-				2B024DC317C89632006F0355 /* Blaumeise.mp3 */,
-				2B024DC417C89632006F0355 /* Buchfink.mp3 */,
-				2B024DC517C89632006F0355 /* Haussperling.mp3 */,
-				2B024DC617C89632006F0355 /* Kohlmeise.mp3 */,
-				2B024DC717C89632006F0355 /* Rabenkraehe.mp3 */,
+				2BAD515D17D0BB32002827FB /* Amsel_org.caf */,
+				2BAD515E17D0BB32002827FB /* Blaumeise_org.caf */,
+				2BAD515F17D0BB32002827FB /* Buchfink_org.caf */,
+				2BAD516017D0BB32002827FB /* Haussperling_org.caf */,
+				2BAD516117D0BB32002827FB /* Kohlmeise_org.caf */,
+				2BAD516217D0BB32002827FB /* Rabenkraehe_org.caf */,
 			);
 			path = Archive;
 			sourceTree = "<group>";
@@ -319,7 +326,11 @@
 			isa = PBXGroup;
 			children = (
 				2BA183E21724584C004CB1BC /* LBAudioDetective.h */,
-				2BA183E31724584C004CB1BC /* LBAudioDetective.m */,
+				2BA183E31724584C004CB1BC /* LBAudioDetective.mm */,
+				2B3DFF4217CE620B00EC4032 /* LBAudioDetectiveFrame.h */,
+				2B3DFF4317CE620B00EC4032 /* LBAudioDetectiveFrame.m */,
+				2BAD519617D107DA002827FB /* LBAudioDetectiveFingerprint.h */,
+				2BAD519717D107DA002827FB /* LBAudioDetectiveFingerprint.m */,
 			);
 			path = Vendor;
 			sourceTree = "<group>";
@@ -400,19 +411,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B024DD817C89632006F0355 /* Kohlmeise.mp3 in Resources */,
-				2B024DDA17C89632006F0355 /* Rabenkraehe.mp3 in Resources */,
+				2BAD516E17D0BBAF002827FB /* Rabenkraehe_org.caf in Resources */,
 				2B024DE017C89632006F0355 /* Buchfink.caf in Resources */,
-				2B024DD417C89632006F0355 /* Buchfink.mp3 in Resources */,
 				2B024DE617C89632006F0355 /* Rabenkreahe.caf in Resources */,
+				2BAD516A17D0BBAF002827FB /* Blaumeise_org.caf in Resources */,
+				2BAD516C17D0BBAF002827FB /* Haussperling_org.caf in Resources */,
 				2B024DDE17C89632006F0355 /* Blaumeise.caf in Resources */,
+				2BAD516D17D0BBAF002827FB /* Kohlmeise_org.caf in Resources */,
 				2B024DDC17C89632006F0355 /* Amsel.caf in Resources */,
 				2B024DE417C89632006F0355 /* Kohlmeise.caf in Resources */,
 				2B024DE217C89632006F0355 /* Haussperling.caf in Resources */,
-				2B024DD217C89632006F0355 /* Blaumeise.mp3 in Resources */,
-				2B024DD617C89632006F0355 /* Haussperling.mp3 in Resources */,
+				2BAD516917D0BBAF002827FB /* Amsel_org.caf in Resources */,
 				2B8C5E2417C890B000B9F2EE /* InfoPlist.strings in Resources */,
-				2B024DD017C89632006F0355 /* Amsel.mp3 in Resources */,
+				2BAD516B17D0BBAF002827FB /* Buchfink_org.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,18 +432,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B024DDD17C89632006F0355 /* Blaumeise.caf in Resources */,
-				2B024DD117C89632006F0355 /* Blaumeise.mp3 in Resources */,
+				2BAD516417D0BBA4002827FB /* Blaumeise_org.caf in Resources */,
+				2BAD516817D0BBA8002827FB /* Rabenkraehe_org.caf in Resources */,
+				2BAD516317D0BBA2002827FB /* Amsel_org.caf in Resources */,
+				2BAD516517D0BBA8002827FB /* Buchfink_org.caf in Resources */,
+				2BAD516717D0BBA8002827FB /* Kohlmeise_org.caf in Resources */,
+				2BAD516617D0BBA8002827FB /* Haussperling_org.caf in Resources */,
 				2BA183CA17245839004CB1BC /* InfoPlist.strings in Resources */,
-				2B024DD517C89632006F0355 /* Haussperling.mp3 in Resources */,
 				2B024DE317C89632006F0355 /* Kohlmeise.caf in Resources */,
 				2B024DDF17C89632006F0355 /* Buchfink.caf in Resources */,
 				2B024DE117C89632006F0355 /* Haussperling.caf in Resources */,
-				2B024DD917C89632006F0355 /* Rabenkraehe.mp3 in Resources */,
-				2B024DCF17C89632006F0355 /* Amsel.mp3 in Resources */,
 				2B024DE917C8965C006F0355 /* Images.xcassets in Resources */,
 				2B024DDB17C89632006F0355 /* Amsel.caf in Resources */,
-				2B024DD717C89632006F0355 /* Kohlmeise.mp3 in Resources */,
-				2B024DD317C89632006F0355 /* Buchfink.mp3 in Resources */,
 				2B024DE517C89632006F0355 /* Rabenkreahe.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -444,7 +455,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B024DE717C89638006F0355 /* LBAudioDetective.m in Sources */,
+				2BAD519917D107DA002827FB /* LBAudioDetectiveFingerprint.m in Sources */,
+				2B024DE717C89638006F0355 /* LBAudioDetective.mm in Sources */,
 				2B8C5E2617C890B000B9F2EE /* LBAudioDetectiveTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -457,13 +469,15 @@
 				2B79D058177479E70060DE41 /* UIImageView+AFNetworking.m in Sources */,
 				2B79D052177479E70060DE41 /* AFImageRequestOperation.m in Sources */,
 				2B79D051177479E70060DE41 /* AFHTTPRequestOperation.m in Sources */,
+				2B3DFF4417CE620B00EC4032 /* LBAudioDetectiveFrame.m in Sources */,
 				2B79D050177479E70060DE41 /* AFHTTPClient.m in Sources */,
 				2B79D057177479E70060DE41 /* AFXMLRequestOperation.m in Sources */,
 				2BA183CC17245839004CB1BC /* main.m in Sources */,
 				2BA183D017245839004CB1BC /* LBAppDelegate.m in Sources */,
 				2BA183D917245839004CB1BC /* LBTableViewController.m in Sources */,
 				2B79D053177479E70060DE41 /* AFJSONRequestOperation.m in Sources */,
-				2BA183E41724584C004CB1BC /* LBAudioDetective.m in Sources */,
+				2BA183E41724584C004CB1BC /* LBAudioDetective.mm in Sources */,
+				2BAD519817D107DA002827FB /* LBAudioDetectiveFingerprint.m in Sources */,
 				2B79D055177479E70060DE41 /* AFPropertyListRequestOperation.m in Sources */,
 				2B79D054177479E70060DE41 /* AFNetworkActivityIndicatorManager.m in Sources */,
 			);

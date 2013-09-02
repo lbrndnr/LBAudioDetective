@@ -24,7 +24,7 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
 -(void)_startProcessing:(id)sender;
 -(void)_stopProcessing:(id)sender;
 
--(NSArray*)_arrayFromAudioUnits:(LBAudioDetectiveIdentificationUnit*)units count:(NSUInteger)count;
+//-(NSArray*)_arrayFromAudioUnits:(LBAudioDetectiveIdentificationUnit*)units count:(NSUInteger)count;
 -(void)_identifyRecordedIdentificationUnits:(NSArray*)units answer:(void(^)(NSString*))completion;
 
 @end
@@ -48,12 +48,6 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
         self.manager = [NSFileManager new];
         
         self.detective = LBAudioDetectiveNew();
-        Float32 pitches[4];
-        pitches[0] = 4000.0f;
-        pitches[1] = 8000.0f;
-        pitches[2] = 12000.0f;
-        pitches[3] = 16000.0f;
-        LBAudioDetectiveSetPitchSteps(self.detective, pitches, 4);
         
 #if TARGET_IPHONE_SIMULATOR
         NSURL* URL = [NSURL URLWithString:@"http://localhost:3000"];
@@ -177,20 +171,20 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
     [_client enqueueHTTPRequestOperation:operation];
 }
 
--(NSArray*)_arrayFromAudioUnits:(LBAudioDetectiveIdentificationUnit *)units count:(NSUInteger)count {
-    NSMutableArray* mutableUnits = [NSMutableArray new];
-    for (NSInteger i = 0; i < count; i++) {
-        LBAudioDetectiveIdentificationUnit unit = units[i];
-        NSInteger f0 = unit.frequencies[0];
-        NSInteger f1 = unit.frequencies[1];
-        NSInteger f2 = unit.frequencies[2];
-        NSInteger f3 = unit.frequencies[3];
-        NSInteger f4 = unit.frequencies[4];
-        [mutableUnits addObject:@[@(f0-(f0%2)), @(f1-(f1%2)), @(f2-(f2%2)), @(f3-(f3%2)), @(f4-(f4%2))]];
-    }
-    
-    return mutableUnits;
-}
+//-(NSArray*)_arrayFromAudioUnits:(LBAudioDetectiveIdentificationUnit *)units count:(NSUInteger)count {
+//    NSMutableArray* mutableUnits = [NSMutableArray new];
+//    for (NSInteger i = 0; i < count; i++) {
+//        LBAudioDetectiveIdentificationUnit unit = units[i];
+//        NSInteger f0 = unit.frequencies[0];
+//        NSInteger f1 = unit.frequencies[1];
+//        NSInteger f2 = unit.frequencies[2];
+//        NSInteger f3 = unit.frequencies[3];
+//        NSInteger f4 = unit.frequencies[4];
+//        [mutableUnits addObject:@[@(f0-(f0%2)), @(f1-(f1%2)), @(f2-(f2%2)), @(f3-(f3%2)), @(f4-(f4%2))]];
+//    }
+//    
+//    return mutableUnits;
+//}
 
 #pragma mark -
 #pragma mark UIActionSheetDelegate
@@ -199,12 +193,12 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
     NSURL* URL = self.userData[@"URL"];
     LBAudioDetectiveProcessAudioURL(self.detective, URL);
     
-    UInt32 unitCount;
-    LBAudioDetectiveIdentificationUnit* identificationUnits = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount);
-    [self _identifyRecordedIdentificationUnits:[self _arrayFromAudioUnits:identificationUnits count:unitCount] answer:^(NSString* name) {
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"It's a %@", name] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-    }];
+//    UInt32 unitCount;
+//    LBAudioDetectiveIdentificationUnit* identificationUnits = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount);
+//    [self _identifyRecordedIdentificationUnits:[self _arrayFromAudioUnits:identificationUnits count:unitCount] answer:^(NSString* name) {
+//        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"It's a %@", name] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//        [alertView show];
+//    }];
     
     self.userData = nil;
 }
