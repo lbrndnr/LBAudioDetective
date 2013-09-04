@@ -32,6 +32,9 @@
 		2B79D056177479E70060DE41 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D04B177479E70060DE41 /* AFURLConnectionOperation.m */; };
 		2B79D057177479E70060DE41 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D04D177479E70060DE41 /* AFXMLRequestOperation.m */; };
 		2B79D058177479E70060DE41 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D04F177479E70060DE41 /* UIImageView+AFNetworking.m */; };
+		2B7AFE1617D70FC000B8EAD9 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B7AFE1517D70FC000B8EAD9 /* CoreAudio.framework */; };
+		2B7AFE2017D7840D00B8EAD9 /* CARingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B7AFE1E17D7840D00B8EAD9 /* CARingBuffer.cpp */; };
+		2B7AFE2117D7840D00B8EAD9 /* CARingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B7AFE1E17D7840D00B8EAD9 /* CARingBuffer.cpp */; };
 		2B8C5E1C17C890B000B9F2EE /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8C5E0517C8908900B9F2EE /* XCTest.framework */; };
 		2B8C5E1D17C890B000B9F2EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183C117245839004CB1BC /* Foundation.framework */; };
 		2B8C5E1E17C890B000B9F2EE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183BF17245839004CB1BC /* UIKit.framework */; };
@@ -104,6 +107,12 @@
 		2B79D04E177479E70060DE41 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		2B79D04F177479E70060DE41 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		2B79D05917747D4F0060DE41 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		2B7AFE1517D70FC000B8EAD9 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		2B7AFE1917D783B800B8EAD9 /* CABitOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CABitOperations.h; path = ../../../../../../../../Developer/Extras/CoreAudio/PublicUtility/CABitOperations.h; sourceTree = "<group>"; };
+		2B7AFE1A17D783D700B8EAD9 /* CAAutoDisposer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CAAutoDisposer.h; path = ../../../../../../../../Developer/Extras/CoreAudio/PublicUtility/CAAutoDisposer.h; sourceTree = "<group>"; };
+		2B7AFE1E17D7840D00B8EAD9 /* CARingBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CARingBuffer.cpp; sourceTree = "<group>"; };
+		2B7AFE1F17D7840D00B8EAD9 /* CARingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CARingBuffer.h; sourceTree = "<group>"; };
+		2B7AFE2217D7841D00B8EAD9 /* CAAtomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CAAtomic.h; path = ../../../../../../../../Developer/Extras/CoreAudio/PublicUtility/CAAtomic.h; sourceTree = "<group>"; };
 		2B8C5E0517C8908900B9F2EE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		2B8C5E1B17C890B000B9F2EE /* LBAudioDetectiveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LBAudioDetectiveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B8C5E2117C890B000B9F2EE /* LBAudioDetectiveTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LBAudioDetectiveTests-Info.plist"; sourceTree = "<group>"; };
@@ -152,6 +161,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B7AFE1617D70FC000B8EAD9 /* CoreAudio.framework in Frameworks */,
 				2B494BDD172806A500FFB6FC /* Accelerate.framework in Frameworks */,
 				2BA183EC1724631E004CB1BC /* AudioToolbox.framework in Frameworks */,
 				2BBC2D021726C679004A0163 /* AVFoundation.framework in Frameworks */,
@@ -202,6 +212,7 @@
 		2B79D03B177479BF0060DE41 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				2B7AFE1217D70EC300B8EAD9 /* CARingBuffer */,
 				2B79D03C177479E70060DE41 /* AFNetworking */,
 			);
 			path = Externals;
@@ -231,6 +242,18 @@
 				2B79D04F177479E70060DE41 /* UIImageView+AFNetworking.m */,
 			);
 			path = AFNetworking;
+			sourceTree = "<group>";
+		};
+		2B7AFE1217D70EC300B8EAD9 /* CARingBuffer */ = {
+			isa = PBXGroup;
+			children = (
+				2B7AFE1F17D7840D00B8EAD9 /* CARingBuffer.h */,
+				2B7AFE1E17D7840D00B8EAD9 /* CARingBuffer.cpp */,
+				2B7AFE1A17D783D700B8EAD9 /* CAAutoDisposer.h */,
+				2B7AFE1917D783B800B8EAD9 /* CABitOperations.h */,
+				2B7AFE2217D7841D00B8EAD9 /* CAAtomic.h */,
+			);
+			name = CARingBuffer;
 			sourceTree = "<group>";
 		};
 		2B8C5DFC17C88F3300B9F2EE /* Source Code */ = {
@@ -287,6 +310,7 @@
 		2BA183BE17245839004CB1BC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2B7AFE1517D70FC000B8EAD9 /* CoreAudio.framework */,
 				2B79D05917747D4F0060DE41 /* MobileCoreServices.framework */,
 				2B494BDC172806A500FFB6FC /* Accelerate.framework */,
 				2BA183EB1724631E004CB1BC /* AudioToolbox.framework */,
@@ -458,6 +482,7 @@
 				2BAD519917D107DA002827FB /* LBAudioDetectiveFingerprint.m in Sources */,
 				2B024DE717C89638006F0355 /* LBAudioDetective.mm in Sources */,
 				2B8C5E2617C890B000B9F2EE /* LBAudioDetectiveTests.m in Sources */,
+				2B7AFE2117D7840D00B8EAD9 /* CARingBuffer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +505,7 @@
 				2BAD519817D107DA002827FB /* LBAudioDetectiveFingerprint.m in Sources */,
 				2B79D055177479E70060DE41 /* AFPropertyListRequestOperation.m in Sources */,
 				2B79D054177479E70060DE41 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				2B7AFE2017D7840D00B8EAD9 /* CARingBuffer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

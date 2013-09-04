@@ -165,7 +165,7 @@ void LBAudioDetectiveFrameExtractFingerprint(LBAudioDetectiveFrameRef inFrame, U
         if (value > 0.0) {
             outFingerprint[2*i] = TRUE;
         }
-        else if (value < -0.0) {
+        else if (value < 0.0) {
             outFingerprint[(2*i)+1] = TRUE;
         }
     }
