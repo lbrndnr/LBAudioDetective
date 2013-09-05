@@ -15,7 +15,6 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
 
 @property (nonatomic, strong) NSFileManager* manager;
 @property (nonatomic, strong) AVAudioPlayer* player;
-@property (nonatomic, strong) NSDictionary* userData;
 
 @property (nonatomic, readonly) NSURL* applicationDocumentDirectory;
 
@@ -24,7 +23,6 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
 -(void)_startProcessing:(id)sender;
 -(void)_stopProcessing:(id)sender;
 
-//-(NSArray*)_arrayFromAudioUnits:(LBAudioDetectiveIdentificationUnit*)units count:(NSUInteger)count;
 -(void)_identifyRecordedIdentificationUnits:(NSArray*)units answer:(void(^)(NSString*))completion;
 
 @end
@@ -111,10 +109,6 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
     
     NSURL* URL = [self _URLForRecording:indexPath.row];
     LBAudioDetectiveProcessAudioURL(self.detective, URL);
-    self.userData = @{@"URL": URL, @"index": @(indexPath.row)};
-    
-    UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:@"Action" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Play", @"Process", @"Send", @"Select", nil];
-    [sheet showInView:self.tableView];
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -149,7 +143,6 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
     processItem.action = @selector(_startProcessing:);
     
     [self.tableView reloadData];
-    self.userData = nil;
 }
 
 -(void)_identifyRecordedIdentificationUnits:(NSArray *)units answer:(void (^)(NSString *))completion {
@@ -185,23 +178,6 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
 //    
 //    return mutableUnits;
 //}
-
-#pragma mark -
-#pragma mark UIActionSheetDelegate
-
--(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {    
-    NSURL* URL = self.userData[@"URL"];
-    LBAudioDetectiveProcessAudioURL(self.detective, URL);
-    
-//    UInt32 unitCount;
-//    LBAudioDetectiveIdentificationUnit* identificationUnits = LBAudioDetectiveGetIdentificationUnits(self.detective, &unitCount);
-//    [self _identifyRecordedIdentificationUnits:[self _arrayFromAudioUnits:identificationUnits count:unitCount] answer:^(NSString* name) {
-//        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Audio Analysis" message:[NSString stringWithFormat:@"It's a %@", name] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//        [alertView show];
-//    }];
-    
-    self.userData = nil;
-}
 
 #pragma mark -
 

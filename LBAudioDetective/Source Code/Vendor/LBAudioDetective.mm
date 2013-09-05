@@ -454,15 +454,22 @@ void LBAudioDetectiveReset(LBAudioDetectiveRef inDetective, Boolean keepFingerpr
         inDetective->fingerprint = NULL;
     }
     
-    inDetective->ringBuffer->Deallocate();
-    inDetective->ringBuffer = NULL;
+    if (inDetective->ringBuffer) {
+        inDetective->ringBuffer->Deallocate();
+        inDetective->ringBuffer = NULL;
+    }
+    
+    if (inDetective->frames) {
+        for (UInt32 i = 0; i < inDetective->numberOfFrames; i++) {
+            LBAudioDetectiveFrameDispose(inDetective->frames[i]);
+        }
+        free(inDetective->frames);
+        inDetective->frames = NULL;
+    }
+    
     inDetective->maxNumberOfSubfingerprints = 0;
     inDetective->numberOfProcessedSamplesInWindow = 0;
     inDetective->numberOfProcessedSamplesInWindow = 0;
-    for (UInt32 i = 0; i < inDetective->numberOfFrames; i++) {
-        LBAudioDetectiveFrameDispose(inDetective->frames[i]);
-    }
-    free(inDetective->frames);
     inDetective->numberOfFrames = 0;
     inDetective->numberOfRowsInLastFrame = 0;
     inDetective->callback = NULL;
@@ -492,7 +499,7 @@ OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionF
     
     Boolean computedAllSubfingerprints = FALSE;
     if (inDetective->numberOfFrames == 0 || inDetective->numberOfRowsInLastFrame == inDetective->subfingerprintLength) {
-        if (inDetective->numberOfFrames == inDetective->maxNumberOfSubfingerprints) {
+        if (inDetective->maxNumberOfSubfingerprints > 0 && inDetective->numberOfFrames == inDetective->maxNumberOfSubfingerprints) {
             computedAllSubfingerprints = TRUE;
         }
         else {

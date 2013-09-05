@@ -23,6 +23,8 @@
 		2B024DE917C8965C006F0355 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DE817C8965C006F0355 /* Images.xcassets */; };
 		2B3DFF4417CE620B00EC4032 /* LBAudioDetectiveFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B3DFF4317CE620B00EC4032 /* LBAudioDetectiveFrame.m */; };
 		2B494BDD172806A500FFB6FC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B494BDC172806A500FFB6FC /* Accelerate.framework */; };
+		2B62EA2417D7B1D00047A547 /* CARingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B62EA2217D7B1D00047A547 /* CARingBuffer.cpp */; };
+		2B62EA2517D7B1D00047A547 /* CARingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B62EA2217D7B1D00047A547 /* CARingBuffer.cpp */; };
 		2B79D050177479E70060DE41 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D03E177479E70060DE41 /* AFHTTPClient.m */; };
 		2B79D051177479E70060DE41 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D040177479E70060DE41 /* AFHTTPRequestOperation.m */; };
 		2B79D052177479E70060DE41 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D042177479E70060DE41 /* AFImageRequestOperation.m */; };
@@ -33,8 +35,6 @@
 		2B79D057177479E70060DE41 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D04D177479E70060DE41 /* AFXMLRequestOperation.m */; };
 		2B79D058177479E70060DE41 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D04F177479E70060DE41 /* UIImageView+AFNetworking.m */; };
 		2B7AFE1617D70FC000B8EAD9 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B7AFE1517D70FC000B8EAD9 /* CoreAudio.framework */; };
-		2B7AFE2017D7840D00B8EAD9 /* CARingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B7AFE1E17D7840D00B8EAD9 /* CARingBuffer.cpp */; };
-		2B7AFE2117D7840D00B8EAD9 /* CARingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B7AFE1E17D7840D00B8EAD9 /* CARingBuffer.cpp */; };
 		2B8C5E1C17C890B000B9F2EE /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B8C5E0517C8908900B9F2EE /* XCTest.framework */; };
 		2B8C5E1D17C890B000B9F2EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183C117245839004CB1BC /* Foundation.framework */; };
 		2B8C5E1E17C890B000B9F2EE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183BF17245839004CB1BC /* UIKit.framework */; };
@@ -87,6 +87,8 @@
 		2B3DFF4217CE620B00EC4032 /* LBAudioDetectiveFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBAudioDetectiveFrame.h; sourceTree = "<group>"; };
 		2B3DFF4317CE620B00EC4032 /* LBAudioDetectiveFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBAudioDetectiveFrame.m; sourceTree = "<group>"; };
 		2B494BDC172806A500FFB6FC /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		2B62EA2217D7B1D00047A547 /* CARingBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CARingBuffer.cpp; path = ../../../../../../../../Developer/Extras/CoreAudio/PublicUtility/CARingBuffer.cpp; sourceTree = "<group>"; };
+		2B62EA2317D7B1D00047A547 /* CARingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CARingBuffer.h; path = ../../../../../../../../Developer/Extras/CoreAudio/PublicUtility/CARingBuffer.h; sourceTree = "<group>"; };
 		2B79D03D177479E70060DE41 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		2B79D03E177479E70060DE41 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
 		2B79D03F177479E70060DE41 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -110,8 +112,6 @@
 		2B7AFE1517D70FC000B8EAD9 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		2B7AFE1917D783B800B8EAD9 /* CABitOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CABitOperations.h; path = ../../../../../../../../Developer/Extras/CoreAudio/PublicUtility/CABitOperations.h; sourceTree = "<group>"; };
 		2B7AFE1A17D783D700B8EAD9 /* CAAutoDisposer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CAAutoDisposer.h; path = ../../../../../../../../Developer/Extras/CoreAudio/PublicUtility/CAAutoDisposer.h; sourceTree = "<group>"; };
-		2B7AFE1E17D7840D00B8EAD9 /* CARingBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CARingBuffer.cpp; sourceTree = "<group>"; };
-		2B7AFE1F17D7840D00B8EAD9 /* CARingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CARingBuffer.h; sourceTree = "<group>"; };
 		2B7AFE2217D7841D00B8EAD9 /* CAAtomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CAAtomic.h; path = ../../../../../../../../Developer/Extras/CoreAudio/PublicUtility/CAAtomic.h; sourceTree = "<group>"; };
 		2B8C5E0517C8908900B9F2EE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		2B8C5E1B17C890B000B9F2EE /* LBAudioDetectiveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LBAudioDetectiveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -247,8 +247,8 @@
 		2B7AFE1217D70EC300B8EAD9 /* CARingBuffer */ = {
 			isa = PBXGroup;
 			children = (
-				2B7AFE1F17D7840D00B8EAD9 /* CARingBuffer.h */,
-				2B7AFE1E17D7840D00B8EAD9 /* CARingBuffer.cpp */,
+				2B62EA2217D7B1D00047A547 /* CARingBuffer.cpp */,
+				2B62EA2317D7B1D00047A547 /* CARingBuffer.h */,
 				2B7AFE1A17D783D700B8EAD9 /* CAAutoDisposer.h */,
 				2B7AFE1917D783B800B8EAD9 /* CABitOperations.h */,
 				2B7AFE2217D7841D00B8EAD9 /* CAAtomic.h */,
@@ -482,7 +482,7 @@
 				2BAD519917D107DA002827FB /* LBAudioDetectiveFingerprint.m in Sources */,
 				2B024DE717C89638006F0355 /* LBAudioDetective.mm in Sources */,
 				2B8C5E2617C890B000B9F2EE /* LBAudioDetectiveTests.m in Sources */,
-				2B7AFE2117D7840D00B8EAD9 /* CARingBuffer.cpp in Sources */,
+				2B62EA2517D7B1D00047A547 /* CARingBuffer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,7 +505,7 @@
 				2BAD519817D107DA002827FB /* LBAudioDetectiveFingerprint.m in Sources */,
 				2B79D055177479E70060DE41 /* AFPropertyListRequestOperation.m in Sources */,
 				2B79D054177479E70060DE41 /* AFNetworkActivityIndicatorManager.m in Sources */,
-				2B7AFE2017D7840D00B8EAD9 /* CARingBuffer.cpp in Sources */,
+				2B62EA2417D7B1D00047A547 /* CARingBuffer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
