@@ -7,7 +7,6 @@
 //
 
 #import "LBAudioDetectiveFingerprint.h"
-
 typedef struct LBAudioDetectiveFingerprint {
     Boolean** subfingerprints;
     UInt32 subfingerprintLength;
@@ -147,7 +146,7 @@ Float32 LBAudioDetectiveFingerprintCompareSubfingerprints(LBAudioDetectiveFinger
     UInt32 possibleHits = 0;
     UInt32 hits = 0;
     
-    for (UInt32 i = 0; i < MIN(inRange, inFingerprint->subfingerprintLength); i++) {
+    for (UInt32 i = 0; i < MIN(inRange, inFingerprint->subfingerprintLength); i += 2) {
         Boolean sf1s1 = inSubfingerprint1[i];
         Boolean sf1s2 = inSubfingerprint1[i+1];
         
