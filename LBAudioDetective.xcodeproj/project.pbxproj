@@ -17,8 +17,8 @@
 		2B024DE217C89632006F0355 /* Haussperling.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCC17C89632006F0355 /* Haussperling.caf */; };
 		2B024DE317C89632006F0355 /* Kohlmeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCD17C89632006F0355 /* Kohlmeise.caf */; };
 		2B024DE417C89632006F0355 /* Kohlmeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCD17C89632006F0355 /* Kohlmeise.caf */; };
-		2B024DE517C89632006F0355 /* Rabenkreahe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCE17C89632006F0355 /* Rabenkreahe.caf */; };
-		2B024DE617C89632006F0355 /* Rabenkreahe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCE17C89632006F0355 /* Rabenkreahe.caf */; };
+		2B024DE517C89632006F0355 /* Rabenkraehe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCE17C89632006F0355 /* Rabenkraehe.caf */; };
+		2B024DE617C89632006F0355 /* Rabenkraehe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCE17C89632006F0355 /* Rabenkraehe.caf */; };
 		2B024DE717C89638006F0355 /* LBAudioDetective.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183E31724584C004CB1BC /* LBAudioDetective.mm */; };
 		2B024DE917C8965C006F0355 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DE817C8965C006F0355 /* Images.xcassets */; };
 		2B3DFF4417CE620B00EC4032 /* LBAudioDetectiveFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B3DFF4317CE620B00EC4032 /* LBAudioDetectiveFrame.m */; };
@@ -85,7 +85,7 @@
 		2B024DCB17C89632006F0355 /* Buchfink.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Buchfink.caf; sourceTree = "<group>"; };
 		2B024DCC17C89632006F0355 /* Haussperling.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Haussperling.caf; sourceTree = "<group>"; };
 		2B024DCD17C89632006F0355 /* Kohlmeise.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kohlmeise.caf; sourceTree = "<group>"; };
-		2B024DCE17C89632006F0355 /* Rabenkreahe.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rabenkreahe.caf; sourceTree = "<group>"; };
+		2B024DCE17C89632006F0355 /* Rabenkraehe.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rabenkraehe.caf; sourceTree = "<group>"; };
 		2B024DE817C8965C006F0355 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2B3DFF4217CE620B00EC4032 /* LBAudioDetectiveFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBAudioDetectiveFrame.h; sourceTree = "<group>"; };
 		2B3DFF4317CE620B00EC4032 /* LBAudioDetectiveFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBAudioDetectiveFrame.m; sourceTree = "<group>"; };
@@ -209,7 +209,7 @@
 				2B024DCB17C89632006F0355 /* Buchfink.caf */,
 				2B024DCC17C89632006F0355 /* Haussperling.caf */,
 				2B024DCD17C89632006F0355 /* Kohlmeise.caf */,
-				2B024DCE17C89632006F0355 /* Rabenkreahe.caf */,
+				2B024DCE17C89632006F0355 /* Rabenkraehe.caf */,
 			);
 			path = Sequences;
 			sourceTree = "<group>";
@@ -443,7 +443,7 @@
 				2BAD516E17D0BBAF002827FB /* Rabenkraehe_org.caf in Resources */,
 				2BD4062A17E4B2AD0069625F /* Amsel.mp3 in Resources */,
 				2B024DE017C89632006F0355 /* Buchfink.caf in Resources */,
-				2B024DE617C89632006F0355 /* Rabenkreahe.caf in Resources */,
+				2B024DE617C89632006F0355 /* Rabenkraehe.caf in Resources */,
 				2BAD516A17D0BBAF002827FB /* Blaumeise_org.caf in Resources */,
 				2BAD516C17D0BBAF002827FB /* Haussperling_org.caf in Resources */,
 				2B024DDE17C89632006F0355 /* Blaumeise.caf in Resources */,
@@ -475,7 +475,7 @@
 				2B024DE117C89632006F0355 /* Haussperling.caf in Resources */,
 				2B024DE917C8965C006F0355 /* Images.xcassets in Resources */,
 				2B024DDB17C89632006F0355 /* Amsel.caf in Resources */,
-				2B024DE517C89632006F0355 /* Rabenkreahe.caf in Resources */,
+				2B024DE517C89632006F0355 /* Rabenkraehe.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
