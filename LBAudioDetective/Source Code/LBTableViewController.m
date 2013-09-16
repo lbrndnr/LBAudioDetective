@@ -18,12 +18,10 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
 
 @property (nonatomic, readonly) NSURL* applicationDocumentDirectory;
 
--(NSURL*)_URLForRecording:(NSInteger)recording;
+-(NSURL*)URLForRecording:(NSInteger)recording;
 
--(void)_startProcessing:(id)sender;
--(void)_stopProcessing:(id)sender;
-
--(void)_identifyRecordedIdentificationUnits:(NSArray*)units answer:(void(^)(NSString*))completion;
+-(void)startProcessing:(id)sender;
+-(void)stopProcessing:(id)sender;
 
 @end
 @implementation LBTableViewController
@@ -70,7 +68,7 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
 -(void)viewDidLoad {
     [super viewDidLoad];
     
-    UIBarButtonItem* processItem = [[UIBarButtonItem alloc] initWithTitle:@"Process" style:UIBarButtonItemStyleBordered target:self action:@selector(_startProcessing:)];
+    UIBarButtonItem* processItem = [[UIBarButtonItem alloc] initWithTitle:@"Process" style:UIBarButtonItemStyleBordered target:self action:@selector(startProcessing:)];
     self.navigationItem.rightBarButtonItem = processItem;
 }
 
@@ -107,16 +105,27 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
         self.player = nil;
     }
     
-    NSURL* URL = [self _URLForRecording:indexPath.row];
-    LBAudioDetectiveProcessAudioURL(self.detective, URL);
+    NSMutableDictionary* matches = [NSMutableDictionary new];
+    NSURL* URL = [self URLForRecording:indexPath.row];
+    NSBundle* bundle = [NSBundle mainBundle];
+    NSArray* birds = @[@"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe"];
+    
+    [birds enumerateObjectsUsingBlock:^(NSString* originalBird, NSUInteger idx, BOOL *stop) {
+        NSURL* originalURL = [bundle URLForResource:[originalBird stringByAppendingString:@"_org"] withExtension:@"caf"];
+        Float32 match = LBAudioDetectiveCompareAudioURLs(self.detective, originalURL, URL, 0);
+        [matches setObject:@(match) forKey:originalBird];
+    }];
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Analysis Results" message:matches.description delegate:Nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alertView show];
 }
 
 #pragma mark -
 #pragma mark Other Methods
 
--(NSURL*)_URLForRecording:(NSInteger)recording {
+-(NSURL*)URLForRecording:(NSInteger)recording {
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString* basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
     NSString* path = [basePath stringByAppendingPathComponent:[NSString stringWithFormat:@"recording-%u.caf", recording]];
@@ -124,60 +133,26 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
     return [NSURL fileURLWithPath:path];
 }
 
--(void)_startProcessing:(id)sender {
-    LBAudioDetectiveSetWriteAudioToURL(self.detective, [self _URLForRecording:[self.tableView numberOfRowsInSection:0]]);
+-(void)startProcessing:(id)sender {
+    LBAudioDetectiveSetWriteAudioToURL(self.detective, [self URLForRecording:[self.tableView numberOfRowsInSection:0]]);
     LBAudioDetectiveStartProcessing(self.detective);
     
     UIBarButtonItem* processItem = self.navigationItem.rightBarButtonItem;
     processItem.title = @"Stop";
-    processItem.action = @selector(_stopProcessing:);
+    processItem.action = @selector(stopProcessing:);
     
-    [self performSelector:@selector(_stopProcessing:) withObject:nil afterDelay:4.0f];
+    [self performSelector:@selector(stopProcessing:) withObject:nil afterDelay:4.0f];
 }
 
--(void)_stopProcessing:(id)sender {
+-(void)stopProcessing:(id)sender {
     LBAudioDetectiveStopProcessing(self.detective);
     
     UIBarButtonItem* processItem = self.navigationItem.rightBarButtonItem;
     processItem.title = @"Process";
-    processItem.action = @selector(_startProcessing:);
+    processItem.action = @selector(startProcessing:);
     
     [self.tableView reloadData];
 }
-
--(void)_identifyRecordedIdentificationUnits:(NSArray *)units answer:(void (^)(NSString *))completion {
-    NSMutableString* string = [NSMutableString new];
-    for (NSArray* unit in units) {
-        [string appendFormat:@"%i-%i-%i-%i-%i-", [(NSNumber*)unit[0] integerValue], [(NSNumber*)unit[1] integerValue], [(NSNumber*)unit[2] integerValue], [(NSNumber*)unit[3] integerValue], [(NSNumber*)unit[4] integerValue]];
-    }
-    
-    NSDictionary* parameters = @{@"voice": string};
-    NSMutableURLRequest* request = [_client requestWithMethod:@"POST" path:@"/birds/identify.json" parameters:parameters];
-    AFJSONRequestOperation* operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:nil failure:nil];
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
-        completion(JSON[@"name"]);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"%@", error);
-        NSLog(@"%@", operation.responseString);
-        completion(@"No Result");
-    }];
-    [_client enqueueHTTPRequestOperation:operation];
-}
-
-//-(NSArray*)_arrayFromAudioUnits:(LBAudioDetectiveIdentificationUnit *)units count:(NSUInteger)count {
-//    NSMutableArray* mutableUnits = [NSMutableArray new];
-//    for (NSInteger i = 0; i < count; i++) {
-//        LBAudioDetectiveIdentificationUnit unit = units[i];
-//        NSInteger f0 = unit.frequencies[0];
-//        NSInteger f1 = unit.frequencies[1];
-//        NSInteger f2 = unit.frequencies[2];
-//        NSInteger f3 = unit.frequencies[3];
-//        NSInteger f4 = unit.frequencies[4];
-//        [mutableUnits addObject:@[@(f0-(f0%2)), @(f1-(f1%2)), @(f2-(f2%2)), @(f3-(f3%2)), @(f4-(f4%2))]];
-//    }
-//    
-//    return mutableUnits;
-//}
 
 #pragma mark -
 

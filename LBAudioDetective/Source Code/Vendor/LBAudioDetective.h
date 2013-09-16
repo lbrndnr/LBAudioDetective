@@ -30,7 +30,7 @@ typedef struct LBAudioDetective *LBAudioDetectiveRef;
 typedef void(*LBAudioDetectiveCallback)(LBAudioDetectiveRef outDetective, id callbackHelper);
     
 /**
- LBAudioDetectiveRef is the basic class that creates a fingerprint from a specific audio file or recording. 
+ LBAudioDetectiveRef is an opaque type that creates a fingerprint from a specific audio file or recording.
  
  Function parameter paradigm:
  in-  a parameter used by the function. It shouldn't have changed when the function is performed.
@@ -61,8 +61,8 @@ void LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective);
 
 /**
  Returns the default `AudioStreamBasicDescription` for recording. The recording will be saved in this format if not differently specified.
- @see LBAudioDetectiveGetRecordingFormat(LBAudioDetectiveRef)
- @see LBAudioDetectiveSetRecordingFormat(LBAudioDetectiveRef, AudioStreamBasicDescription)
+ @see LBAudioDetectiveGetRecordingSampleRate(LBAudioDetectiveRef)
+ @see LBAudioDetectiveSetRecordingSampleRate(LBAudioDetectiveRef, Float64)
      
  @return An `AudioStreamBasicDescription struct
 */
@@ -71,8 +71,8 @@ AudioStreamBasicDescription LBAudioDetectiveDefaultRecordingFormat();
     
 /**
  Returns the default `AudioStreamBasicDescription` for processing. The recording or audio file will be processed using this format if not differently specified.
- @see LBAudioDetectiveGetProcessingFormat(LBAudioDetectiveRef)
- @see LBAudioDetectiveSetProcessingFormat(LBAudioDetectiveRef, AudioStreamBasicDescription)
+ @see LBAudioDetectiveGetProcessingSampleRate(LBAudioDetectiveRef)
+ @see LBAudioDetectiveSetProcessingSampleRate(LBAudioDetectiveRef, Float64)
      
  @return An `AudioStreamBasicDescription` struct
 */
@@ -80,28 +80,28 @@ AudioStreamBasicDescription LBAudioDetectiveDefaultRecordingFormat();
 AudioStreamBasicDescription LBAudioDetectiveDefaultProcessingFormat();
 
 /**
- Returns the currently set `AudioStreamBasicDescription` for recording. The recording will be saved in this format.
+ Returns the currently set `Float64` sample rate for recording. The recording will be saved in this format.
  @see LBAudioDetectiveDefaultRecordingFormat()
- @see LBAudioDetectiveSetRecordingFormat(LBAudioDetectiveRef, AudioStreamBasicDescription)
+ @see LBAudioDetectiveSetRecordingSampleRate(LBAudioDetectiveRef, Float64)
      
  @param inDetective The receiving LBAudioDetective struct
  
  @return An `AudioStreamBasicDescription` struct
 */
 
-AudioStreamBasicDescription LBAudioDetectiveGetRecordingFormat(LBAudioDetectiveRef inDetective);
+Float64 LBAudioDetectiveGetRecordingSampleRate(LBAudioDetectiveRef inDetective);
     
 /**
- Returns the currently set `AudioStreamBasicDescription` for processing. The recording or audio file will be processed using this format.
+ Returns the currently set `Float64` sample rate for processing. The recording or audio file will be processed using this format.
  @see LBAudioDetectiveDefaultProcessingFormat()
- @see LBAudioDetectiveSetProcessingFormat(LBAudioDetectiveRef, AudioStreamBasicDescription)
+ @see LBAudioDetectiveSetProcessingSampleRate(LBAudioDetectiveRef, Float64)
  
  @param inDetective The receiving LBAudioDetective struct
      
  @return An `AudioStreamBasicDescription` struct
 */
     
-AudioStreamBasicDescription LBAudioDetectiveGetProcessingFormat(LBAudioDetectiveRef inDetective);
+Float64 LBAudioDetectiveGetProcessingSampleRate(LBAudioDetectiveRef inDetective);
     
 /**
  Every frequency contained in a window analyzed using the FFT are summed up. The number of pitch steps specifies in how many ranges the pitches are separated and then added.
@@ -148,6 +148,17 @@ UInt32 LBAudioDetectiveGetWindowSize(LBAudioDetectiveRef inDetective);
 UInt32 LBAudioDetectiveGetAnalysisStride(LBAudioDetectiveRef inDetective);
     
 /**
+ The length of the subfingerprints
+ @see LBAudioDetectiveSetSubfingerprintLength(LBAudioDetectiveRef, UInt32)
+     
+ @param inDetective The receiving LBAudioDetective struct
+     
+ @return An `UInt32` representing the length of one subfingerprint
+*/
+    
+UInt32 LBAudioDetectiveGetSubfingerprintLength(LBAudioDetectiveRef inDetective);
+    
+/**
  After processing an audio file or finish processing simultaneously to the recording, calling this function returns the resulting fingerprint. The lifetime of the fingerprint is bound to the detective. Thus a copy has to be made in order to keep it longer than the detective.
      
  @param inDetective The receiving LBAudioDetective struct
@@ -163,24 +174,24 @@ LBAudioDetectiveFingerprintRef LBAudioDetectiveGetFingerprint(LBAudioDetectiveRe
 /**
  Sets an `AudioStreamBasicDescription` for recording. The recording will be saved in this format. The format has to be signed integer and PCM.
  @see LBAudioDetectiveDefaultRecordingFormat()
- @see LBAudioDetectiveGetRecordingFormat(LBAudioDetectiveRef)
+ @see LBAudioDetectiveGetRecordingSampleRate(LBAudioDetectiveRef)
      
  @param inDetective The receiving LBAudioDetective struct
  @param inStreamFormat The audio format to be used
 */
     
-void LBAudioDetectiveSetRecordingFormat(LBAudioDetectiveRef inDetective, AudioStreamBasicDescription inStreamFormat);
+void LBAudioDetectiveSetRecordingSampleRate(LBAudioDetectiveRef inDetective, Float64 inSampleRate);
     
 /**
  Sets an `AudioStreamBasicDescription` for processing. The recording will be processed using this format. The format has to be float and PCM.
  @see LBAudioDetectiveDefaultProcessingFormat()
- @see LBAudioDetectiveGetProcessingFormat(LBAudioDetectiveRef)
+ @see LBAudioDetectiveGetProcessingSampleRate(LBAudioDetectiveRef)
      
  @param inDetective The receiving LBAudioDetective struct
  @param inStreamFormat The audio format to be used
 */
     
-void LBAudioDetectiveSetProcessingFormat(LBAudioDetectiveRef inDetective, AudioStreamBasicDescription inStreamFormat);
+void LBAudioDetectiveSetProcessingSampleRate(LBAudioDetectiveRef inDetective, Float64 inSampleRate);
     
 /**
  Every frequency contained in a window analyzed using the FFT are summed up. The number of pitch steps specifies in how many ranges the pitches are separated and then added.
@@ -223,8 +234,19 @@ void LBAudioDetectiveSetWindowSize(LBAudioDetectiveRef inDetective, UInt32 inWin
 void LBAudioDetectiveSetAnalysisStride(LBAudioDetectiveRef inDetective, UInt32 inAnalysisStride);
     
 /**
+ The length of the subfingerprints
+ @see LBAudioDetectiveSetSubfingerprintLength(LBAudioDetectiveRef, UInt32)
+     
+ @param inDetective The receiving LBAudioDetective struct
+     
+ @return An `UInt32` representing the length of one subfingerprint
+*/
+    
+void LBAudioDetectiveSetSubfingerprintLength(LBAudioDetectiveRef inDetective, UInt32 inSubfingerprintLength);
+    
+/**
  If the `LBAudioDetectiveRef` is used to record and analyze simultaneously, the recorded data will be saved in the specified directory using the recording format.
- @see LBAudioDetectiveSetProcessingFormat(LBAudioDetectiveRef, AudioStreamBasicDescritpion)
+ @see LBAudioDetectiveSetProcessingSampleRate(LBAudioDetectiveRef, Float64)
      
  @param inDetective The receiving LBAudioDetective struct
  @param inFileURL A file URL representing a directory

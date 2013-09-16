@@ -11,7 +11,7 @@
 typedef struct LBAudioDetectiveFingerprint *LBAudioDetectiveFingerprintRef;
 
 /**
- LBAudioDetectiveFingerprintRef is a struct reprensenting the final product of `LBAudioDetective`'s analysis. It consists of multiple subfingerprints which are made out of one `LBAudioDetectiveFrame`.
+ LBAudioDetectiveFingerprintRef is an opaque type reprensenting the final product of `LBAudioDetective`'s analysis. It consists of multiple subfingerprints which are made out of one `LBAudioDetectiveFrame`.
  */
 
 #pragma mark (De)Allocation
@@ -68,6 +68,19 @@ UInt32 LBAudioDetectiveFingerprintGetSubfingerprintLength(LBAudioDetectiveFinger
 */
 
 UInt32 LBAudioDetectiveFingerprintGetNumberOfSubfingerprints(LBAudioDetectiveFingerprintRef inFingerprint);
+
+/**
+ Retrieves the demanded subfingerprint at the given index
+ @see LBAudioDetectiveFingerprintAddSubfingerprint(LBAudioDetectiveFingerprintRef, Boolean*)
+ 
+ @param inFingerprint The receiving LBAudioDetectiveFingerprint struct
+ @param inIndex The index of the subfingerprint
+ @param outSubfingerprint A `Boolean` array that is filled up with the subfingerprint
+ 
+ @return An `UInt32` indicating the length of the subfingerprints
+ */
+
+UInt32 LBAudioDetectiveFingerprintGetSubfingerprintAtIndex(LBAudioDetectiveFingerprintRef inFingerprint, UInt32 inIndex, Boolean* outSubfingerprint);
 
 #pragma mark -
 #pragma mark Setters

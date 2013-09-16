@@ -11,7 +11,7 @@
 typedef struct LBAudioDetectiveFrame *LBAudioDetectiveFrameRef;
 
 /**
- LBAudioDetectiveFrameRef is an internal class used by LBAudioDetective to handle the FFT.
+ LBAudioDetectiveFrameRef is an internal type used by LBAudioDetective to handle the FFT.
 */
 
 #pragma mark (De)Allocation
@@ -24,7 +24,7 @@ typedef struct LBAudioDetectiveFrame *LBAudioDetectiveFrameRef;
  @return A LBAudioDetectiveFrame struct
 */
 
-LBAudioDetectiveFrameRef LBAudioDetectiveFrameNew(UInt32 inRowCount);
+LBAudioDetectiveFrameRef LBAudioDetectiveFrameNew(UInt32 inMaxRowCount);
 
 /**
  Deallocates the receiver.
@@ -82,6 +82,16 @@ Float32* LBAudioDetectiveFrameGetRow(LBAudioDetectiveFrameRef inFrame, UInt32 in
 
 Float32 LBAudioDetectiveFrameGetValue(LBAudioDetectiveFrameRef inFrame, UInt32 inRowIndex, UInt32 inColumnIndex);
 
+/**
+ Returns a `Boolean` flag indicating if the receiver is full
+ 
+ @param inFrame The receiving LBAudioDetectiveFrame struct
+ 
+ @return A `Boolean`
+ */
+
+Boolean LBAudioDetectiveFrameFull(LBAudioDetectiveFrameRef inFrame);
+
 #pragma mark -
 #pragma mark Setters
 
@@ -93,9 +103,11 @@ Float32 LBAudioDetectiveFrameGetValue(LBAudioDetectiveFrameRef inFrame, UInt32 i
  @param inRow The `Float32` array with a length of `inCount`
  @param inRowIndex The index of the new row
  @param inCount The length of `inRow`
+ 
+ @return A `Boolean` representing the success of the invocation
 */
 
-void LBAudioDetectiveFrameSetRow(LBAudioDetectiveFrameRef inFrame, Float32* inRow, UInt32 inRowIndex, UInt32 inCount);
+Boolean LBAudioDetectiveFrameSetRow(LBAudioDetectiveFrameRef inFrame, Float32* inRow, UInt32 inRowIndex, UInt32 inCount);
 
 #pragma mark -
 #pragma mark Other Methods
@@ -134,10 +146,9 @@ UInt32 LBAudioDetectiveFrameFingerprintLength(LBAudioDetectiveFrameRef inFrame);
  @param inFrame The receiving LBAudioDetectiveFrame struct
  @param inNumberOfWavelets The number of flags that will be taken into account
  @param outFingerprint An array of `Boolean`s at a given length representing a fingerprint for this `LBAudioDetectiveFrameRef`
- @param outFingerprintLength The length of the resulting fingerprint
 */
 
-void LBAudioDetectiveFrameExtractFingerprint(LBAudioDetectiveFrameRef inFrame, UInt32 inNumberOfWavelets, Boolean* outFingerprint, UInt32* outFingerprintLength);
+void LBAudioDetectiveFrameExtractFingerprint(LBAudioDetectiveFrameRef inFrame, UInt32 inNumberOfWavelets, Boolean* outFingerprint);
 
 /**
  Compares two frames on their equality.

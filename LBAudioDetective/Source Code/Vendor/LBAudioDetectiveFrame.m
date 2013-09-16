@@ -10,6 +10,7 @@
 
 typedef struct LBAudioDetectiveFrame {
     Float32** rows;
+    UInt32 maxNumberOfRows;
     UInt32 numberOfRows;
     UInt32 rowLength;
 } LBAudioDetectiveFrame;
@@ -18,13 +19,13 @@ void LBAudioDetectiveFrameDecomposeArray(Float32** ioArray, UInt32 inCount);
 
 #pragma mark (De)Allocation
 
-LBAudioDetectiveFrameRef LBAudioDetectiveFrameNew(UInt32 inRowCount) {
+LBAudioDetectiveFrameRef LBAudioDetectiveFrameNew(UInt32 inMaxRowCount) {
     size_t size = sizeof(LBAudioDetectiveFrame);
     LBAudioDetectiveFrame* instance = malloc(size);
     memset(instance, 0, size);
     
-    instance->rows = calloc(inRowCount, sizeof(Float32*));
-    instance->numberOfRows = inRowCount;
+    instance->rows = calloc(inMaxRowCount, sizeof(Float32*));
+    instance->maxNumberOfRows = inMaxRowCount;
     
     return instance;
 }
@@ -45,9 +46,10 @@ void LBAudioDetectiveFrameDispose(LBAudioDetectiveFrameRef inFrame) {
 LBAudioDetectiveFrameRef LBAudioDetectiveFrameCopy(LBAudioDetectiveFrameRef inFrame) {
     LBAudioDetectiveFrame* instance = (LBAudioDetectiveFrame*)calloc(1, sizeof(LBAudioDetectiveFrame));
     
+    instance->maxNumberOfRows = inFrame->maxNumberOfRows;
     instance->numberOfRows = inFrame->numberOfRows;
     instance->rowLength = inFrame->rowLength;
-    instance->rows = calloc(inFrame->numberOfRows, sizeof(Float32*));
+    instance->rows = calloc(inFrame->maxNumberOfRows, sizeof(Float32*));
     
     size_t rowSize = sizeof(Float32)*instance->rowLength;
     for (UInt32 i = 0; i < inFrame->numberOfRows; i++) {
@@ -74,10 +76,18 @@ Float32 LBAudioDetectiveFrameGetValue(LBAudioDetectiveFrameRef inFrame, UInt32 i
     return inFrame->rows[inRowIndex][inColumnIndex];
 }
 
+Boolean LBAudioDetectiveFrameFull(LBAudioDetectiveFrameRef inFrame) {
+    return (inFrame->numberOfRows >= inFrame->maxNumberOfRows);
+}
+
 #pragma mark -
 #pragma mark Setters
 
-void LBAudioDetectiveFrameSetRow(LBAudioDetectiveFrameRef inFrame, Float32* inRow, UInt32 inRowIndex, UInt32 inCount) {
+Boolean LBAudioDetectiveFrameSetRow(LBAudioDetectiveFrameRef inFrame, Float32* inRow, UInt32 inRowIndex, UInt32 inCount) {
+    if (LBAudioDetectiveFrameFull(inFrame)) {
+        return FALSE;
+    }
+    
     size_t size = sizeof(Float32)*inCount;
     Float32* newRow = (Float32*)calloc(inCount, sizeof(Float32));
     memcpy(newRow, inRow, size);
@@ -89,6 +99,9 @@ void LBAudioDetectiveFrameSetRow(LBAudioDetectiveFrameRef inFrame, Float32* inRo
     else {
         inFrame->rowLength = MIN(inFrame->rowLength, inCount);
     }
+    
+    inFrame->numberOfRows++;
+    return TRUE;
 }
 
 #pragma mark -
@@ -144,7 +157,7 @@ UInt32 LBAudioDetectiveFrameFingerprintLength(LBAudioDetectiveFrameRef inFrame) 
     return inFrame->numberOfRows*inFrame->rowLength*2;
 }
 
-void LBAudioDetectiveFrameExtractFingerprint(LBAudioDetectiveFrameRef inFrame, UInt32 inNumberOfWavelets, Boolean* outFingerprint, UInt32* outFingerprintLength) {
+void LBAudioDetectiveFrameExtractFingerprint(LBAudioDetectiveFrameRef inFrame, UInt32 inNumberOfWavelets, Boolean* outFingerprint) {
     NSMutableArray* array = [NSMutableArray arrayWithCapacity:inFrame->numberOfRows*inFrame->rowLength];
     
     for (UInt32 row = 0; row < inFrame->numberOfRows; row++) {
@@ -157,9 +170,6 @@ void LBAudioDetectiveFrameExtractFingerprint(LBAudioDetectiveFrameRef inFrame, U
         return [@(fabs(obj2.doubleValue)) compare:@(fabs(obj1.doubleValue))];
     }];
     
-    size_t size = LBAudioDetectiveFrameFingerprintSize(inFrame);
-    memset(outFingerprint, 0, size);
-    
     for (UInt32 i = 0; i < inNumberOfWavelets; i++) {
         Float64 value = ((NSNumber*)array[i]).doubleValue;
         if (value > 0.0) {
@@ -169,8 +179,6 @@ void LBAudioDetectiveFrameExtractFingerprint(LBAudioDetectiveFrameRef inFrame, U
             outFingerprint[(2*i)+1] = TRUE;
         }
     }
-    
-    *outFingerprintLength = array.count*2;
 }
 
 Boolean LBAudioDetectiveFrameEqualToFrame(LBAudioDetectiveFrameRef inFrame1, LBAudioDetectiveFrameRef inFrame2) {
@@ -180,6 +188,11 @@ Boolean LBAudioDetectiveFrameEqualToFrame(LBAudioDetectiveFrameRef inFrame1, LBA
     
     for (UInt32 r = 0; r < inFrame1->numberOfRows ; r++) {
         if (memcmp(inFrame1->rows[r], inFrame2->rows[r], inFrame1->rowLength*sizeof(Float32)) != 0) {
+//            for (UInt32 c = 0; c < inFrame1->rowLength; c++) {
+//                if (inFrame1->rows[r][c] != inFrame2->rows[r][c]) {
+//                    NSLog(@"r:%u c:%u %f != %f", (unsigned int)r, (unsigned int)c, inFrame1->rows[r][c], inFrame2->rows[r][c]);
+//                }
+//            }
             return FALSE;
         }
     }

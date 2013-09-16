@@ -13,8 +13,27 @@
 
 @property (nonatomic) LBAudioDetectiveRef detective;
 
++(NSString*)stringFromFingerprint:(LBAudioDetectiveFingerprintRef)fingerprint;
+
 @end
 @implementation LBAudioDetectiveTests
+
++(NSString*)stringFromFingerprint:(LBAudioDetectiveFingerprintRef)fingerprint {
+    NSMutableArray* array = [NSMutableArray new];
+    NSUInteger subfingerprintLength = LBAudioDetectiveFingerprintGetSubfingerprintLength(fingerprint);
+    for (NSUInteger i = 0; i < LBAudioDetectiveFingerprintGetNumberOfSubfingerprints(fingerprint); i++) {
+        Boolean subfingerprint[subfingerprintLength];
+        LBAudioDetectiveFingerprintGetSubfingerprintAtIndex(fingerprint, i, subfingerprint);
+        NSMutableString* subfingerprintString = [NSMutableString new];
+        for (NSUInteger j = 0; j < subfingerprintLength; j++) {
+            [subfingerprintString appendString:[NSString stringWithFormat:@"%i", subfingerprint[j]]];
+        }
+        
+        [array addObject:subfingerprintString];
+    }
+    
+    return [array componentsJoinedByString:@"+"];
+}
 
 -(void)setUp {
     [super setUp];
@@ -66,21 +85,23 @@
 }
 
 -(void)testFingerprintVersatility {
-    NSURL* originalURL = [[NSBundle mainBundle] URLForResource:@"Amsel" withExtension:@"caf"];
-    
-    LBAudioDetectiveProcessAudioURL(self.detective, originalURL);
-    LBAudioDetectiveFingerprintRef fingerprint1 = LBAudioDetectiveGetFingerprint(self.detective);
-    
-    LBAudioDetectiveRef differentDetective = LBAudioDetectiveNew();
-    LBAudioDetectiveProcessAudioURL(differentDetective, originalURL);
-    LBAudioDetectiveFingerprintRef fingerprint2 = LBAudioDetectiveGetFingerprint(differentDetective);
-    
-    if (!LBAudioDetectiveFingerprintEqualToFingerprint(fingerprint1, fingerprint2)) {
-        Float32 match = LBAudioDetectiveFingerprintCompareToFingerprint(fingerprint1, fingerprint2, 0);
-        XCTFail(@"Couldn't create persisting fingerprints for Amsel:%2f%%", match*100.0);
+    for (UInt32 i = 0; i < 10; i++) {
+        NSURL* originalURL = [[NSBundle mainBundle] URLForResource:@"Amsel" withExtension:@"caf"];
+        
+        LBAudioDetectiveProcessAudioURL(self.detective, originalURL);
+        LBAudioDetectiveFingerprintRef fingerprint1 = LBAudioDetectiveGetFingerprint(self.detective);
+        
+        LBAudioDetectiveRef differentDetective = LBAudioDetectiveNew();
+        LBAudioDetectiveProcessAudioURL(differentDetective, originalURL);
+        LBAudioDetectiveFingerprintRef fingerprint2 = LBAudioDetectiveGetFingerprint(differentDetective);
+        
+        if (!LBAudioDetectiveFingerprintEqualToFingerprint(fingerprint1, fingerprint2)) {
+            Float32 match = LBAudioDetectiveFingerprintCompareToFingerprint(fingerprint1, fingerprint2, LBAudioDetectiveFingerprintGetSubfingerprintLength(fingerprint1));
+            XCTFail(@"Couldn't create persisting fingerprints for Amsel:%2f%%", match*100.0);
+        }
+        
+        LBAudioDetectiveDispose(differentDetective);
     }
-    
-    LBAudioDetectiveDispose(differentDetective);
 }
 
 -(void)testFingerprintComparison {
@@ -91,8 +112,31 @@
     LBAudioDetectiveFingerprintRef copy = LBAudioDetectiveFingerprintCopy(fingerprint);
     
     if (!LBAudioDetectiveFingerprintEqualToFingerprint(fingerprint, copy)) {
-        Float32 match = LBAudioDetectiveFingerprintCompareToFingerprint(fingerprint, copy, 0);
+        Float32 match = LBAudioDetectiveFingerprintCompareToFingerprint(fingerprint, copy, LBAudioDetectiveFingerprintGetSubfingerprintLength(fingerprint));
         XCTFail(@"Couldn't create persisting fingerprints for Amsel:%2f%%", match*100.0);
+    }
+}
+
+-(void)testFingerprintPrints {
+    NSBundle* bundle = [NSBundle mainBundle];
+    NSArray* birds = @[@"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe"];
+    
+    [birds enumerateObjectsUsingBlock:^(NSString* originalBird, NSUInteger idx, BOOL *stop) {
+        NSURL* originalURL = [bundle URLForResource:[originalBird stringByAppendingString:@"_org"] withExtension:@"caf"];
+        LBAudioDetectiveProcessAudioURL(self.detective, originalURL);
+        LBAudioDetectiveFingerprintRef fingerprint = LBAudioDetectiveGetFingerprint(self.detective);
+        NSLog(@"%@\n%@", originalBird, [LBAudioDetectiveTests stringFromFingerprint:fingerprint]);
+    }];
+}
+
+-(void)testConversion {
+    NSURL* cafURL = [[NSBundle mainBundle] URLForResource:@"Amsel" withExtension:@"caf"];
+    NSURL* mp3URL = [[NSBundle mainBundle] URLForResource:@"Amsel" withExtension:@"mp3"];
+    
+    Float32 match = LBAudioDetectiveCompareAudioURLs(self.detective, cafURL, mp3URL, 0);
+    
+    if (match < 1.0f) {
+        XCTFail(@"Couldn't create the same fingerprint for mp3/caf files: %2f%%", match*100.0);
     }
 }
 

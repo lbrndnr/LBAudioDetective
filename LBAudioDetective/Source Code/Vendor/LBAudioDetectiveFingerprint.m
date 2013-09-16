@@ -69,6 +69,12 @@ UInt32 LBAudioDetectiveFingerprintGetNumberOfSubfingerprints(LBAudioDetectiveFin
     return inFingerprint->subfingerprintCount;
 }
 
+UInt32 LBAudioDetectiveFingerprintGetSubfingerprintAtIndex(LBAudioDetectiveFingerprintRef inFingerprint, UInt32 inIndex, Boolean* outSubfingerprint) {
+    memcpy(outSubfingerprint, inFingerprint->subfingerprints[inIndex], inFingerprint->subfingerprintLength*sizeof(Boolean));
+    
+    return inFingerprint->subfingerprintLength;
+}
+
 #pragma mark -
 #pragma mark Setters
 
