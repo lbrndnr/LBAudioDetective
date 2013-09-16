@@ -65,8 +65,6 @@
 		2BAD519817D107DA002827FB /* LBAudioDetectiveFingerprint.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD519717D107DA002827FB /* LBAudioDetectiveFingerprint.m */; };
 		2BAD519917D107DA002827FB /* LBAudioDetectiveFingerprint.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD519717D107DA002827FB /* LBAudioDetectiveFingerprint.m */; };
 		2BBC2D021726C679004A0163 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBC2D011726C679004A0163 /* AVFoundation.framework */; };
-		2BD4062917E4B2AD0069625F /* Amsel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2BD4062817E4B2AD0069625F /* Amsel.mp3 */; };
-		2BD4062A17E4B2AD0069625F /* Amsel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2BD4062817E4B2AD0069625F /* Amsel.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,7 +145,6 @@
 		2BAD519617D107DA002827FB /* LBAudioDetectiveFingerprint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBAudioDetectiveFingerprint.h; sourceTree = "<group>"; };
 		2BAD519717D107DA002827FB /* LBAudioDetectiveFingerprint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBAudioDetectiveFingerprint.m; sourceTree = "<group>"; };
 		2BBC2D011726C679004A0163 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		2BD4062817E4B2AD0069625F /* Amsel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Amsel.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,7 +200,6 @@
 		2B024DC817C89632006F0355 /* Sequences */ = {
 			isa = PBXGroup;
 			children = (
-				2BD4062817E4B2AD0069625F /* Amsel.mp3 */,
 				2B024DC917C89632006F0355 /* Amsel.caf */,
 				2B024DCA17C89632006F0355 /* Blaumeise.caf */,
 				2B024DCB17C89632006F0355 /* Buchfink.caf */,
@@ -441,7 +437,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BAD516E17D0BBAF002827FB /* Rabenkraehe_org.caf in Resources */,
-				2BD4062A17E4B2AD0069625F /* Amsel.mp3 in Resources */,
 				2B024DE017C89632006F0355 /* Buchfink.caf in Resources */,
 				2B024DE617C89632006F0355 /* Rabenkraehe.caf in Resources */,
 				2BAD516A17D0BBAF002827FB /* Blaumeise_org.caf in Resources */,
@@ -464,7 +459,6 @@
 				2B024DDD17C89632006F0355 /* Blaumeise.caf in Resources */,
 				2BAD516417D0BBA4002827FB /* Blaumeise_org.caf in Resources */,
 				2BAD516817D0BBA8002827FB /* Rabenkraehe_org.caf in Resources */,
-				2BD4062917E4B2AD0069625F /* Amsel.mp3 in Resources */,
 				2BAD516317D0BBA2002827FB /* Amsel_org.caf in Resources */,
 				2BAD516517D0BBA8002827FB /* Buchfink_org.caf in Resources */,
 				2BAD516717D0BBA8002827FB /* Kohlmeise_org.caf in Resources */,

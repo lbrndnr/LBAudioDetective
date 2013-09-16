@@ -129,15 +129,4 @@
     }];
 }
 
--(void)testConversion {
-    NSURL* cafURL = [[NSBundle mainBundle] URLForResource:@"Amsel" withExtension:@"caf"];
-    NSURL* mp3URL = [[NSBundle mainBundle] URLForResource:@"Amsel" withExtension:@"mp3"];
-    
-    Float32 match = LBAudioDetectiveCompareAudioURLs(self.detective, cafURL, mp3URL, 0);
-    
-    if (match < 1.0f) {
-        XCTFail(@"Couldn't create the same fingerprint for mp3/caf files: %2f%%", match*100.0);
-    }
-}
-
 @end
