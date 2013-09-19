@@ -59,7 +59,8 @@
         
         [birds enumerateObjectsUsingBlock:^(NSString* sequenceBird, NSUInteger idx, BOOL *stop) {
             NSURL* sequenceURL = [bundle URLForResource:sequenceBird withExtension:@"caf"];
-            Float32 match = LBAudioDetectiveCompareAudioURLs(self.detective, originalURL, sequenceURL, 0);
+            Float32 match = 0.0f;
+            LBAudioDetectiveCompareAudioURLs(self.detective, originalURL, sequenceURL, 0, &match);
             
             Boolean same = FALSE;
             NSString* originalName = originalBird;

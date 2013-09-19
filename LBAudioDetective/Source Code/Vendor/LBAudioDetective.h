@@ -10,7 +10,9 @@
 #import <AudioToolbox/AudioToolbox.h>
     
 #import "LBAudioDetectiveFingerprint.h"
-    
+
+extern const OSStatus kLBAudioDetectiveArgumentInvalid;
+
 extern const UInt32 kLBAudioDetectiveDefaultWindowSize;
 extern const UInt32 kLBAudioDetectiveDefaultAnalysisStride;
 extern const UInt32 kLBAudioDetectiveDefaultNumberOfPitchSteps;
@@ -45,7 +47,7 @@ LBAudioDetectiveRef LBAudioDetectiveNew();
  @param inDetective The `LBAudioDetectiveRef` that should be deallocated
 */
     
-void LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective);
+OSStatus LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective);
 
 #pragma mark -
 #pragma mark Getters
@@ -171,7 +173,7 @@ LBAudioDetectiveFingerprintRef LBAudioDetectiveGetFingerprint(LBAudioDetectiveRe
  @param inStreamFormat The audio format to be used
 */
     
-void LBAudioDetectiveSetRecordingSampleRate(LBAudioDetectiveRef inDetective, Float64 inSampleRate);
+OSStatus LBAudioDetectiveSetRecordingSampleRate(LBAudioDetectiveRef inDetective, Float64 inSampleRate);
     
 /**
  Sets an `AudioStreamBasicDescription` for processing. The recording will be processed using this format. The format has to be float and PCM.
@@ -182,7 +184,7 @@ void LBAudioDetectiveSetRecordingSampleRate(LBAudioDetectiveRef inDetective, Flo
  @param inStreamFormat The audio format to be used
 */
     
-void LBAudioDetectiveSetProcessingSampleRate(LBAudioDetectiveRef inDetective, Float64 inSampleRate);
+OSStatus LBAudioDetectiveSetProcessingSampleRate(LBAudioDetectiveRef inDetective, Float64 inSampleRate);
     
 /**
  Every frequency contained in a window analyzed using the FFT are summed up. The number of pitch steps specifies in how many ranges the pitches are separated and then added.
@@ -192,7 +194,7 @@ void LBAudioDetectiveSetProcessingSampleRate(LBAudioDetectiveRef inDetective, Fl
  @param inNumberOfPitchSteps The number of pitch ranges that should be used
 */
     
-void LBAudioDetectiveSetNumberOfPitchSteps(LBAudioDetectiveRef inDetective, UInt32 inNumberOfPitchSteps);
+OSStatus LBAudioDetectiveSetNumberOfPitchSteps(LBAudioDetectiveRef inDetective, UInt32 inNumberOfPitchSteps);
     
 /**
  The subfingerprint length specifies the number of FFT windows that are gathered into one subfingerprint.
@@ -202,7 +204,7 @@ void LBAudioDetectiveSetNumberOfPitchSteps(LBAudioDetectiveRef inDetective, UInt
  @param inSubfingerprintLength The number of FFT windows that should be contained in one subfingerprint
 */
 
-void LBAudioDetectiveSetSubfingerprintLength(LBAudioDetectiveRef inDetective, UInt32 inSubfingerprintLength);
+OSStatus LBAudioDetectiveSetSubfingerprintLength(LBAudioDetectiveRef inDetective, UInt32 inSubfingerprintLength);
     
 /**
  The window size represents the number of audio sample frames that are used in one FFT analysis.
@@ -212,7 +214,7 @@ void LBAudioDetectiveSetSubfingerprintLength(LBAudioDetectiveRef inDetective, UI
  @param inWindowSize The size of the window used for the FFT
 */
     
-void LBAudioDetectiveSetWindowSize(LBAudioDetectiveRef inDetective, UInt32 inWindowSize);
+OSStatus LBAudioDetectiveSetWindowSize(LBAudioDetectiveRef inDetective, UInt32 inWindowSize);
     
 /**
  The analysis stride specifies the number of audio sample frames that are iterated until the next FFT analysis. So if the first FFT analysis A1 starts at the index i, A2 will computed on index+analysisStride. The default window size and analysis stride are set in such manner that the FFTs will overlap if not differently specified.
@@ -222,7 +224,7 @@ void LBAudioDetectiveSetWindowSize(LBAudioDetectiveRef inDetective, UInt32 inWin
  @param inAnalysisStride The number of audio sample frames that are skipped between two FFTs
 */
     
-void LBAudioDetectiveSetAnalysisStride(LBAudioDetectiveRef inDetective, UInt32 inAnalysisStride);
+OSStatus LBAudioDetectiveSetAnalysisStride(LBAudioDetectiveRef inDetective, UInt32 inAnalysisStride);
     
 /**
  The length of the subfingerprints
@@ -233,7 +235,7 @@ void LBAudioDetectiveSetAnalysisStride(LBAudioDetectiveRef inDetective, UInt32 i
  @return An `UInt32` representing the length of one subfingerprint
 */
     
-void LBAudioDetectiveSetSubfingerprintLength(LBAudioDetectiveRef inDetective, UInt32 inSubfingerprintLength);
+OSStatus LBAudioDetectiveSetSubfingerprintLength(LBAudioDetectiveRef inDetective, UInt32 inSubfingerprintLength);
 
 #pragma mark -
 #pragma mark Processing
@@ -246,7 +248,7 @@ void LBAudioDetectiveSetSubfingerprintLength(LBAudioDetectiveRef inDetective, UI
  @param inFileURL A file URL representing the directory to the audio file to be processed
 */
 
-void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL);
+OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL);
     
 /**
  This function initializes the simultaneous analysis while recording.
@@ -258,7 +260,7 @@ void LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inF
  @param inCallbackHelper A helper pointer which is passed to the `inCallback` function
 */
 
-void LBAudioDetectiveProcess(LBAudioDetectiveRef inDetective, UInt32 inMaxNumberOfSubfingerprints, LBAudioDetectiveCallback inCallback, id inCallbackHelper);
+OSStatus LBAudioDetectiveProcess(LBAudioDetectiveRef inDetective, UInt32 inMaxNumberOfSubfingerprints, LBAudioDetectiveCallback inCallback, id inCallbackHelper);
     
 /**
  This function initializes the simultaneous analysis while recording. The current fingerprint will be reset.
@@ -267,7 +269,7 @@ void LBAudioDetectiveProcess(LBAudioDetectiveRef inDetective, UInt32 inMaxNumber
  @param inDetective The receiving LBAudioDetective struct
 */
     
-void LBAudioDetectiveStartProcessing(LBAudioDetectiveRef inDetective);
+OSStatus LBAudioDetectiveStartProcessing(LBAudioDetectiveRef inDetective);
     
 /**
  This function stops the simultaneous analysis while recording and the recording itself. The fingerprint is after this call finished and can be obtained.
@@ -276,7 +278,7 @@ void LBAudioDetectiveStartProcessing(LBAudioDetectiveRef inDetective);
  @param inDetective The receiving LBAudioDetective struct
 */
     
-void LBAudioDetectiveStopProcessing(LBAudioDetectiveRef inDetective);
+OSStatus LBAudioDetectiveStopProcessing(LBAudioDetectiveRef inDetective);
     
 /**
  This function resumes the simultaneous analysis while recording and the recording itself.
@@ -285,7 +287,7 @@ void LBAudioDetectiveStopProcessing(LBAudioDetectiveRef inDetective);
  @param inDetective The receiving LBAudioDetective struct
 */
 
-void LBAudioDetectiveResumeProcessing(LBAudioDetectiveRef inDetective);
+OSStatus LBAudioDetectiveResumeProcessing(LBAudioDetectiveRef inDetective);
     
 /**
  This function pauses the simultaneous analysis while recording and the recording itself.
@@ -294,7 +296,7 @@ void LBAudioDetectiveResumeProcessing(LBAudioDetectiveRef inDetective);
  @param inDetective The receiving LBAudioDetective struct
 */
     
-void LBAudioDetectivePauseProcessing(LBAudioDetectiveRef inDetective);
+OSStatus LBAudioDetectivePauseProcessing(LBAudioDetectiveRef inDetective);
 
 #pragma mark -
 #pragma mark Comparison
@@ -311,6 +313,6 @@ void LBAudioDetectivePauseProcessing(LBAudioDetectiveRef inDetective);
  @return A `Float32` value between 0.0 and 1.0 which indicates how equal `inFileURL2` is to `inFileURL1`
 */
 
-Float32 LBAudioDetectiveCompareAudioURLs(LBAudioDetectiveRef inDetective, NSURL* inFileURL1, NSURL* inFileURL2, UInt32 inComparisonRange);
+OSStatus LBAudioDetectiveCompareAudioURLs(LBAudioDetectiveRef inDetective, NSURL* inFileURL1, NSURL* inFileURL2, UInt32 inComparisonRange, Float32* outMatch);
 
 #pragma mark -

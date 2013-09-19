@@ -112,7 +112,8 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
     
     [birds enumerateObjectsUsingBlock:^(NSString* originalBird, NSUInteger idx, BOOL *stop) {
         NSURL* originalURL = [bundle URLForResource:[originalBird stringByAppendingString:@"_org"] withExtension:@"caf"];
-        Float32 match = LBAudioDetectiveCompareAudioURLs(self.detective, originalURL, URL, 0);
+        Float32 match = 0.0;
+        LBAudioDetectiveCompareAudioURLs(self.detective, originalURL, URL, 0, &match);
         [matches setObject:@(match) forKey:originalBird];
     }];
     
