@@ -91,7 +91,7 @@ static inline void LBErrorCheckOnLine(OSStatus error, int line) {
         sprintf(errorString, "%d", (int)error);
     }
     
-    fprintf(stderr, "Error %s on line %i", errorString, line);
+    fprintf(stderr, "Error %s on line %i\n", errorString, line);
 }
 
 #pragma mark -
@@ -122,14 +122,18 @@ OSStatus LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective) {
     error = LBAudioDetectiveStopProcessing(inDetective);
     LBErrorCheck(error);
     
-    error = AUGraphUninitialize(inDetective->graph);
-    LBErrorCheck(error);
+    if (inDetective->graph) {
+        error = AUGraphUninitialize(inDetective->graph);
+        LBErrorCheck(error);
+        
+        error = AUGraphClose(inDetective->graph);
+        LBErrorCheck(error);
+    }
     
-    error = AUGraphClose(inDetective->graph);
-    LBErrorCheck(error);
-    
-    error = ExtAudioFileDispose(inDetective->inputFile);
-    LBErrorCheck(error);
+    if (inDetective->inputFile) {
+        error = ExtAudioFileDispose(inDetective->inputFile);
+        LBErrorCheck(error);
+    }
     
     LBAudioDetectiveFingerprintDispose(inDetective->fingerprint);
     
@@ -321,7 +325,6 @@ OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL*
             
             currentFrame = LBAudioDetectiveFrameNew(kLBAudioDetectiveDefaultNumberOfRowsPerFrame);
         }
-
         
         error = ExtAudioFileRead(inDetective->inputFile, &readNumberFrames, &bufferList);
         LBErrorCheck(error);
@@ -372,8 +375,11 @@ OSStatus LBAudioDetectiveStartProcessing(LBAudioDetectiveRef inDetective) {
 OSStatus LBAudioDetectiveStopProcessing(LBAudioDetectiveRef inDetective) {
     OSStatus error = noErr;
     Boolean isProcessing = FALSE;
-    error = AUGraphIsRunning(inDetective->graph, &isProcessing);
-    LBErrorCheck(error);
+    
+    if (inDetective->graph) {
+        error = AUGraphIsRunning(inDetective->graph, &isProcessing);
+        LBErrorCheck(error);
+    }
     
     if (isProcessing) {
         error = AUGraphStop(inDetective->graph);
