@@ -19,13 +19,11 @@
 		2B024DE417C89632006F0355 /* Kohlmeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCD17C89632006F0355 /* Kohlmeise.caf */; };
 		2B024DE517C89632006F0355 /* Rabenkraehe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCE17C89632006F0355 /* Rabenkraehe.caf */; };
 		2B024DE617C89632006F0355 /* Rabenkraehe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCE17C89632006F0355 /* Rabenkraehe.caf */; };
-		2B024DE717C89638006F0355 /* LBAudioDetective.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183E31724584C004CB1BC /* LBAudioDetective.mm */; };
+		2B024DE717C89638006F0355 /* LBAudioDetective.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183E31724584C004CB1BC /* LBAudioDetective.m */; };
 		2B024DE917C8965C006F0355 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DE817C8965C006F0355 /* Images.xcassets */; };
 		2B3DFF4417CE620B00EC4032 /* LBAudioDetectiveFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B3DFF4317CE620B00EC4032 /* LBAudioDetectiveFrame.m */; };
 		2B494BDD172806A500FFB6FC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B494BDC172806A500FFB6FC /* Accelerate.framework */; };
 		2B5A8DDF17E4B982004D5D08 /* LBAudioDetectiveFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B3DFF4317CE620B00EC4032 /* LBAudioDetectiveFrame.m */; };
-		2B62EA2417D7B1D00047A547 /* CARingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B62EA2217D7B1D00047A547 /* CARingBuffer.cpp */; };
-		2B62EA2517D7B1D00047A547 /* CARingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B62EA2217D7B1D00047A547 /* CARingBuffer.cpp */; };
 		2B79D050177479E70060DE41 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D03E177479E70060DE41 /* AFHTTPClient.m */; };
 		2B79D051177479E70060DE41 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D040177479E70060DE41 /* AFHTTPRequestOperation.m */; };
 		2B79D052177479E70060DE41 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B79D042177479E70060DE41 /* AFImageRequestOperation.m */; };
@@ -48,7 +46,7 @@
 		2BA183CC17245839004CB1BC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183CB17245839004CB1BC /* main.m */; };
 		2BA183D017245839004CB1BC /* LBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183CF17245839004CB1BC /* LBAppDelegate.m */; };
 		2BA183D917245839004CB1BC /* LBTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183D817245839004CB1BC /* LBTableViewController.m */; };
-		2BA183E41724584C004CB1BC /* LBAudioDetective.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183E31724584C004CB1BC /* LBAudioDetective.mm */; };
+		2BA183E41724584C004CB1BC /* LBAudioDetective.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183E31724584C004CB1BC /* LBAudioDetective.m */; };
 		2BA183EC1724631E004CB1BC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183EB1724631E004CB1BC /* AudioToolbox.framework */; };
 		2BAD516317D0BBA2002827FB /* Amsel_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD515D17D0BB32002827FB /* Amsel_org.caf */; };
 		2BAD516417D0BBA4002827FB /* Blaumeise_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD515E17D0BB32002827FB /* Blaumeise_org.caf */; };
@@ -88,8 +86,6 @@
 		2B3DFF4217CE620B00EC4032 /* LBAudioDetectiveFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBAudioDetectiveFrame.h; sourceTree = "<group>"; };
 		2B3DFF4317CE620B00EC4032 /* LBAudioDetectiveFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBAudioDetectiveFrame.m; sourceTree = "<group>"; };
 		2B494BDC172806A500FFB6FC /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		2B62EA2217D7B1D00047A547 /* CARingBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CARingBuffer.cpp; path = ../../../../../../../../Developer/Extras/CoreAudio/PublicUtility/CARingBuffer.cpp; sourceTree = "<group>"; };
-		2B62EA2317D7B1D00047A547 /* CARingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CARingBuffer.h; path = ../../../../../../../../Developer/Extras/CoreAudio/PublicUtility/CARingBuffer.h; sourceTree = "<group>"; };
 		2B79D03D177479E70060DE41 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
 		2B79D03E177479E70060DE41 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
 		2B79D03F177479E70060DE41 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
@@ -111,9 +107,6 @@
 		2B79D04F177479E70060DE41 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		2B79D05917747D4F0060DE41 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		2B7AFE1517D70FC000B8EAD9 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
-		2B7AFE1917D783B800B8EAD9 /* CABitOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CABitOperations.h; path = ../../../../../../../../Developer/Extras/CoreAudio/PublicUtility/CABitOperations.h; sourceTree = "<group>"; };
-		2B7AFE1A17D783D700B8EAD9 /* CAAutoDisposer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CAAutoDisposer.h; path = ../../../../../../../../Developer/Extras/CoreAudio/PublicUtility/CAAutoDisposer.h; sourceTree = "<group>"; };
-		2B7AFE2217D7841D00B8EAD9 /* CAAtomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CAAtomic.h; path = ../../../../../../../../Developer/Extras/CoreAudio/PublicUtility/CAAtomic.h; sourceTree = "<group>"; };
 		2B8C5E0517C8908900B9F2EE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		2B8C5E1B17C890B000B9F2EE /* LBAudioDetectiveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LBAudioDetectiveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B8C5E2117C890B000B9F2EE /* LBAudioDetectiveTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LBAudioDetectiveTests-Info.plist"; sourceTree = "<group>"; };
@@ -133,7 +126,7 @@
 		2BA183D717245839004CB1BC /* LBTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBTableViewController.h; sourceTree = "<group>"; };
 		2BA183D817245839004CB1BC /* LBTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBTableViewController.m; sourceTree = "<group>"; };
 		2BA183E21724584C004CB1BC /* LBAudioDetective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBAudioDetective.h; sourceTree = "<group>"; };
-		2BA183E31724584C004CB1BC /* LBAudioDetective.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LBAudioDetective.mm; sourceTree = "<group>"; };
+		2BA183E31724584C004CB1BC /* LBAudioDetective.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBAudioDetective.m; sourceTree = "<group>"; };
 		2BA183EB1724631E004CB1BC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		2BA183ED17246329004CB1BC /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		2BAD515D17D0BB32002827FB /* Amsel_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Amsel_org.caf; sourceTree = "<group>"; };
@@ -213,7 +206,6 @@
 		2B79D03B177479BF0060DE41 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
-				2B7AFE1217D70EC300B8EAD9 /* CARingBuffer */,
 				2B79D03C177479E70060DE41 /* AFNetworking */,
 			);
 			path = Externals;
@@ -243,18 +235,6 @@
 				2B79D04F177479E70060DE41 /* UIImageView+AFNetworking.m */,
 			);
 			path = AFNetworking;
-			sourceTree = "<group>";
-		};
-		2B7AFE1217D70EC300B8EAD9 /* CARingBuffer */ = {
-			isa = PBXGroup;
-			children = (
-				2B62EA2217D7B1D00047A547 /* CARingBuffer.cpp */,
-				2B62EA2317D7B1D00047A547 /* CARingBuffer.h */,
-				2B7AFE1A17D783D700B8EAD9 /* CAAutoDisposer.h */,
-				2B7AFE1917D783B800B8EAD9 /* CABitOperations.h */,
-				2B7AFE2217D7841D00B8EAD9 /* CAAtomic.h */,
-			);
-			name = CARingBuffer;
 			sourceTree = "<group>";
 		};
 		2B8C5DFC17C88F3300B9F2EE /* Source Code */ = {
@@ -351,7 +331,7 @@
 			isa = PBXGroup;
 			children = (
 				2BA183E21724584C004CB1BC /* LBAudioDetective.h */,
-				2BA183E31724584C004CB1BC /* LBAudioDetective.mm */,
+				2BA183E31724584C004CB1BC /* LBAudioDetective.m */,
 				2B3DFF4217CE620B00EC4032 /* LBAudioDetectiveFrame.h */,
 				2B3DFF4317CE620B00EC4032 /* LBAudioDetectiveFrame.m */,
 				2BAD519617D107DA002827FB /* LBAudioDetectiveFingerprint.h */,
@@ -482,9 +462,8 @@
 			files = (
 				2BAD519917D107DA002827FB /* LBAudioDetectiveFingerprint.m in Sources */,
 				2B5A8DDF17E4B982004D5D08 /* LBAudioDetectiveFrame.m in Sources */,
-				2B024DE717C89638006F0355 /* LBAudioDetective.mm in Sources */,
+				2B024DE717C89638006F0355 /* LBAudioDetective.m in Sources */,
 				2B8C5E2617C890B000B9F2EE /* LBAudioDetectiveTests.m in Sources */,
-				2B62EA2517D7B1D00047A547 /* CARingBuffer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,11 +482,10 @@
 				2BA183D017245839004CB1BC /* LBAppDelegate.m in Sources */,
 				2BA183D917245839004CB1BC /* LBTableViewController.m in Sources */,
 				2B79D053177479E70060DE41 /* AFJSONRequestOperation.m in Sources */,
-				2BA183E41724584C004CB1BC /* LBAudioDetective.mm in Sources */,
+				2BA183E41724584C004CB1BC /* LBAudioDetective.m in Sources */,
 				2BAD519817D107DA002827FB /* LBAudioDetectiveFingerprint.m in Sources */,
 				2B79D055177479E70060DE41 /* AFPropertyListRequestOperation.m in Sources */,
 				2B79D054177479E70060DE41 /* AFNetworkActivityIndicatorManager.m in Sources */,
-				2B62EA2417D7B1D00047A547 /* CARingBuffer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

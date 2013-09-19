@@ -134,7 +134,6 @@ NSString* const kLBTableViewCellIdentifier = @"LBTableViewCellIdentifier";
 }
 
 -(void)startProcessing:(id)sender {
-    LBAudioDetectiveSetWriteAudioToURL(self.detective, [self URLForRecording:[self.tableView numberOfRowsInSection:0]]);
     LBAudioDetectiveStartProcessing(self.detective);
     
     UIBarButtonItem* processItem = self.navigationItem.rightBarButtonItem;

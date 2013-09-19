@@ -8,17 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import <AVFoundation/AVFoundation.h>
-#import <AudioUnit/AudioUnit.h>
-#import <Accelerate/Accelerate.h>
-
-#if defined(__cplusplus)
-
-extern "C" {
-#endif
     
 #import "LBAudioDetectiveFingerprint.h"
-#import "LBAudioDetectiveFrame.h"
     
 extern const UInt32 kLBAudioDetectiveDefaultWindowSize;
 extern const UInt32 kLBAudioDetectiveDefaultAnalysisStride;
@@ -243,16 +234,6 @@ void LBAudioDetectiveSetAnalysisStride(LBAudioDetectiveRef inDetective, UInt32 i
 */
     
 void LBAudioDetectiveSetSubfingerprintLength(LBAudioDetectiveRef inDetective, UInt32 inSubfingerprintLength);
-    
-/**
- If the `LBAudioDetectiveRef` is used to record and analyze simultaneously, the recorded data will be saved in the specified directory using the recording format.
- @see LBAudioDetectiveSetProcessingSampleRate(LBAudioDetectiveRef, Float64)
-     
- @param inDetective The receiving LBAudioDetective struct
- @param inFileURL A file URL representing a directory
-*/
-
-void LBAudioDetectiveSetWriteAudioToURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL);
 
 #pragma mark -
 #pragma mark Processing
@@ -333,7 +314,3 @@ void LBAudioDetectivePauseProcessing(LBAudioDetectiveRef inDetective);
 Float32 LBAudioDetectiveCompareAudioURLs(LBAudioDetectiveRef inDetective, NSURL* inFileURL1, NSURL* inFileURL2, UInt32 inComparisonRange);
 
 #pragma mark -
-    
-#if defined(__cplusplus)
-}
-#endif
