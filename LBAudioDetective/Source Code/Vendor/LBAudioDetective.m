@@ -329,7 +329,7 @@ OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL*
         error = ExtAudioFileRead(inDetective->inputFile, &readNumberFrames, &bufferList);
         LBErrorCheck(error);
         
-        Float32 data[inDetective->pitchStepCount];
+        Float32 data[inDetective->pitchStepCount];        
         error = LBAudioDetectiveComputeFrequencies(inDetective, (SInt16*)bufferList.mBuffers[0].mData, readNumberFrames, inDetective->processingFormat, inDetective->pitchStepCount, data);
         LBErrorCheck(error);
         LBAudioDetectiveFrameSetRow(currentFrame, data, frameIndex, inDetective->pitchStepCount);
@@ -338,7 +338,9 @@ OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL*
         error = ExtAudioFileSeek(inDetective->inputFile, offset);
         LBErrorCheck(error);
     }
-    frames[f] = currentFrame;
+    if (currentFrame && LBAudioDetectiveFrameFull(currentFrame)) {
+        frames[f] = currentFrame;
+    }
     
     LBAudioDetectiveFingerprintRef fingerprint = LBAudioDetectiveFingerprintNew(0);
     LBAudioDetectiveSynthesizeFingerprint(inDetective, frames, framesCount, &fingerprint);

@@ -47,9 +47,11 @@
     [super tearDown];
 }
 
+// The recordings used to generate the fingerprints are from http://www.vogelwarte.ch . They have been modified and cropped.
+
 -(void)testIdentification {
-    NSBundle* bundle = [NSBundle mainBundle];
-    NSArray* birds = @[@"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe"];
+    NSBundle* bundle = [NSBundle bundleForClass:[self class]];
+    NSArray* birds = @[@"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe", @"Elster", @"Zilpzalp", @"Turmfalke", @"Strassentaube"];
     
     [birds enumerateObjectsUsingBlock:^(NSString* originalBird, NSUInteger idx, BOOL *stop) {
         NSURL* originalURL = [bundle URLForResource:[originalBird stringByAppendingString:@"_org"] withExtension:@"caf"];
@@ -120,7 +122,7 @@
 
 -(void)testFingerprintPrints {
     NSBundle* bundle = [NSBundle mainBundle];
-    NSArray* birds = @[@"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe"];
+    NSArray* birds = @[@"Elster", @"Zilpzalp", @"Turmfalke", @"Strassentaube", @"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe"];
     
     [birds enumerateObjectsUsingBlock:^(NSString* originalBird, NSUInteger idx, BOOL *stop) {
         NSURL* originalURL = [bundle URLForResource:[originalBird stringByAppendingString:@"_org"] withExtension:@"caf"];

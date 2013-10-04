@@ -7,18 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2B024DDB17C89632006F0355 /* Amsel.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC917C89632006F0355 /* Amsel.caf */; };
-		2B024DDC17C89632006F0355 /* Amsel.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DC917C89632006F0355 /* Amsel.caf */; };
-		2B024DDD17C89632006F0355 /* Blaumeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCA17C89632006F0355 /* Blaumeise.caf */; };
-		2B024DDE17C89632006F0355 /* Blaumeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCA17C89632006F0355 /* Blaumeise.caf */; };
-		2B024DDF17C89632006F0355 /* Buchfink.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCB17C89632006F0355 /* Buchfink.caf */; };
-		2B024DE017C89632006F0355 /* Buchfink.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCB17C89632006F0355 /* Buchfink.caf */; };
-		2B024DE117C89632006F0355 /* Haussperling.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCC17C89632006F0355 /* Haussperling.caf */; };
-		2B024DE217C89632006F0355 /* Haussperling.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCC17C89632006F0355 /* Haussperling.caf */; };
-		2B024DE317C89632006F0355 /* Kohlmeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCD17C89632006F0355 /* Kohlmeise.caf */; };
-		2B024DE417C89632006F0355 /* Kohlmeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCD17C89632006F0355 /* Kohlmeise.caf */; };
-		2B024DE517C89632006F0355 /* Rabenkraehe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCE17C89632006F0355 /* Rabenkraehe.caf */; };
-		2B024DE617C89632006F0355 /* Rabenkraehe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DCE17C89632006F0355 /* Rabenkraehe.caf */; };
 		2B024DE717C89638006F0355 /* LBAudioDetective.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183E31724584C004CB1BC /* LBAudioDetective.m */; };
 		2B024DE917C8965C006F0355 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B024DE817C8965C006F0355 /* Images.xcassets */; };
 		2B3DFF4417CE620B00EC4032 /* LBAudioDetectiveFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B3DFF4317CE620B00EC4032 /* LBAudioDetectiveFrame.m */; };
@@ -48,21 +36,49 @@
 		2BA183D917245839004CB1BC /* LBTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183D817245839004CB1BC /* LBTableViewController.m */; };
 		2BA183E41724584C004CB1BC /* LBAudioDetective.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA183E31724584C004CB1BC /* LBAudioDetective.m */; };
 		2BA183EC1724631E004CB1BC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BA183EB1724631E004CB1BC /* AudioToolbox.framework */; };
-		2BAD516317D0BBA2002827FB /* Amsel_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD515D17D0BB32002827FB /* Amsel_org.caf */; };
-		2BAD516417D0BBA4002827FB /* Blaumeise_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD515E17D0BB32002827FB /* Blaumeise_org.caf */; };
-		2BAD516517D0BBA8002827FB /* Buchfink_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD515F17D0BB32002827FB /* Buchfink_org.caf */; };
-		2BAD516617D0BBA8002827FB /* Haussperling_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD516017D0BB32002827FB /* Haussperling_org.caf */; };
-		2BAD516717D0BBA8002827FB /* Kohlmeise_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD516117D0BB32002827FB /* Kohlmeise_org.caf */; };
-		2BAD516817D0BBA8002827FB /* Rabenkraehe_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD516217D0BB32002827FB /* Rabenkraehe_org.caf */; };
-		2BAD516917D0BBAF002827FB /* Amsel_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD515D17D0BB32002827FB /* Amsel_org.caf */; };
-		2BAD516A17D0BBAF002827FB /* Blaumeise_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD515E17D0BB32002827FB /* Blaumeise_org.caf */; };
-		2BAD516B17D0BBAF002827FB /* Buchfink_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD515F17D0BB32002827FB /* Buchfink_org.caf */; };
-		2BAD516C17D0BBAF002827FB /* Haussperling_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD516017D0BB32002827FB /* Haussperling_org.caf */; };
-		2BAD516D17D0BBAF002827FB /* Kohlmeise_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD516117D0BB32002827FB /* Kohlmeise_org.caf */; };
-		2BAD516E17D0BBAF002827FB /* Rabenkraehe_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD516217D0BB32002827FB /* Rabenkraehe_org.caf */; };
 		2BAD519817D107DA002827FB /* LBAudioDetectiveFingerprint.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD519717D107DA002827FB /* LBAudioDetectiveFingerprint.m */; };
 		2BAD519917D107DA002827FB /* LBAudioDetectiveFingerprint.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD519717D107DA002827FB /* LBAudioDetectiveFingerprint.m */; };
 		2BBC2D021726C679004A0163 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBC2D011726C679004A0163 /* AVFoundation.framework */; };
+		2BED141317FF2896008FD665 /* Amsel_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED13FE17FF2896008FD665 /* Amsel_org.caf */; };
+		2BED141417FF2896008FD665 /* Amsel_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED13FE17FF2896008FD665 /* Amsel_org.caf */; };
+		2BED141517FF2896008FD665 /* Blaumeise_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED13FF17FF2896008FD665 /* Blaumeise_org.caf */; };
+		2BED141617FF2896008FD665 /* Blaumeise_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED13FF17FF2896008FD665 /* Blaumeise_org.caf */; };
+		2BED141717FF2896008FD665 /* Buchfink_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140017FF2896008FD665 /* Buchfink_org.caf */; };
+		2BED141817FF2896008FD665 /* Buchfink_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140017FF2896008FD665 /* Buchfink_org.caf */; };
+		2BED141917FF2896008FD665 /* Elster_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140117FF2896008FD665 /* Elster_org.caf */; };
+		2BED141A17FF2896008FD665 /* Elster_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140117FF2896008FD665 /* Elster_org.caf */; };
+		2BED141B17FF2896008FD665 /* Haussperling_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140217FF2896008FD665 /* Haussperling_org.caf */; };
+		2BED141C17FF2896008FD665 /* Haussperling_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140217FF2896008FD665 /* Haussperling_org.caf */; };
+		2BED141D17FF2896008FD665 /* Kohlmeise_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140317FF2896008FD665 /* Kohlmeise_org.caf */; };
+		2BED141E17FF2896008FD665 /* Kohlmeise_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140317FF2896008FD665 /* Kohlmeise_org.caf */; };
+		2BED141F17FF2896008FD665 /* Rabenkraehe_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140417FF2896008FD665 /* Rabenkraehe_org.caf */; };
+		2BED142017FF2896008FD665 /* Rabenkraehe_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140417FF2896008FD665 /* Rabenkraehe_org.caf */; };
+		2BED142117FF2896008FD665 /* Strassentaube_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140517FF2896008FD665 /* Strassentaube_org.caf */; };
+		2BED142217FF2896008FD665 /* Strassentaube_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140517FF2896008FD665 /* Strassentaube_org.caf */; };
+		2BED142317FF2896008FD665 /* Turmfalke_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140617FF2896008FD665 /* Turmfalke_org.caf */; };
+		2BED142417FF2896008FD665 /* Turmfalke_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140617FF2896008FD665 /* Turmfalke_org.caf */; };
+		2BED142517FF2896008FD665 /* Zilpzalp_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140717FF2896008FD665 /* Zilpzalp_org.caf */; };
+		2BED142617FF2896008FD665 /* Zilpzalp_org.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140717FF2896008FD665 /* Zilpzalp_org.caf */; };
+		2BED142717FF2896008FD665 /* Amsel.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140917FF2896008FD665 /* Amsel.caf */; };
+		2BED142817FF2896008FD665 /* Amsel.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140917FF2896008FD665 /* Amsel.caf */; };
+		2BED142917FF2896008FD665 /* Blaumeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140A17FF2896008FD665 /* Blaumeise.caf */; };
+		2BED142A17FF2896008FD665 /* Blaumeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140A17FF2896008FD665 /* Blaumeise.caf */; };
+		2BED142B17FF2896008FD665 /* Buchfink.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140B17FF2896008FD665 /* Buchfink.caf */; };
+		2BED142C17FF2896008FD665 /* Buchfink.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140B17FF2896008FD665 /* Buchfink.caf */; };
+		2BED142D17FF2896008FD665 /* Elster.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140C17FF2896008FD665 /* Elster.caf */; };
+		2BED142E17FF2896008FD665 /* Elster.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140C17FF2896008FD665 /* Elster.caf */; };
+		2BED142F17FF2896008FD665 /* Haussperling.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140D17FF2896008FD665 /* Haussperling.caf */; };
+		2BED143017FF2896008FD665 /* Haussperling.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140D17FF2896008FD665 /* Haussperling.caf */; };
+		2BED143117FF2896008FD665 /* Kohlmeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140E17FF2896008FD665 /* Kohlmeise.caf */; };
+		2BED143217FF2896008FD665 /* Kohlmeise.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140E17FF2896008FD665 /* Kohlmeise.caf */; };
+		2BED143317FF2896008FD665 /* Rabenkraehe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140F17FF2896008FD665 /* Rabenkraehe.caf */; };
+		2BED143417FF2896008FD665 /* Rabenkraehe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED140F17FF2896008FD665 /* Rabenkraehe.caf */; };
+		2BED143517FF2896008FD665 /* Strassentaube.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED141017FF2896008FD665 /* Strassentaube.caf */; };
+		2BED143617FF2896008FD665 /* Strassentaube.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED141017FF2896008FD665 /* Strassentaube.caf */; };
+		2BED143717FF2896008FD665 /* Turmfalke.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED141117FF2896008FD665 /* Turmfalke.caf */; };
+		2BED143817FF2896008FD665 /* Turmfalke.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED141117FF2896008FD665 /* Turmfalke.caf */; };
+		2BED143917FF2896008FD665 /* Zilpzalp.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED141217FF2896008FD665 /* Zilpzalp.caf */; };
+		2BED143A17FF2896008FD665 /* Zilpzalp.caf in Resources */ = {isa = PBXBuildFile; fileRef = 2BED141217FF2896008FD665 /* Zilpzalp.caf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,12 +92,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2B024DC917C89632006F0355 /* Amsel.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Amsel.caf; sourceTree = "<group>"; };
-		2B024DCA17C89632006F0355 /* Blaumeise.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Blaumeise.caf; sourceTree = "<group>"; };
-		2B024DCB17C89632006F0355 /* Buchfink.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Buchfink.caf; sourceTree = "<group>"; };
-		2B024DCC17C89632006F0355 /* Haussperling.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Haussperling.caf; sourceTree = "<group>"; };
-		2B024DCD17C89632006F0355 /* Kohlmeise.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kohlmeise.caf; sourceTree = "<group>"; };
-		2B024DCE17C89632006F0355 /* Rabenkraehe.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rabenkraehe.caf; sourceTree = "<group>"; };
 		2B024DE817C8965C006F0355 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2B3DFF4217CE620B00EC4032 /* LBAudioDetectiveFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBAudioDetectiveFrame.h; sourceTree = "<group>"; };
 		2B3DFF4317CE620B00EC4032 /* LBAudioDetectiveFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBAudioDetectiveFrame.m; sourceTree = "<group>"; };
@@ -129,15 +139,29 @@
 		2BA183E31724584C004CB1BC /* LBAudioDetective.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBAudioDetective.m; sourceTree = "<group>"; };
 		2BA183EB1724631E004CB1BC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		2BA183ED17246329004CB1BC /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
-		2BAD515D17D0BB32002827FB /* Amsel_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Amsel_org.caf; sourceTree = "<group>"; };
-		2BAD515E17D0BB32002827FB /* Blaumeise_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Blaumeise_org.caf; sourceTree = "<group>"; };
-		2BAD515F17D0BB32002827FB /* Buchfink_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Buchfink_org.caf; sourceTree = "<group>"; };
-		2BAD516017D0BB32002827FB /* Haussperling_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Haussperling_org.caf; sourceTree = "<group>"; };
-		2BAD516117D0BB32002827FB /* Kohlmeise_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kohlmeise_org.caf; sourceTree = "<group>"; };
-		2BAD516217D0BB32002827FB /* Rabenkraehe_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rabenkraehe_org.caf; sourceTree = "<group>"; };
 		2BAD519617D107DA002827FB /* LBAudioDetectiveFingerprint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBAudioDetectiveFingerprint.h; sourceTree = "<group>"; };
 		2BAD519717D107DA002827FB /* LBAudioDetectiveFingerprint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBAudioDetectiveFingerprint.m; sourceTree = "<group>"; };
 		2BBC2D011726C679004A0163 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		2BED13FE17FF2896008FD665 /* Amsel_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Amsel_org.caf; sourceTree = "<group>"; };
+		2BED13FF17FF2896008FD665 /* Blaumeise_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Blaumeise_org.caf; sourceTree = "<group>"; };
+		2BED140017FF2896008FD665 /* Buchfink_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Buchfink_org.caf; sourceTree = "<group>"; };
+		2BED140117FF2896008FD665 /* Elster_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Elster_org.caf; sourceTree = "<group>"; };
+		2BED140217FF2896008FD665 /* Haussperling_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Haussperling_org.caf; sourceTree = "<group>"; };
+		2BED140317FF2896008FD665 /* Kohlmeise_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kohlmeise_org.caf; sourceTree = "<group>"; };
+		2BED140417FF2896008FD665 /* Rabenkraehe_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rabenkraehe_org.caf; sourceTree = "<group>"; };
+		2BED140517FF2896008FD665 /* Strassentaube_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Strassentaube_org.caf; sourceTree = "<group>"; };
+		2BED140617FF2896008FD665 /* Turmfalke_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Turmfalke_org.caf; sourceTree = "<group>"; };
+		2BED140717FF2896008FD665 /* Zilpzalp_org.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zilpzalp_org.caf; sourceTree = "<group>"; };
+		2BED140917FF2896008FD665 /* Amsel.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Amsel.caf; sourceTree = "<group>"; };
+		2BED140A17FF2896008FD665 /* Blaumeise.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Blaumeise.caf; sourceTree = "<group>"; };
+		2BED140B17FF2896008FD665 /* Buchfink.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Buchfink.caf; sourceTree = "<group>"; };
+		2BED140C17FF2896008FD665 /* Elster.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Elster.caf; sourceTree = "<group>"; };
+		2BED140D17FF2896008FD665 /* Haussperling.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Haussperling.caf; sourceTree = "<group>"; };
+		2BED140E17FF2896008FD665 /* Kohlmeise.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Kohlmeise.caf; sourceTree = "<group>"; };
+		2BED140F17FF2896008FD665 /* Rabenkraehe.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Rabenkraehe.caf; sourceTree = "<group>"; };
+		2BED141017FF2896008FD665 /* Strassentaube.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Strassentaube.caf; sourceTree = "<group>"; };
+		2BED141117FF2896008FD665 /* Turmfalke.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Turmfalke.caf; sourceTree = "<group>"; };
+		2BED141217FF2896008FD665 /* Zilpzalp.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zilpzalp.caf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,41 +192,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2B024DC017C89632006F0355 /* Birds */ = {
-			isa = PBXGroup;
-			children = (
-				2B024DC117C89632006F0355 /* Archive */,
-				2B024DC817C89632006F0355 /* Sequences */,
-			);
-			path = Birds;
-			sourceTree = "<group>";
-		};
-		2B024DC117C89632006F0355 /* Archive */ = {
-			isa = PBXGroup;
-			children = (
-				2BAD515D17D0BB32002827FB /* Amsel_org.caf */,
-				2BAD515E17D0BB32002827FB /* Blaumeise_org.caf */,
-				2BAD515F17D0BB32002827FB /* Buchfink_org.caf */,
-				2BAD516017D0BB32002827FB /* Haussperling_org.caf */,
-				2BAD516117D0BB32002827FB /* Kohlmeise_org.caf */,
-				2BAD516217D0BB32002827FB /* Rabenkraehe_org.caf */,
-			);
-			path = Archive;
-			sourceTree = "<group>";
-		};
-		2B024DC817C89632006F0355 /* Sequences */ = {
-			isa = PBXGroup;
-			children = (
-				2B024DC917C89632006F0355 /* Amsel.caf */,
-				2B024DCA17C89632006F0355 /* Blaumeise.caf */,
-				2B024DCB17C89632006F0355 /* Buchfink.caf */,
-				2B024DCC17C89632006F0355 /* Haussperling.caf */,
-				2B024DCD17C89632006F0355 /* Kohlmeise.caf */,
-				2B024DCE17C89632006F0355 /* Rabenkraehe.caf */,
-			);
-			path = Sequences;
-			sourceTree = "<group>";
-		};
 		2B79D03B177479BF0060DE41 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
@@ -317,8 +306,8 @@
 		2BA183C617245839004CB1BC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2BED13FC17FF2896008FD665 /* Birds */,
 				2B024DE817C8965C006F0355 /* Images.xcassets */,
-				2B024DC017C89632006F0355 /* Birds */,
 				2BA183C717245839004CB1BC /* LBAudioDetective-Info.plist */,
 				2BA183C817245839004CB1BC /* InfoPlist.strings */,
 				2BA183CB17245839004CB1BC /* main.m */,
@@ -338,6 +327,50 @@
 				2BAD519717D107DA002827FB /* LBAudioDetectiveFingerprint.m */,
 			);
 			path = Vendor;
+			sourceTree = "<group>";
+		};
+		2BED13FC17FF2896008FD665 /* Birds */ = {
+			isa = PBXGroup;
+			children = (
+				2BED13FD17FF2896008FD665 /* Archive */,
+				2BED140817FF2896008FD665 /* Sequences */,
+			);
+			name = Birds;
+			path = ../../../../Documents/Schule/Maturarbeit/Birds;
+			sourceTree = "<group>";
+		};
+		2BED13FD17FF2896008FD665 /* Archive */ = {
+			isa = PBXGroup;
+			children = (
+				2BED13FE17FF2896008FD665 /* Amsel_org.caf */,
+				2BED13FF17FF2896008FD665 /* Blaumeise_org.caf */,
+				2BED140017FF2896008FD665 /* Buchfink_org.caf */,
+				2BED140117FF2896008FD665 /* Elster_org.caf */,
+				2BED140217FF2896008FD665 /* Haussperling_org.caf */,
+				2BED140317FF2896008FD665 /* Kohlmeise_org.caf */,
+				2BED140417FF2896008FD665 /* Rabenkraehe_org.caf */,
+				2BED140517FF2896008FD665 /* Strassentaube_org.caf */,
+				2BED140617FF2896008FD665 /* Turmfalke_org.caf */,
+				2BED140717FF2896008FD665 /* Zilpzalp_org.caf */,
+			);
+			path = Archive;
+			sourceTree = "<group>";
+		};
+		2BED140817FF2896008FD665 /* Sequences */ = {
+			isa = PBXGroup;
+			children = (
+				2BED140917FF2896008FD665 /* Amsel.caf */,
+				2BED140A17FF2896008FD665 /* Blaumeise.caf */,
+				2BED140B17FF2896008FD665 /* Buchfink.caf */,
+				2BED140C17FF2896008FD665 /* Elster.caf */,
+				2BED140D17FF2896008FD665 /* Haussperling.caf */,
+				2BED140E17FF2896008FD665 /* Kohlmeise.caf */,
+				2BED140F17FF2896008FD665 /* Rabenkraehe.caf */,
+				2BED141017FF2896008FD665 /* Strassentaube.caf */,
+				2BED141117FF2896008FD665 /* Turmfalke.caf */,
+				2BED141217FF2896008FD665 /* Zilpzalp.caf */,
+			);
+			path = Sequences;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -416,19 +449,27 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2BAD516E17D0BBAF002827FB /* Rabenkraehe_org.caf in Resources */,
-				2B024DE017C89632006F0355 /* Buchfink.caf in Resources */,
-				2B024DE617C89632006F0355 /* Rabenkraehe.caf in Resources */,
-				2BAD516A17D0BBAF002827FB /* Blaumeise_org.caf in Resources */,
-				2BAD516C17D0BBAF002827FB /* Haussperling_org.caf in Resources */,
-				2B024DDE17C89632006F0355 /* Blaumeise.caf in Resources */,
-				2BAD516D17D0BBAF002827FB /* Kohlmeise_org.caf in Resources */,
-				2B024DDC17C89632006F0355 /* Amsel.caf in Resources */,
-				2B024DE417C89632006F0355 /* Kohlmeise.caf in Resources */,
-				2B024DE217C89632006F0355 /* Haussperling.caf in Resources */,
-				2BAD516917D0BBAF002827FB /* Amsel_org.caf in Resources */,
+				2BED142617FF2896008FD665 /* Zilpzalp_org.caf in Resources */,
+				2BED143617FF2896008FD665 /* Strassentaube.caf in Resources */,
+				2BED143A17FF2896008FD665 /* Zilpzalp.caf in Resources */,
+				2BED141417FF2896008FD665 /* Amsel_org.caf in Resources */,
+				2BED142417FF2896008FD665 /* Turmfalke_org.caf in Resources */,
+				2BED143817FF2896008FD665 /* Turmfalke.caf in Resources */,
+				2BED142817FF2896008FD665 /* Amsel.caf in Resources */,
+				2BED141817FF2896008FD665 /* Buchfink_org.caf in Resources */,
+				2BED142A17FF2896008FD665 /* Blaumeise.caf in Resources */,
+				2BED142E17FF2896008FD665 /* Elster.caf in Resources */,
+				2BED142217FF2896008FD665 /* Strassentaube_org.caf in Resources */,
+				2BED142017FF2896008FD665 /* Rabenkraehe_org.caf in Resources */,
+				2BED143417FF2896008FD665 /* Rabenkraehe.caf in Resources */,
 				2B8C5E2417C890B000B9F2EE /* InfoPlist.strings in Resources */,
-				2BAD516B17D0BBAF002827FB /* Buchfink_org.caf in Resources */,
+				2BED141617FF2896008FD665 /* Blaumeise_org.caf in Resources */,
+				2BED142C17FF2896008FD665 /* Buchfink.caf in Resources */,
+				2BED141C17FF2896008FD665 /* Haussperling_org.caf in Resources */,
+				2BED143017FF2896008FD665 /* Haussperling.caf in Resources */,
+				2BED141A17FF2896008FD665 /* Elster_org.caf in Resources */,
+				2BED143217FF2896008FD665 /* Kohlmeise.caf in Resources */,
+				2BED141E17FF2896008FD665 /* Kohlmeise_org.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,20 +477,28 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B024DDD17C89632006F0355 /* Blaumeise.caf in Resources */,
-				2BAD516417D0BBA4002827FB /* Blaumeise_org.caf in Resources */,
-				2BAD516817D0BBA8002827FB /* Rabenkraehe_org.caf in Resources */,
-				2BAD516317D0BBA2002827FB /* Amsel_org.caf in Resources */,
-				2BAD516517D0BBA8002827FB /* Buchfink_org.caf in Resources */,
-				2BAD516717D0BBA8002827FB /* Kohlmeise_org.caf in Resources */,
-				2BAD516617D0BBA8002827FB /* Haussperling_org.caf in Resources */,
+				2BED142117FF2896008FD665 /* Strassentaube_org.caf in Resources */,
+				2BED142D17FF2896008FD665 /* Elster.caf in Resources */,
+				2BED143717FF2896008FD665 /* Turmfalke.caf in Resources */,
+				2BED142517FF2896008FD665 /* Zilpzalp_org.caf in Resources */,
+				2BED143317FF2896008FD665 /* Rabenkraehe.caf in Resources */,
+				2BED142B17FF2896008FD665 /* Buchfink.caf in Resources */,
+				2BED141917FF2896008FD665 /* Elster_org.caf in Resources */,
+				2BED141F17FF2896008FD665 /* Rabenkraehe_org.caf in Resources */,
+				2BED142917FF2896008FD665 /* Blaumeise.caf in Resources */,
+				2BED141D17FF2896008FD665 /* Kohlmeise_org.caf in Resources */,
+				2BED142717FF2896008FD665 /* Amsel.caf in Resources */,
 				2BA183CA17245839004CB1BC /* InfoPlist.strings in Resources */,
-				2B024DE317C89632006F0355 /* Kohlmeise.caf in Resources */,
-				2B024DDF17C89632006F0355 /* Buchfink.caf in Resources */,
-				2B024DE117C89632006F0355 /* Haussperling.caf in Resources */,
+				2BED143917FF2896008FD665 /* Zilpzalp.caf in Resources */,
+				2BED141317FF2896008FD665 /* Amsel_org.caf in Resources */,
 				2B024DE917C8965C006F0355 /* Images.xcassets in Resources */,
-				2B024DDB17C89632006F0355 /* Amsel.caf in Resources */,
-				2B024DE517C89632006F0355 /* Rabenkraehe.caf in Resources */,
+				2BED143117FF2896008FD665 /* Kohlmeise.caf in Resources */,
+				2BED142F17FF2896008FD665 /* Haussperling.caf in Resources */,
+				2BED142317FF2896008FD665 /* Turmfalke_org.caf in Resources */,
+				2BED141517FF2896008FD665 /* Blaumeise_org.caf in Resources */,
+				2BED143517FF2896008FD665 /* Strassentaube.caf in Resources */,
+				2BED141717FF2896008FD665 /* Buchfink_org.caf in Resources */,
+				2BED141B17FF2896008FD665 /* Haussperling_org.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
