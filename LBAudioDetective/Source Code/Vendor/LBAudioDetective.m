@@ -150,7 +150,7 @@ OSStatus LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective) {
 #pragma mark Getters
 
 AudioStreamBasicDescription LBAudioDetectiveDefaultRecordingFormat() {
-    UInt32 bytesPerSample = sizeof(SInt16);
+    UInt32 bytesPerSample = sizeof(SInt32);
     
     AudioStreamBasicDescription asbd = {0};
     memset(&asbd, 0, sizeof(AudioStreamBasicDescription));

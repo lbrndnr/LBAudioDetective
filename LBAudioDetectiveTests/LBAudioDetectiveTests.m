@@ -49,9 +49,9 @@
 
 // The recordings used to generate the fingerprints are from http://www.vogelwarte.ch . They have been modified and cropped.
 
--(void)testIdentification {
+-(void)testFingerprinting {
     NSBundle* bundle = [NSBundle bundleForClass:[self class]];
-    NSArray* birds = @[@"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe", @"Elster", @"Zilpzalp", @"Turmfalke", @"Strassentaube"];
+    NSArray* birds = @[@"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe", @"Zaunkoenig", @"Zilpzalp", @"Turmfalke", @"Strassentaube"];
     
     [birds enumerateObjectsUsingBlock:^(NSString* originalBird, NSUInteger idx, BOOL *stop) {
         NSURL* originalURL = [bundle URLForResource:[originalBird stringByAppendingString:@"_org"] withExtension:@"caf"];
@@ -61,6 +61,44 @@
         
         [birds enumerateObjectsUsingBlock:^(NSString* sequenceBird, NSUInteger idx, BOOL *stop) {
             NSURL* sequenceURL = [bundle URLForResource:sequenceBird withExtension:@"caf"];
+            Float32 match = 0.0f;
+            LBAudioDetectiveCompareAudioURLs(self.detective, originalURL, sequenceURL, 0, &match);
+            
+            Boolean same = FALSE;
+            NSString* originalName = originalBird;
+            NSString* sequenceName = sequenceBird;
+            if ([originalBird isEqualToString:sequenceBird]) {
+                same = TRUE;
+                originalName = [originalName uppercaseString];
+                sequenceName = [sequenceName uppercaseString];
+            }
+            
+            if (maxMatch < match) {
+                maxMatch = match;
+                failed = !same;
+            }
+            
+            NSLog(@"Identification(%@-%@):%2.2f%%", originalName, sequenceName, match*100.0);
+        }];
+        
+        if (failed) {
+            XCTFail(@"%@ didn't match the best", originalBird);
+        }
+    }];
+}
+
+-(void)testIdentification {
+    NSBundle* bundle = [NSBundle bundleForClass:[self class]];
+    NSArray* birds = @[@"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe", @"Zaunkoenig", @"Zilpzalp", @"Turmfalke", @"Strassentaube"];
+    
+    [birds enumerateObjectsUsingBlock:^(NSString* originalBird, NSUInteger idx, BOOL *stop) {
+        NSURL* originalURL = [bundle URLForResource:[originalBird stringByAppendingString:@"_org"] withExtension:@"caf"];
+        
+        __block Float32 maxMatch = 0.0f;
+        __block Boolean failed = FALSE;
+        
+        [birds enumerateObjectsUsingBlock:^(NSString* sequenceBird, NSUInteger idx, BOOL *stop) {
+            NSURL* sequenceURL = [bundle URLForResource:[sequenceBird stringByAppendingString:@"_dif"] withExtension:@"caf"];
             Float32 match = 0.0f;
             LBAudioDetectiveCompareAudioURLs(self.detective, originalURL, sequenceURL, 0, &match);
             
@@ -122,7 +160,7 @@
 
 -(void)testFingerprintPrints {
     NSBundle* bundle = [NSBundle mainBundle];
-    NSArray* birds = @[@"Elster", @"Zilpzalp", @"Turmfalke", @"Strassentaube", @"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe"];
+    NSArray* birds = @[@"Zaunkoenig", @"Zilpzalp", @"Turmfalke", @"Strassentaube", @"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe"];
     
     [birds enumerateObjectsUsingBlock:^(NSString* originalBird, NSUInteger idx, BOOL *stop) {
         NSURL* originalURL = [bundle URLForResource:[originalBird stringByAppendingString:@"_org"] withExtension:@"caf"];
