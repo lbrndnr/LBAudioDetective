@@ -150,6 +150,7 @@ OSStatus LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective) {
 #pragma mark Getters
 
 AudioStreamBasicDescription LBAudioDetectiveDefaultRecordingFormat() {
+    Float64 hardwareSampleRate = [[AVAudioSession sharedInstance] sampleRate];
     UInt32 bytesPerSample = sizeof(SInt32);
     
     AudioStreamBasicDescription asbd = {0};
@@ -161,7 +162,7 @@ AudioStreamBasicDescription LBAudioDetectiveDefaultRecordingFormat() {
 	asbd.mChannelsPerFrame = 1;
 	asbd.mBytesPerPacket = bytesPerSample*asbd.mFramesPerPacket;
 	asbd.mBytesPerFrame = bytesPerSample*asbd.mChannelsPerFrame;
-    asbd.mSampleRate = 5512.0;
+    asbd.mSampleRate = hardwareSampleRate;
     
     return asbd;
 }
