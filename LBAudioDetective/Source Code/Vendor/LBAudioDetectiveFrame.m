@@ -107,6 +107,8 @@ Boolean LBAudioDetectiveFrameSetRow(LBAudioDetectiveFrameRef inFrame, Float32* i
 #pragma mark -
 #pragma mark Other Methods
 
+// Haar Wavlet Decomposition Code from http://www.codeproject.com/Articles/206507/Duplicates-detector-via-audio-fingerprinting
+
 void LBAudioDetectiveFrameDecompose(LBAudioDetectiveFrameRef inFrame) {
     for (UInt32 row = 0; row < inFrame->numberOfRows; row++) {
         LBAudioDetectiveFrameDecomposeArray(&inFrame->rows[row], inFrame->rowLength);

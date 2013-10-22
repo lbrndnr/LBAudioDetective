@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "LBAudioDetective.h"
+#import "LBAudioDetectiveFrame.h"
 
 @interface LBAudioDetectiveTests : XCTestCase
 
@@ -51,13 +52,16 @@
 
 -(void)testFingerprintingWithSequenceSuffix:(NSString*)suffix {
     NSBundle* bundle = [NSBundle bundleForClass:[self class]];
-    NSArray* birds = @[@"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe", @"Zaunkoenig", @"Zilpzalp", @"Turmfalke", @"Strassentaube"];
+    NSArray* birds = @[@"BlackBird", @"BlueTit", @"Chaffinch", @"Sparrow", @"GreatTit", @"Crow", @"Wren", @"Chiffchaff", @"Kestrel", @"Pigeon"];
+    
     
     [birds enumerateObjectsUsingBlock:^(NSString* originalBird, NSUInteger idx, BOOL *stop) {
         NSURL* originalURL = [bundle URLForResource:originalBird withExtension:@"caf"];
         
         __block Float32 maxMatch = 0.0f;
         __block Boolean failed = FALSE;
+        __block NSMutableDictionary* results = [NSMutableDictionary new];
+        __block Float32 trueMatch = 0.0f;
         
         [birds enumerateObjectsUsingBlock:^(NSString* sequenceBird, NSUInteger idx, BOOL *stop) {
             NSURL* sequenceURL = [bundle URLForResource:[sequenceBird stringByAppendingString:suffix] withExtension:@"caf"];
@@ -71,6 +75,7 @@
                 same = TRUE;
                 originalName = [originalName uppercaseString];
                 sequenceName = [sequenceName uppercaseString];
+                trueMatch = match*100.0f;
             }
             
             if (maxMatch < match) {
@@ -78,12 +83,16 @@
                 failed = !same;
             }
             
-            NSLog(@"Identification(%@-%@):%2.2f%%", originalName, sequenceName, match*100.0);
+            [results setObject:[NSString stringWithFormat:@"%@/%@", originalName, sequenceName] forKey:@(match*100.0f)];
         }];
         
         if (failed) {
             XCTFail(@"%@ didn't match the best", originalBird);
+            
+            //NSLog(@"%@->%@", [results objectForKey:@(maxMatch*100.0f)], @(maxMatch*100.0f));
         }
+        NSLog(@"%@->%@", [NSString stringWithFormat:@"%@/%@", originalBird.uppercaseString, originalBird.uppercaseString], @(trueMatch));
+        NSLog(@"%@", results);
     }];
 }
 
@@ -97,14 +106,24 @@
     [self testFingerprintingWithSequenceSuffix:@"_dif"];
 }
 
-// Test 3
+// Test 3.1
+-(void)testFingerprintingWithBlured1Birds {
+    [self testFingerprintingWithSequenceSuffix:@"_blu1"];
+}
+
+// Test 3.2
+-(void)testFingerprintingWithBlured2Birds {
+    [self testFingerprintingWithSequenceSuffix:@"_blu2"];
+}
+
+// Test 4
 -(void)testFingerprintingWithRecordedBirds {
     [self testFingerprintingWithSequenceSuffix:@"_rec"];
 }
 
 -(void)testFingerprintVersatility {
     for (UInt32 i = 0; i < 10; i++) {
-        NSURL* originalURL = [[NSBundle mainBundle] URLForResource:@"Amsel" withExtension:@"caf"];
+        NSURL* originalURL = [[NSBundle mainBundle] URLForResource:@"BlackBird" withExtension:@"caf"];
         
         LBAudioDetectiveProcessAudioURL(self.detective, originalURL);
         LBAudioDetectiveFingerprintRef fingerprint1 = LBAudioDetectiveGetFingerprint(self.detective);
@@ -123,7 +142,7 @@
 }
 
 -(void)testFingerprintComparison {
-    NSURL* originalURL = [[NSBundle mainBundle] URLForResource:@"Amsel" withExtension:@"caf"];
+    NSURL* originalURL = [[NSBundle mainBundle] URLForResource:@"BlackBird" withExtension:@"caf"];
     
     LBAudioDetectiveProcessAudioURL(self.detective, originalURL);
     LBAudioDetectiveFingerprintRef fingerprint = LBAudioDetectiveGetFingerprint(self.detective);
@@ -137,7 +156,7 @@
 
 -(void)testFingerprintPrints {
     NSBundle* bundle = [NSBundle mainBundle];
-    NSArray* birds = @[@"Zaunkoenig", @"Zilpzalp", @"Turmfalke", @"Strassentaube", @"Amsel", @"Blaumeise", @"Buchfink", @"Haussperling", @"Kohlmeise", @"Rabenkraehe"];
+    NSArray* birds = @[@"BlackBird", @"BlueTit", @"Chaffinch", @"Sparrow", @"GreatTit", @"Crow", @"Wren", @"Chiffchaff", @"Kestrel", @"Pigeon"];
     
     [birds enumerateObjectsUsingBlock:^(NSString* originalBird, NSUInteger idx, BOOL *stop) {
         NSURL* originalURL = [bundle URLForResource:[originalBird stringByAppendingString:@"_org"] withExtension:@"caf"];
@@ -145,6 +164,27 @@
         LBAudioDetectiveFingerprintRef fingerprint = LBAudioDetectiveGetFingerprint(self.detective);
         NSLog(@"%@\n%@", originalBird, [LBAudioDetectiveTests stringFromFingerprint:fingerprint]);
     }];
+}
+
+-(void)testHaarWaveletDecomposition {
+    LBAudioDetectiveFrameRef frame = LBAudioDetectiveFrameNew(3);
+    
+    Float32 row1[] = {538, 940, 1940, 1794};
+    Float32 row2[] = {1840, 213, 1320, 913};
+    Float32 row3[] = {192, 591, 492, 1921};
+    
+    LBAudioDetectiveFrameSetRow(frame, row1, 0, 4);
+    LBAudioDetectiveFrameSetRow(frame, row2, 1, 4);
+    LBAudioDetectiveFrameSetRow(frame, row3, 2, 4);
+    
+    LBAudioDetectiveFrameDecompose(frame);
+    
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 4; c++) {
+            printf("%f\t", LBAudioDetectiveFrameGetValue(frame, r, c));
+        }
+        printf("\n");
+    }
 }
 
 @end
