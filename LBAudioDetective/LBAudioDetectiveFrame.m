@@ -108,6 +108,7 @@ Boolean LBAudioDetectiveFrameSetRow(LBAudioDetectiveFrameRef inFrame, Float32* i
 #pragma mark Other Methods
 
 // Haar Wavlet Decomposition Code from http://www.codeproject.com/Articles/206507/Duplicates-detector-via-audio-fingerprinting
+// Decomposes the frame with the haar wavelet transform
 
 void LBAudioDetectiveFrameDecompose(LBAudioDetectiveFrameRef inFrame) {
     for (UInt32 row = 0; row < inFrame->numberOfRows; row++) {
@@ -159,7 +160,11 @@ UInt32 LBAudioDetectiveFrameFingerprintLength(LBAudioDetectiveFrameRef inFrame) 
     return inFrame->numberOfRows*inFrame->rowLength*2;
 }
 
+// Creates a subfingerprint, an array of booleans, of the receiving frame
+
 void LBAudioDetectiveFrameExtractFingerprint(LBAudioDetectiveFrameRef inFrame, UInt32 inNumberOfWavelets, Boolean* outFingerprint) {
+    // USe NSMutableArray to easily sort the data according to their absolute values
+    
     NSMutableArray* array = [NSMutableArray arrayWithCapacity:inFrame->numberOfRows*inFrame->rowLength];
     
     for (UInt32 row = 0; row < inFrame->numberOfRows; row++) {
@@ -171,6 +176,8 @@ void LBAudioDetectiveFrameExtractFingerprint(LBAudioDetectiveFrameRef inFrame, U
     [array sortUsingComparator:^NSComparisonResult(NSNumber* obj1, NSNumber* obj2) {
         return [@(fabs(obj2.doubleValue)) compare:@(fabs(obj1.doubleValue))];
     }];
+    
+    // Create the boolean array and store the signs of the top 200 values in it
     
     for (UInt32 i = 0; i < inNumberOfWavelets; i++) {
         Float64 value = ((NSNumber*)array[i]).doubleValue;

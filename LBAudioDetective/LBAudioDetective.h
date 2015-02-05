@@ -51,16 +51,6 @@ OSStatus LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective);
 
 #pragma mark -
 #pragma mark Getters
-
-/**
- Returns the default `AudioStreamBasicDescription` for recording. The recording will be saved in this format if not differently specified.
- @see LBAudioDetectiveGetRecordingSampleRate(LBAudioDetectiveRef)
- @see LBAudioDetectiveSetRecordingSampleRate(LBAudioDetectiveRef, Float64)
-     
- @return An `AudioStreamBasicDescription struct
-*/
-    
-AudioStreamBasicDescription LBAudioDetectiveDefaultRecordingFormat();
     
 /**
  Returns the default `AudioStreamBasicDescription` for processing. The recording or audio file will be processed using this format if not differently specified.
@@ -71,18 +61,6 @@ AudioStreamBasicDescription LBAudioDetectiveDefaultRecordingFormat();
 */
     
 AudioStreamBasicDescription LBAudioDetectiveDefaultProcessingFormat();
-
-/**
- Returns the currently set `Float64` sample rate for recording. The recording will be saved in this format.
- @see LBAudioDetectiveDefaultRecordingFormat()
- @see LBAudioDetectiveSetRecordingSampleRate(LBAudioDetectiveRef, Float64)
-     
- @param inDetective The receiving LBAudioDetective struct
- 
- @return An `AudioStreamBasicDescription` struct
-*/
-
-Float64 LBAudioDetectiveGetRecordingSampleRate(LBAudioDetectiveRef inDetective);
     
 /**
  Returns the currently set `Float64` sample rate for processing. The recording or audio file will be processed using this format.
@@ -249,54 +227,6 @@ OSStatus LBAudioDetectiveSetSubfingerprintLength(LBAudioDetectiveRef inDetective
 */
 
 OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL);
-    
-/**
- This function initializes the simultaneous analysis while recording.
- @see LBAudioDetectiveGetFingerprint(LBAudioDetectiveRef)
-     
- @param inDetective The receiving LBAudioDetective struct
- @param inMaxNumberOfProcessedSamples The number of audio sample frames to be processed
- @param inCallback A function which is called as soon as `inMaxNumberOfProcessedSamples` is reached
- @param inCallbackHelper A helper pointer which is passed to the `inCallback` function
-*/
-
-OSStatus LBAudioDetectiveProcess(LBAudioDetectiveRef inDetective, UInt32 inMaxNumberOfSubfingerprints, LBAudioDetectiveCallback inCallback, id inCallbackHelper);
-    
-/**
- This function initializes the simultaneous analysis while recording. The current fingerprint will be reset.
- @see LBAudioDetectiveGetFingerprint(LBAudioDetectiveRef)
-     
- @param inDetective The receiving LBAudioDetective struct
-*/
-    
-OSStatus LBAudioDetectiveStartProcessing(LBAudioDetectiveRef inDetective);
-    
-/**
- This function stops the simultaneous analysis while recording and the recording itself. The fingerprint is after this call finished and can be obtained.
- @see LBAudioDetectiveGetFingerprint(LBAudioDetectiveRef)
-     
- @param inDetective The receiving LBAudioDetective struct
-*/
-    
-OSStatus LBAudioDetectiveStopProcessing(LBAudioDetectiveRef inDetective);
-    
-/**
- This function resumes the simultaneous analysis while recording and the recording itself.
- @see LBAudioDetectiveGetFingerprint(LBAudioDetectiveRef)
-     
- @param inDetective The receiving LBAudioDetective struct
-*/
-
-OSStatus LBAudioDetectiveResumeProcessing(LBAudioDetectiveRef inDetective);
-    
-/**
- This function pauses the simultaneous analysis while recording and the recording itself.
- @see LBAudioDetectiveGetFingerprint(LBAudioDetectiveRef)
- 
- @param inDetective The receiving LBAudioDetective struct
-*/
-    
-OSStatus LBAudioDetectivePauseProcessing(LBAudioDetectiveRef inDetective);
 
 #pragma mark -
 #pragma mark Comparison

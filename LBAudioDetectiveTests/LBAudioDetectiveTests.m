@@ -123,7 +123,7 @@
 
 -(void)testFingerprintVersatility {
     for (UInt32 i = 0; i < 10; i++) {
-        NSURL* originalURL = [[NSBundle mainBundle] URLForResource:@"BlackBird" withExtension:@"caf"];
+        NSURL* originalURL = [[NSBundle bundleForClass:self.class] URLForResource:@"BlackBird" withExtension:@"caf"];
         
         LBAudioDetectiveProcessAudioURL(self.detective, originalURL);
         LBAudioDetectiveFingerprintRef fingerprint1 = LBAudioDetectiveGetFingerprint(self.detective);
@@ -142,7 +142,7 @@
 }
 
 -(void)testFingerprintComparison {
-    NSURL* originalURL = [[NSBundle mainBundle] URLForResource:@"BlackBird" withExtension:@"caf"];
+    NSURL* originalURL = [[NSBundle bundleForClass:self.class] URLForResource:@"BlackBird" withExtension:@"caf"];
     
     LBAudioDetectiveProcessAudioURL(self.detective, originalURL);
     LBAudioDetectiveFingerprintRef fingerprint = LBAudioDetectiveGetFingerprint(self.detective);
@@ -155,7 +155,7 @@
 }
 
 -(void)testFingerprintPrints {
-    NSBundle* bundle = [NSBundle mainBundle];
+    NSBundle* bundle = [NSBundle bundleForClass:self.class];
     NSArray* birds = @[@"BlackBird", @"BlueTit", @"Chaffinch", @"Sparrow", @"GreatTit", @"Crow", @"Wren", @"Chiffchaff", @"Kestrel", @"Pigeon"];
     
     [birds enumerateObjectsUsingBlock:^(NSString* originalBird, NSUInteger idx, BOOL *stop) {

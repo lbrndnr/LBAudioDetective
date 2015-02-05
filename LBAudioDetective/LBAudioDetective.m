@@ -60,10 +60,7 @@ typedef struct LBAudioDetective {
     } FFT;
 } LBAudioDetective;
 
-OSStatus LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef inDetective);
 void LBAudioDetectiveReset(LBAudioDetectiveRef inDetective, Boolean keepFingerprint);
-
-OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionFlags* ioActionFlags, const AudioTimeStamp* inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList* ioData);
 
 OSStatus LBAudioDetectiveAnalyzeIfWindowFull(LBAudioDetectiveRef inDetective, UInt32 inNumberFrames, AudioBufferList inData, AudioStreamBasicDescription inDataFormat, const AudioTimeStamp* inTimeStamp, LBAudioDetectiveFrameRef ioFrame);
 void LBAudioDetectiveSynthesizeFingerprint(LBAudioDetectiveRef inDetective, LBAudioDetectiveFrameRef* inFrames, UInt32 inNumberOfFrames, LBAudioDetectiveFingerprintRef* ioFingerprint);
@@ -102,7 +99,6 @@ LBAudioDetectiveRef LBAudioDetectiveNew() {
     LBAudioDetective* instance = (LBAudioDetective*)malloc(size);
     memset(instance, 0, size);
     
-    instance->recordingFormat = LBAudioDetectiveDefaultRecordingFormat();
     instance->processingFormat = LBAudioDetectiveDefaultProcessingFormat();
     
     instance->subfingerprintLength = kLBAudioDetectiveDefaultSubfingerprintLength;
@@ -119,8 +115,6 @@ OSStatus LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective) {
     }
     
     OSStatus error = noErr;
-    error = LBAudioDetectiveStopProcessing(inDetective);
-    LBErrorCheck(error);
     
     if (inDetective->graph) {
         error = AUGraphUninitialize(inDetective->graph);
@@ -148,24 +142,6 @@ OSStatus LBAudioDetectiveDispose(LBAudioDetectiveRef inDetective) {
 
 #pragma mark -
 #pragma mark Getters
-
-AudioStreamBasicDescription LBAudioDetectiveDefaultRecordingFormat() {
-    Float64 hardwareSampleRate = [[AVAudioSession sharedInstance] sampleRate];
-    UInt32 bytesPerSample = sizeof(SInt32);
-    
-    AudioStreamBasicDescription asbd = {0};
-    memset(&asbd, 0, sizeof(AudioStreamBasicDescription));
-    asbd.mFormatID = kAudioFormatLinearPCM;
-	asbd.mFormatFlags = kAudioFormatFlagIsSignedInteger|kAudioFormatFlagIsPacked;
-	asbd.mBitsPerChannel = 8*bytesPerSample;
-	asbd.mFramesPerPacket = 1;
-	asbd.mChannelsPerFrame = 1;
-	asbd.mBytesPerPacket = bytesPerSample*asbd.mFramesPerPacket;
-	asbd.mBytesPerFrame = bytesPerSample*asbd.mChannelsPerFrame;
-    asbd.mSampleRate = hardwareSampleRate;
-    
-    return asbd;
-}
 
 AudioStreamBasicDescription LBAudioDetectiveDefaultProcessingFormat() {
     UInt32 bytesPerSample = sizeof(Float32);
@@ -271,6 +247,8 @@ OSStatus LBAudioDetectiveSetAnalysisStride(LBAudioDetectiveRef inDetective, UInt
 #pragma mark -
 #pragma mark Other Methods
 
+// Reads an audio file and processes it according to the set preferences
+
 OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL) {
     OSStatus error = noErr;
     
@@ -286,16 +264,24 @@ OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL*
         LBErrorCheck(error);
     }
     
+    // Open the audio file in the given directory
+    
     error = ExtAudioFileOpenURL((__bridge CFURLRef)(inFileURL), &inDetective->inputFile);
     LBErrorCheck(error);
     
+    // Specify the format we want to read it with (PCM)
+    
     error = ExtAudioFileSetProperty(inDetective->inputFile, kExtAudioFileProperty_ClientDataFormat, sizeof(AudioStreamBasicDescription), &inDetective->processingFormat);
     LBErrorCheck(error);
+    
+    // Get the length of the audio file
     
     UInt32 propertySize = sizeof(SInt64);
     SInt64 dataLength = 0;
     error = ExtAudioFileGetProperty(inDetective->inputFile, kExtAudioFileProperty_FileLengthFrames, &propertySize, &dataLength);
     LBErrorCheck(error);
+    
+    // Calculate the number of frames needed
     
     UInt32 numberFrames = inDetective->windowSize;
     AudioBufferList bufferList;
@@ -316,6 +302,8 @@ OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL*
     LBAudioDetectiveFrameRef currentFrame = NULL;
     UInt32 remainingData = imageWidth%kLBAudioDetectiveDefaultNumberOfRowsPerFrame;
     
+    // Start reading by iterating through the data
+    
     for (UInt64 i = 0; i < imageWidth-remainingData; i++) {
         UInt32 frameIndex = (i % kLBAudioDetectiveDefaultNumberOfRowsPerFrame);
         if (frameIndex == 0) {
@@ -327,13 +315,19 @@ OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL*
             currentFrame = LBAudioDetectiveFrameNew(kLBAudioDetectiveDefaultNumberOfRowsPerFrame);
         }
         
+        // Read a window
+        
         error = ExtAudioFileRead(inDetective->inputFile, &readNumberFrames, &bufferList);
         LBErrorCheck(error);
+        
+        // Calculate the frequencies and store it in a LBAudioDetectiveFrame
         
         Float32 data[inDetective->pitchStepCount];        
         error = LBAudioDetectiveComputeFrequencies(inDetective, (SInt16*)bufferList.mBuffers[0].mData, readNumberFrames, inDetective->processingFormat, inDetective->pitchStepCount, data);
         LBErrorCheck(error);
         LBAudioDetectiveFrameSetRow(currentFrame, data, frameIndex, inDetective->pitchStepCount);
+        
+        // Go 64 sample frames further
         
         offset += inDetective->analysisStride;
         error = ExtAudioFileSeek(inDetective->inputFile, offset);
@@ -342,6 +336,8 @@ OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL*
     if (currentFrame && LBAudioDetectiveFrameFull(currentFrame)) {
         frames[f] = currentFrame;
     }
+    
+    // Synthesise and store the fingerprint
     
     LBAudioDetectiveFingerprintRef fingerprint = LBAudioDetectiveFingerprintNew(0);
     LBAudioDetectiveSynthesizeFingerprint(inDetective, frames, framesCount, &fingerprint);
@@ -357,154 +353,8 @@ OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL*
     return error;
 }
 
-OSStatus LBAudioDetectiveProcess(LBAudioDetectiveRef inDetective, UInt32 inMaxNumberOfSubfingerprints, LBAudioDetectiveCallback inCallback, id inCallbackHelper) {
-    inDetective->maxNumberOfSubfingerprints = inMaxNumberOfSubfingerprints;
-    inDetective->callback = inCallback;
-    inDetective->callbackHelper = inCallbackHelper;
-    return LBAudioDetectiveStartProcessing(inDetective);
-}
-
-OSStatus LBAudioDetectiveStartProcessing(LBAudioDetectiveRef inDetective) {
-    if (inDetective->graph == NULL || inDetective->rioUnit == NULL) {
-        LBAudioDetectiveInitializeGraph(inDetective);
-    }
-    
-    LBAudioDetectiveReset(inDetective, FALSE);
-    inDetective->recordBuffer = (SInt16*)calloc(AudioStreamBytesPerSample(inDetective->recordingFormat), inDetective->windowSize);
-    
-    return AUGraphStart(inDetective->graph);
-}
-
-OSStatus LBAudioDetectiveStopProcessing(LBAudioDetectiveRef inDetective) {
-    OSStatus error = noErr;
-    Boolean isProcessing = FALSE;
-    
-    if (inDetective->graph) {
-        error = AUGraphIsRunning(inDetective->graph, &isProcessing);
-        LBErrorCheck(error);
-    }
-    
-    if (isProcessing) {
-        error = AUGraphStop(inDetective->graph);
-        LBErrorCheck(error);
-        
-        LBAudioDetectiveFingerprintRef fingerprint = LBAudioDetectiveFingerprintNew(0);
-        LBAudioDetectiveSynthesizeFingerprint(inDetective, inDetective->frames, inDetective->numberOfFrames, &fingerprint);
-        inDetective->fingerprint = fingerprint;
-        LBAudioDetectiveReset(inDetective, TRUE);
-    }
-    
-    return error;
-}
-
-OSStatus LBAudioDetectiveResumeProcessing(LBAudioDetectiveRef inDetective) {
-    OSStatus error = noErr;
-    
-    if (inDetective->graph == NULL) {
-        LBAudioDetectiveStartProcessing(inDetective);
-    }
-    else {
-        Boolean isProcessing = FALSE;
-        error = AUGraphIsRunning(inDetective->graph, &isProcessing);
-        LBErrorCheck(error);
-        
-        if (!isProcessing) {
-            error = AUGraphStart(inDetective->graph);
-            LBErrorCheck(error);
-        }
-    }
-    
-    return error;
-}
-
-OSStatus LBAudioDetectivePauseProcessing(LBAudioDetectiveRef inDetective) {
-    OSStatus error = noErr;
-    
-    if (inDetective->graph != NULL) {
-        Boolean isProcessing = FALSE;
-        error = AUGraphIsRunning(inDetective->graph, &isProcessing);
-        LBErrorCheck(error);
-        
-        if (isProcessing) {
-            error = AUGraphStop(inDetective->graph);
-            LBErrorCheck(error);
-        }
-    }
-    
-    return error;
-}
-
 #pragma mark -
 #pragma mark Processing
-
-OSStatus LBAudioDetectiveInitializeGraph(LBAudioDetectiveRef inDetective) {
-    OSStatus error = noErr;
-    
-#if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
-    // Create new AUGraph
-    error = NewAUGraph(&inDetective->graph);
-    LBErrorCheck(error);
-    
-    // Initialize rioNode (microphone input)
-    AudioComponentDescription rioCD = {0};
-    rioCD.componentType = kAudioUnitType_Output;
-    rioCD.componentSubType = kAudioUnitSubType_RemoteIO;
-    rioCD.componentManufacturer = kAudioUnitManufacturer_Apple;
-    rioCD.componentFlags = 0;
-    rioCD.componentFlagsMask = 0;
-    
-    AUNode rioNode;
-    error = AUGraphAddNode(inDetective->graph, &rioCD, &rioNode);
-    LBErrorCheck(error);
-    
-    // Open the graph so I can modify the audio units
-    error = AUGraphOpen(inDetective->graph);
-    LBErrorCheck(error);
-    
-    // Get initialized rioUnit
-    error = AUGraphNodeInfo(inDetective->graph, rioNode, NULL, &inDetective->rioUnit);
-    LBErrorCheck(error);
-    
-    // Set properties to rioUnit
-    AudioUnitElement bus0 = 0, bus1 = 1;
-    UInt32 onFlag = 1, offFlag = 0;
-    UInt32 propertySize = sizeof(UInt32);
-    
-    // Enable microphone input
-	error = AudioUnitSetProperty(inDetective->rioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, bus1, &onFlag, propertySize);
-    LBErrorCheck(error);
-	
-    // Disable speakers output
-	error = AudioUnitSetProperty(inDetective->rioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Output, bus0, &offFlag, propertySize);
-    LBErrorCheck(error);
-    
-    // Set the stream format we want
-    propertySize = sizeof(AudioStreamBasicDescription);
-    error = AudioUnitSetProperty(inDetective->rioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, bus0, &inDetective->recordingFormat, propertySize);
-    LBErrorCheck(error);
-    
-    error = AudioUnitSetProperty(inDetective->rioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, bus1, &inDetective->recordingFormat, propertySize);
-    LBErrorCheck(error);
-	
-    AURenderCallbackStruct callback = {0};
-    callback.inputProc = LBAudioDetectiveMicrophoneOutput;
-	callback.inputProcRefCon = inDetective;
-    propertySize = sizeof(AURenderCallbackStruct);
-	error = AudioUnitSetProperty(inDetective->rioUnit, kAudioOutputUnitProperty_SetInputCallback, kAudioUnitScope_Global, bus0, &callback, propertySize);
-    LBErrorCheck(error);
-    
-    propertySize = sizeof(UInt32);
-    error = AudioUnitSetProperty(inDetective->rioUnit, kAudioUnitProperty_ShouldAllocateBuffer, kAudioUnitScope_Output, bus1, &offFlag, propertySize);
-    LBErrorCheck(error);
-    
-    // Initialize Graph
-    error = AUGraphInitialize(inDetective->graph);
-    LBErrorCheck(error);
-    
-#endif
-    
-    return error;
-}
 
 void LBAudioDetectiveReset(LBAudioDetectiveRef inDetective, Boolean keepFingerprint) {
     if (!keepFingerprint) {
@@ -530,65 +380,6 @@ void LBAudioDetectiveReset(LBAudioDetectiveRef inDetective, Boolean keepFingerpr
     inDetective->numberOfFrames = 0;
     inDetective->callback = NULL;
     inDetective->callbackHelper = nil;
-}
-
-OSStatus LBAudioDetectiveMicrophoneOutput(void* inRefCon, AudioUnitRenderActionFlags* ioActionFlags, const AudioTimeStamp* inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList* ioData) {
-    LBAudioDetective* inDetective = (LBAudioDetective*)inRefCon;
-    OSStatus error = noErr;
-    
-    AudioBufferList bufferList;
-    SInt16 samples[inNumberFrames];
-    memset(samples, 0, sizeof(samples));
-    
-    bufferList.mNumberBuffers = 1;
-    bufferList.mBuffers[0].mData = samples;
-    bufferList.mBuffers[0].mNumberChannels = inDetective->recordingFormat.mChannelsPerFrame;
-    bufferList.mBuffers[0].mDataByteSize = inNumberFrames*AudioStreamBytesPerSample(inDetective->recordingFormat);
-    
-    error = AudioUnitRender(inDetective->rioUnit, ioActionFlags, inTimeStamp, 1, inNumberFrames, &bufferList);
-    LBErrorCheck(error);
-    
-    Boolean computedAllSubfingerprints = FALSE;
-    Boolean needsNewFrame = FALSE;
-    LBAudioDetectiveFrameRef processingFrame = NULL;
-    
-    if (inDetective->numberOfFrames == 0) {
-        needsNewFrame = TRUE;
-    }
-    else {
-        processingFrame = inDetective->frames[inDetective->numberOfFrames-1];
-        if (LBAudioDetectiveFrameFull(processingFrame)) {
-            if (inDetective->numberOfFrames == inDetective->maxNumberOfSubfingerprints) {
-                computedAllSubfingerprints = TRUE;
-            }
-            else {
-                needsNewFrame = TRUE;
-            }
-        }
-    }
-    
-    if (needsNewFrame) {
-        inDetective->numberOfFrames++;
-        inDetective->frames = (LBAudioDetectiveFrameRef*)realloc(inDetective->frames, sizeof(LBAudioDetectiveFrameRef)*inDetective->numberOfFrames);
-        processingFrame = LBAudioDetectiveFrameNew(inDetective->subfingerprintLength);
-        inDetective->frames[inDetective->numberOfFrames-1] = processingFrame;
-    }
-    
-    if (processingFrame) {
-        error = LBAudioDetectiveAnalyzeIfWindowFull(inDetective, inNumberFrames, bufferList, inDetective->recordingFormat, inTimeStamp, processingFrame);
-        LBErrorCheck(error);
-    }
-    else if (computedAllSubfingerprints) {
-        if (inDetective->callback) {
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                inDetective->callback(inDetective, inDetective->callbackHelper);
-            });
-        }
-        
-        LBAudioDetectiveStopProcessing(inDetective);
-    }
-    
-    return error;
 }
 
 OSStatus LBAudioDetectiveAnalyzeIfWindowFull(LBAudioDetectiveRef inDetective, UInt32 inNumberFrames, AudioBufferList inData, AudioStreamBasicDescription inDataFormat, const AudioTimeStamp* inTimeStamp, LBAudioDetectiveFrameRef ioFrame) {
@@ -620,6 +411,8 @@ OSStatus LBAudioDetectiveAnalyzeIfWindowFull(LBAudioDetectiveRef inDetective, UI
     return error;
 }
 
+// Conversion from an array of LBAudioDetectiveFrames to one LBAudioDetectivFingerprint
+
 void LBAudioDetectiveSynthesizeFingerprint(LBAudioDetectiveRef inDetective, LBAudioDetectiveFrameRef* inFrames, UInt32 inNumberOfFrames, LBAudioDetectiveFingerprintRef* ioFingerprint) {
     for (UInt32 i = 0; i < inNumberOfFrames; i++) {
         LBAudioDetectiveFrameRef frame = inFrames[i];
@@ -638,8 +431,12 @@ void LBAudioDetectiveSynthesizeFingerprint(LBAudioDetectiveRef inDetective, LBAu
     }
 }
 
+// Applies the FFT to the data, computes the frequencies and adds them up together
+
 OSStatus LBAudioDetectiveComputeFrequencies(LBAudioDetectiveRef inDetective, void* inSamples, UInt32 inNumberFrames, AudioStreamBasicDescription inDataFormat, UInt32 inNumberOfFrequencyBins, Float32* outData) {
     OSStatus error = noErr;
+    
+    // Check first whether the format is the same, convert otherwise
     
     if (inDataFormat.mFormatFlags != inDetective->processingFormat.mFormatFlags || inDataFormat.mBytesPerFrame != inDataFormat.mBytesPerFrame) {
         Float32 convertedSamples[inNumberFrames];
@@ -650,6 +447,8 @@ OSStatus LBAudioDetectiveComputeFrequencies(LBAudioDetectiveRef inDetective, voi
         LBErrorCheck(error);
     }
     
+    // Perform the FFT using Accelerate.framework
+    
     Float32* samples = (Float32*)inSamples;
 
     vDSP_ctoz((COMPLEX*)samples, 2, &inDetective->FFT.A, 1, inDetective->FFT.nOver2);
@@ -657,6 +456,8 @@ OSStatus LBAudioDetectiveComputeFrequencies(LBAudioDetectiveRef inDetective, voi
     vDSP_ztoc(&inDetective->FFT.A, 1, (COMPLEX *)samples, 2, inDetective->FFT.nOver2);
     
     inDetective->FFT.A.imagp[0] = 0.0;
+    
+    // Calculate the ranges of the 32 categories according to the processing format
     
     UInt32 binsCount = inNumberOfFrequencyBins+1;
     Float64 maxFreq = inDetective->processingFormat.mSampleRate/2.0;
@@ -673,6 +474,8 @@ OSStatus LBAudioDetectiveComputeFrequencies(LBAudioDetectiveRef inDetective, voi
     UInt32 width = inNumberFrames/2.0;
     size_t size = inNumberOfFrequencyBins*sizeof(Float32*);
     memset(outData, 0, size);
+    
+    // Iterate through the spectrogram slice, the output of the FFT and store it in a buffer
     
     for (int i = 0; i < inNumberOfFrequencyBins; i++) {
         UInt32 lowBound = indices[i];
