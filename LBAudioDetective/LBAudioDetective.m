@@ -63,7 +63,7 @@ typedef struct LBAudioDetective {
 void LBAudioDetectiveReset(LBAudioDetectiveRef inDetective, Boolean keepFingerprint);
 
 OSStatus LBAudioDetectiveAnalyzeIfWindowFull(LBAudioDetectiveRef inDetective, UInt32 inNumberFrames, AudioBufferList inData, AudioStreamBasicDescription inDataFormat, const AudioTimeStamp* inTimeStamp, LBAudioDetectiveFrameRef ioFrame);
-void LBAudioDetectiveSynthesizeFingerprint(LBAudioDetectiveRef inDetective, LBAudioDetectiveFrameRef* inFrames, UInt32 inNumberOfFrames, LBAudioDetectiveFingerprintRef* ioFingerprint);
+void LBAudioDetectiveSynthesizeFingerprint(LBAudioDetectiveRef inDetective, LBAudioDetectiveFrameRef* inFrames, UInt64 inNumberOfFrames, LBAudioDetectiveFingerprintRef* ioFingerprint);
 OSStatus LBAudioDetectiveComputeFrequencies(LBAudioDetectiveRef inDetective, void* inSamples, UInt32 inNumberFrames, AudioStreamBasicDescription inDataFormat, UInt32 inNumberOfFrequencyBins, Float32* outData);
 
 OSStatus LBAudioDetectiveConvertToFormat(void* inData, AudioStreamBasicDescription inFromFormat, AudioStreamBasicDescription inToFormat, UInt32 inNumberFrames, void* outData);
@@ -297,7 +297,7 @@ OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL*
     UInt32 readNumberFrames = numberFrames;
     
     UInt32 f = 0;
-    UInt32 framesCount = imageWidth/kLBAudioDetectiveDefaultNumberOfRowsPerFrame;
+    UInt64 framesCount = imageWidth/kLBAudioDetectiveDefaultNumberOfRowsPerFrame;
     LBAudioDetectiveFrameRef frames[framesCount];
     LBAudioDetectiveFrameRef currentFrame = NULL;
     UInt32 remainingData = imageWidth%kLBAudioDetectiveDefaultNumberOfRowsPerFrame;
@@ -384,7 +384,7 @@ void LBAudioDetectiveReset(LBAudioDetectiveRef inDetective, Boolean keepFingerpr
 
 OSStatus LBAudioDetectiveAnalyzeIfWindowFull(LBAudioDetectiveRef inDetective, UInt32 inNumberFrames, AudioBufferList inData, AudioStreamBasicDescription inDataFormat, const AudioTimeStamp* inTimeStamp, LBAudioDetectiveFrameRef ioFrame) {
     OSStatus error = noErr;
-    SInt64 delta = (SInt16)inDetective->windowSize-((SInt16)inDetective->recordBufferIndex+(SInt16)inNumberFrames);
+    SInt32 delta = inDetective->windowSize-(inDetective->recordBufferIndex+inNumberFrames);
     if (delta > 0) {
         // Window is not full yet
         
@@ -394,7 +394,7 @@ OSStatus LBAudioDetectiveAnalyzeIfWindowFull(LBAudioDetectiveRef inDetective, UI
     else {
         // Store remaining data to the buffer in order to fill the window
         
-        UInt32 remainingNumberFrames = (inNumberFrames+delta);
+        SInt32 remainingNumberFrames = (inNumberFrames+delta);
         memcpy(inDetective->recordBuffer+inDetective->recordBufferIndex, inData.mBuffers[0].mData, remainingNumberFrames*AudioStreamBytesPerSample(inDetective->recordingFormat));
 
         Float32 row[inDetective->pitchStepCount];
@@ -413,7 +413,7 @@ OSStatus LBAudioDetectiveAnalyzeIfWindowFull(LBAudioDetectiveRef inDetective, UI
 
 // Conversion from an array of LBAudioDetectiveFrames to one LBAudioDetectivFingerprint
 
-void LBAudioDetectiveSynthesizeFingerprint(LBAudioDetectiveRef inDetective, LBAudioDetectiveFrameRef* inFrames, UInt32 inNumberOfFrames, LBAudioDetectiveFingerprintRef* ioFingerprint) {
+void LBAudioDetectiveSynthesizeFingerprint(LBAudioDetectiveRef inDetective, LBAudioDetectiveFrameRef* inFrames, UInt64 inNumberOfFrames, LBAudioDetectiveFingerprintRef* ioFingerprint) {
     for (UInt32 i = 0; i < inNumberOfFrames; i++) {
         LBAudioDetectiveFrameRef frame = inFrames[i];
         
