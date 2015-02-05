@@ -298,7 +298,7 @@ OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL*
     
     UInt32 f = 0;
     UInt64 framesCount = imageWidth/kLBAudioDetectiveDefaultNumberOfRowsPerFrame;
-    LBAudioDetectiveFrameRef frames[framesCount];
+    LBAudioDetectiveFrameRef* frames = malloc(framesCount*sizeof(LBAudioDetectiveFrameRef));
     LBAudioDetectiveFrameRef currentFrame = NULL;
     UInt32 remainingData = imageWidth%kLBAudioDetectiveDefaultNumberOfRowsPerFrame;
     
@@ -323,7 +323,7 @@ OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL*
         // Calculate the frequencies and store it in a LBAudioDetectiveFrame
         
         Float32 data[inDetective->pitchStepCount];        
-        error = LBAudioDetectiveComputeFrequencies(inDetective, (SInt16*)bufferList.mBuffers[0].mData, readNumberFrames, inDetective->processingFormat, inDetective->pitchStepCount, data);
+        error = LBAudioDetectiveComputeFrequencies(inDetective, bufferList.mBuffers[0].mData, readNumberFrames, inDetective->processingFormat, inDetective->pitchStepCount, data);
         LBErrorCheck(error);
         LBAudioDetectiveFrameSetRow(currentFrame, data, frameIndex, inDetective->pitchStepCount);
         
@@ -347,6 +347,7 @@ OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL*
     for (UInt64 i = 0; i < framesCount; i++) {
         LBAudioDetectiveFrameDispose(frames[i]);
     }
+    free(frames);
 
     LBAudioDetectiveReset(inDetective, TRUE);
     
@@ -405,7 +406,7 @@ OSStatus LBAudioDetectiveAnalyzeIfWindowFull(LBAudioDetectiveRef inDetective, UI
         
         inDetective->recordBufferIndex = -delta-1;
         memset(inDetective->recordBuffer, 0, inDetective->windowSize*AudioStreamBytesPerSample(inDetective->recordingFormat));
-        memcpy(inDetective->recordBuffer, (SInt16*)inData.mBuffers[0].mData+remainingNumberFrames, inData.mBuffers[0].mDataByteSize-remainingNumberFrames*AudioStreamBytesPerSample(inDetective->recordingFormat));
+        memcpy(inDetective->recordBuffer, inData.mBuffers[0].mData+remainingNumberFrames, inData.mBuffers[0].mDataByteSize-remainingNumberFrames*AudioStreamBytesPerSample(inDetective->recordingFormat));
     }
     
     return error;

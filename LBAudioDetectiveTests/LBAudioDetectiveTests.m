@@ -22,7 +22,7 @@
 +(NSString*)stringFromFingerprint:(LBAudioDetectiveFingerprintRef)fingerprint {
     NSMutableArray* array = [NSMutableArray new];
     NSUInteger subfingerprintLength = LBAudioDetectiveFingerprintGetSubfingerprintLength(fingerprint);
-    for (NSUInteger i = 0; i < LBAudioDetectiveFingerprintGetNumberOfSubfingerprints(fingerprint); i++) {
+    for (UInt32 i = 0; i < LBAudioDetectiveFingerprintGetNumberOfSubfingerprints(fingerprint); i++) {
         Boolean subfingerprint[subfingerprintLength];
         LBAudioDetectiveFingerprintGetSubfingerprintAtIndex(fingerprint, i, subfingerprint);
         NSMutableString* subfingerprintString = [NSMutableString new];
@@ -152,18 +152,6 @@
         Float32 match = LBAudioDetectiveFingerprintCompareToFingerprint(fingerprint, copy, LBAudioDetectiveFingerprintGetSubfingerprintLength(fingerprint));
         XCTFail(@"Couldn't create persisting fingerprints for Amsel:%2f%%", match*100.0);
     }
-}
-
--(void)testFingerprintPrints {
-    NSBundle* bundle = [NSBundle bundleForClass:self.class];
-    NSArray* birds = @[@"BlackBird", @"BlueTit", @"Chaffinch", @"Sparrow", @"GreatTit", @"Crow", @"Wren", @"Chiffchaff", @"Kestrel", @"Pigeon"];
-    
-    [birds enumerateObjectsUsingBlock:^(NSString* originalBird, NSUInteger idx, BOOL *stop) {
-        NSURL* originalURL = [bundle URLForResource:[originalBird stringByAppendingString:@"_org"] withExtension:@"caf"];
-        LBAudioDetectiveProcessAudioURL(self.detective, originalURL);
-        LBAudioDetectiveFingerprintRef fingerprint = LBAudioDetectiveGetFingerprint(self.detective);
-        NSLog(@"%@\n%@", originalBird, [LBAudioDetectiveTests stringFromFingerprint:fingerprint]);
-    }];
 }
 
 -(void)testHaarWaveletDecomposition {
