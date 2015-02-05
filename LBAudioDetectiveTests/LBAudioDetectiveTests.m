@@ -125,18 +125,20 @@
     for (UInt32 i = 0; i < 10; i++) {
         NSURL* originalURL = [[NSBundle bundleForClass:self.class] URLForResource:@"BlackBird" withExtension:@"caf"];
         
-        LBAudioDetectiveProcessAudioURL(self.detective, originalURL);
-        LBAudioDetectiveFingerprintRef fingerprint1 = LBAudioDetectiveGetFingerprint(self.detective);
+        LBAudioDetectiveFingerprintRef fingerprint1 = NULL;
+        LBAudioDetectiveProcessAudioURL(self.detective, originalURL, &fingerprint1);
         
         LBAudioDetectiveRef differentDetective = LBAudioDetectiveNew();
-        LBAudioDetectiveProcessAudioURL(differentDetective, originalURL);
-        LBAudioDetectiveFingerprintRef fingerprint2 = LBAudioDetectiveGetFingerprint(differentDetective);
+        LBAudioDetectiveFingerprintRef fingerprint2 = NULL;
+        LBAudioDetectiveProcessAudioURL(differentDetective, originalURL, &fingerprint2);
         
         if (!LBAudioDetectiveFingerprintEqualToFingerprint(fingerprint1, fingerprint2)) {
             Float32 match = LBAudioDetectiveFingerprintCompareToFingerprint(fingerprint1, fingerprint2, LBAudioDetectiveFingerprintGetSubfingerprintLength(fingerprint1));
             XCTFail(@"Couldn't create persisting fingerprints for Amsel:%2f%%", match*100.0);
         }
         
+        LBAudioDetectiveFingerprintDispose(fingerprint1);
+        LBAudioDetectiveFingerprintDispose(fingerprint2);
         LBAudioDetectiveDispose(differentDetective);
     }
 }
@@ -144,14 +146,17 @@
 -(void)testFingerprintComparison {
     NSURL* originalURL = [[NSBundle bundleForClass:self.class] URLForResource:@"BlackBird" withExtension:@"caf"];
     
-    LBAudioDetectiveProcessAudioURL(self.detective, originalURL);
-    LBAudioDetectiveFingerprintRef fingerprint = LBAudioDetectiveGetFingerprint(self.detective);
+    LBAudioDetectiveFingerprintRef fingerprint = NULL;
+    LBAudioDetectiveProcessAudioURL(self.detective, originalURL, &fingerprint);
     LBAudioDetectiveFingerprintRef copy = LBAudioDetectiveFingerprintCopy(fingerprint);
     
     if (!LBAudioDetectiveFingerprintEqualToFingerprint(fingerprint, copy)) {
         Float32 match = LBAudioDetectiveFingerprintCompareToFingerprint(fingerprint, copy, LBAudioDetectiveFingerprintGetSubfingerprintLength(fingerprint));
         XCTFail(@"Couldn't create persisting fingerprints for Amsel:%2f%%", match*100.0);
     }
+    
+    LBAudioDetectiveFingerprintDispose(fingerprint);
+    LBAudioDetectiveFingerprintDispose(copy);
 }
 
 -(void)testHaarWaveletDecomposition {

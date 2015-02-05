@@ -20,7 +20,6 @@ extern const UInt32 kLBAudioDetectiveDefaultFingerprintComparisonRange;
 extern const UInt32 kLBAudioDetectiveDefaultSubfingerprintLength;
     
 typedef struct LBAudioDetective *LBAudioDetectiveRef;
-typedef void(*LBAudioDetectiveCallback)(LBAudioDetectiveRef outDetective, id callbackHelper);
     
 /**
  LBAudioDetectiveRef is an opaque type that creates a fingerprint from a specific audio file or recording.
@@ -128,16 +127,6 @@ UInt32 LBAudioDetectiveGetAnalysisStride(LBAudioDetectiveRef inDetective);
 */
     
 UInt32 LBAudioDetectiveGetSubfingerprintLength(LBAudioDetectiveRef inDetective);
-    
-/**
- After processing an audio file or finish processing simultaneously to the recording, calling this function returns the resulting fingerprint. The lifetime of the fingerprint is bound to the detective. Thus a copy has to be made in order to keep it longer than the detective.
-     
- @param inDetective The receiving LBAudioDetective struct
-     
- @return The resulting LBAudioDetectiveFingerprint struct
-*/
-
-LBAudioDetectiveFingerprintRef LBAudioDetectiveGetFingerprint(LBAudioDetectiveRef inDetective);
 
 #pragma mark -
 #pragma mark Setters
@@ -226,7 +215,7 @@ OSStatus LBAudioDetectiveSetSubfingerprintLength(LBAudioDetectiveRef inDetective
  @param inFileURL A file URL representing the directory to the audio file to be processed
 */
 
-OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL);
+OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL* inFileURL, LBAudioDetectiveFingerprintRef* outFingerprint);
 
 #pragma mark -
 #pragma mark Comparison
