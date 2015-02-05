@@ -210,6 +210,7 @@ OSStatus LBAudioDetectiveProcessAudioURL(LBAudioDetectiveRef inDetective, NSURL*
     
     if (!inFileURL) {
         error = kLBAudioDetectiveArgumentInvalid;
+        return error;
     }
     
     if (inDetective->inputFile) {
@@ -452,9 +453,12 @@ OSStatus LBAudioDetectiveCompareAudioURLs(LBAudioDetectiveRef inDetective, NSURL
     error = LBAudioDetectiveProcessAudioURL(inDetective, inFileURL2, &fingerprint2);
     LBErrorCheck(error);
     
-    *outMatch = LBAudioDetectiveFingerprintCompareToFingerprint(fingerprint1, fingerprint2, inComparisonRange);
+    if (error == noErr) {
+        *outMatch = LBAudioDetectiveFingerprintCompareToFingerprint(fingerprint1, fingerprint2, inComparisonRange);
+    }
     
     LBAudioDetectiveFingerprintDispose(fingerprint1);
+    LBAudioDetectiveFingerprintDispose(fingerprint2);
     
     return error;
 }
