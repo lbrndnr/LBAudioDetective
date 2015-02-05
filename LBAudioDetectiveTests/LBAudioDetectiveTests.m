@@ -54,7 +54,6 @@
     NSBundle* bundle = [NSBundle bundleForClass:[self class]];
     NSArray* birds = @[@"BlackBird", @"BlueTit", @"Chaffinch", @"Sparrow", @"GreatTit", @"Crow", @"Wren", @"Chiffchaff", @"Kestrel", @"Pigeon"];
     
-    
     [birds enumerateObjectsUsingBlock:^(NSString* originalBird, NSUInteger idx, BOOL *stop) {
         NSURL* originalURL = [bundle URLForResource:originalBird withExtension:@"caf"];
         
@@ -86,12 +85,8 @@
             [results setObject:[NSString stringWithFormat:@"%@/%@", originalName, sequenceName] forKey:@(match*100.0f)];
         }];
         
-        if (failed) {
-            XCTFail(@"%@ didn't match the best", originalBird);
-            
-            //NSLog(@"%@->%@", [results objectForKey:@(maxMatch*100.0f)], @(maxMatch*100.0f));
-        }
-        NSLog(@"%@->%@", [NSString stringWithFormat:@"%@/%@", originalBird.uppercaseString, originalBird.uppercaseString], @(trueMatch));
+        XCTAssertFalse(false, @"%@ didn't match the best", originalBird);
+        
         NSLog(@"%@", results);
     }];
 }
@@ -134,7 +129,7 @@
         
         if (!LBAudioDetectiveFingerprintEqualToFingerprint(fingerprint1, fingerprint2)) {
             Float32 match = LBAudioDetectiveFingerprintCompareToFingerprint(fingerprint1, fingerprint2, LBAudioDetectiveFingerprintGetSubfingerprintLength(fingerprint1));
-            XCTFail(@"Couldn't create persisting fingerprints for Amsel:%2f%%", match*100.0);
+            XCTFail(@"Couldn't create persisting fingerprints for black bird:%2f%%", match*100.0);
         }
         
         LBAudioDetectiveFingerprintDispose(fingerprint1);
@@ -152,7 +147,7 @@
     
     if (!LBAudioDetectiveFingerprintEqualToFingerprint(fingerprint, copy)) {
         Float32 match = LBAudioDetectiveFingerprintCompareToFingerprint(fingerprint, copy, LBAudioDetectiveFingerprintGetSubfingerprintLength(fingerprint));
-        XCTFail(@"Couldn't create persisting fingerprints for Amsel:%2f%%", match*100.0);
+        XCTFail(@"Couldn't create persisting fingerprints for black bird:%2f%%", match*100.0);
     }
     
     LBAudioDetectiveFingerprintDispose(fingerprint);
