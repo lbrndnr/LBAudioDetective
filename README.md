@@ -24,4 +24,4 @@ The library links against the following frameworks: AVFoundation, AudioUnit, Acc
 LBAudioDetective is licensed under the [MIT License](http://opensource.org/licenses/mit-license.php).
 
 ## Contact
-If you have any questions, I'd be happy to answer them. You can also [follow me on Twitter](https://twitter.com/larcus94) of course :)
+If you have any questions, I'd be happy to answer them. You can also [follow me on Twitter](https://twitter.com/lbrndnr) of course :)
